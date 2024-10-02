@@ -1,0 +1,27 @@
+
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  font-family: sans-serif;
+  min-height: 100vh;
+  background-image: url('../src/assets/img3.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+.container { /* Assuming your components are inside a container */
+  width: 100%;
+  height: auto;
+  overflow-y: scroll; /* Allows the content to scroll */
+}
+
