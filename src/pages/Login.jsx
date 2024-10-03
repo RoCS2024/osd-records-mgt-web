@@ -9,6 +9,8 @@ import logo from '../assets/logo.png';
 
 import { jwtDecode } from 'jwt-decode';
 
+import { config } from "../Constants";
+
 
 const Login = () => {
     const navigate = useNavigate();
@@ -27,7 +29,7 @@ const Login = () => {
         };
 
         try {
-            const response = await axios.post('http://localhost:8080/user/login', userData);
+            const response = await axios.post(config.url.API_URL, userData);
             if (response.status === 200) {
                 const token = response.headers.get('jwt-token');
                 const tokenDecoded = jwtDecode(token);
