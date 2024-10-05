@@ -79,7 +79,7 @@ const Login = () => {
     };
 
     return (
-        <div className="semi-body">
+        <div className="form-container">
 
             <div className="form-box-login">
 
@@ -89,7 +89,9 @@ const Login = () => {
                         <div className="logo">
                             <img src={logo} alt="Logo" id="logo"/>
                         </div>
+
                         <h1>Login</h1>
+
                     </div>
 
                     <div className="field-box">
@@ -118,7 +120,7 @@ const Login = () => {
 
                     {errorMessage && <p className="error-message">{errorMessage}</p>}
 
-                    <button type="submit" className="login">Login</button>
+                    <button type="submit" className="button">Login</button>
 
                     <div className="register-link">
                         <p className="noAcc">Don't have an Account?<a className="click" href="account/create">Click here</a></p>
