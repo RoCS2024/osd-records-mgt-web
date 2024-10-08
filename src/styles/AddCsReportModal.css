@@ -1,0 +1,112 @@
+.modal-box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 420px;
+    height: auto;
+    max-width: 80%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.error {
+    font-size: 11px;
+    color: red;
+    width: 100%;
+    text-align: center;
+}
+
+div .add-form-container {
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    padding: 0;
+    margin: 0;
+}
+
+.modal-box h2 {
+    display: block;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 300px;
+    padding: 3px 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    background-color: white;
+    border: 1px solid #757575;
+    height: 35px;
+}
+
+.form-group select {
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="6"><path d="M0 0l6 6 6-6H0z" fill="%23444444"/></svg>');
+    background-repeat: no-repeat;
+    background-position-x: calc(100% - 20px);
+    background-position-y: center;
+    transition: background-color 0.3s;
+}
+
+.form-group textarea {
+    resize: vertical;
+    height: 80px;
+}
+
+.submit-btn,
+.close-btn {
+    margin: 15px 0;
+    justify-content: center;
+    align-items: center;
+    width: 180px;
+    font-size: 16px;
+    background-color: #0174BE;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: .5vw;
+    transition: background-color 0.3s;
+}
+
+.close-btn {
+    background-color: transparent;
+    color: #333;
+    font-size: 24px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 30px;
+    padding: 0;
+    margin: 0;
+    border: none;
+    cursor: pointer;
+    width: 0;
+    height: 0;
+}
+
+.close-btn:hover {
+    color: #dc3545;
+}
+
+.submit-btn:hover {
+    opacity: 0.9;
+}
