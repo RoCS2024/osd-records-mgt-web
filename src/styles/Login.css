@@ -1,27 +1,31 @@
 .form-container {
     display: grid;                      
-    justify-items: center;           
+    justify-items: center; 
     align-content: start;                 
     font-family: sans-serif;            
     min-height: 100vh; 
     min-width: 100%;
+    padding-top: 25px; /* move everything up */
+
 }
 
 .form-box-login {
     width: 500px;     
-    height: 550px;   
+    max-height: 750px; 
     background: rgba(255, 255, 255, 0.85);
     border-radius: 12px;  
-    margin-top: 48px;    
+    margin-top: 30px; /* move it upwards */
+    margin-right: 10%; /* move the container to the left */
     padding: 27px;        
     display: grid;                      
-    justify-items: center;           
+    justify-items: center;       
     align-content: start; 
+   
 }
 
 .form-container-login {
     width: 450px;
-    height: 530px;
+    max-height: 700px;
     display: grid;                      
     justify-items: center;           
     align-content: start;
@@ -60,13 +64,13 @@
 
 
 .field-box {
-    margin-top: 10px;
+    margin-top: 0px;
     height: 85px;
     width: 100%;
     display: grid;                      
     justify-items: center;           
     align-content: center;
-    margin: 15px 0;
+    margin: 10px 0; /* Adjust vertical margin */
     padding: 0;
 }
 
@@ -122,11 +126,12 @@
     cursor: pointer;
 }
 
-form .forgot-password-link{
+.forgot-password-link{
     width: 100%;
     display: grid;                      
     justify-items: end;           
     align-content: start;
+    margin-top: 15px; 
     margin: 0;
     padding: 0;
 }
@@ -137,14 +142,15 @@ form .forgot-password-link{
     color: #0174BE;
     margin: 0;
     padding: 0;
+    margin-top: 7px;
 }
 
-.button {
-    margin-top: 14px; 
+.login-button {
+    margin-top: 25px; 
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 45.55%;
+    width: 47.55%;
     height: 50px;
     border-radius: 7px;
     cursor: pointer;
@@ -156,8 +162,12 @@ form .forgot-password-link{
 }
 
 
-button:hover {
+.login-button:hover {
     background-color: #005B96;
+}
+
+.noAcc{
+    margin-top: 16px;
 }
 
 form .register-link{

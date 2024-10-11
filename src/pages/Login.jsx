@@ -120,7 +120,7 @@ const Login = () => {
 
                     {errorMessage && <p className="error-message">{errorMessage}</p>}
 
-                    <button type="submit" className="button">Login</button>
+                    <button type="submit" className="login-button">Login</button>
 
                     <div className="register-link">
                         <p className="noAcc">Don't have an Account?<a className="click" href="account/create">Click here</a></p>
