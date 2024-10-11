@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/ForgotPassword.css';
 
-import { TbEyeClosed, TbEyeUp, TbUser } from "react-icons/tb";
+import { TbEyeClosed, TbEyeUp} from "react-icons/tb";
 import logo from '../assets/logo.png';
 
 const ForgotPassword = () => {
