@@ -92,7 +92,11 @@ const OtpForm = () => {
                     />
                 </div>
 
-                <button type="submit" disabled={isSubmitting || formData.otp.length === 0 || formData.username.length === 0}>
+                <button
+                    className="otp-button" 
+                    type="submit" 
+                    disabled={isSubmitting || formData.otp.length === 0 || formData.username.length === 0}
+                    >
                     {isSubmitting ? 'Submitting...' : 'Verify OTP'}
                 </button>
 

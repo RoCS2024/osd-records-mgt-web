@@ -1,9 +1,10 @@
-.create-account {
+.create-account-container {
     display: grid;                      
     justify-items: center;           
     align-content: start;                 
     font-family: sans-serif;            
-    min-height: 100vh; 
+    min-height: 70vh;
+    height: auto;
     min-width: 100%;
 }
 
@@ -70,7 +71,7 @@
 .input-box label {
     width: 100%;
     text-align: left;
-    font-size: 12px;
+    font-size: 15px;
     color: #757575;
     margin-bottom: 5px;
 }
@@ -126,6 +127,10 @@ form button {
     outline: none;
 }
 
+form button:hover{
+    background-color: #005B96;
+}
+
 .select-style {
     width: 100%;
     height: 40px;
@@ -145,13 +150,15 @@ form button {
     cursor: pointer;
 }
 
+
+
 button.button-disabled1 {
     background-color: #d3d3d3; 
     cursor: not-allowed; 
 }
 
 button.button-enabled1 {
-    background-color: #007bff; 
+    background-color: #0174BE; 
     cursor: pointer; 
     color: white; 
 }

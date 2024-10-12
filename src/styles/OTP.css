@@ -9,6 +9,8 @@
     display: grid;                      
     justify-items: center;           
     align-content: start; 
+    border: none;
+    outline: none;
 }
 
 .form-container {
@@ -47,7 +49,7 @@
     text-align: center;
 }
 
-button {
+.otp-button {
     width: 60%;
     height: 50px;
     padding: 10px;
@@ -60,12 +62,12 @@ button {
     transition: background-color 0.3s ease;
 }
 
-button:disabled {
+.otp-button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
 }
 
-button:hover:enabled {
+.otp-button:hover:enabled {
     background-color: #218838;
 }
 

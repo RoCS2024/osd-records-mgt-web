@@ -146,7 +146,7 @@ const RegisterForm = () => {
     };
 
     return (
-        <div className="create-account">
+        <div className="create-account-container">
 
             <div className="form-box-register">
 

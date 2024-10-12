@@ -103,7 +103,7 @@ const AddGuestModal = ({ onClose, onSubmit }) => {
 
                     </div>
                     
-                    <button type="submit">Add Guest</button>
+                    <button type="submit" className='addguest-button'>Add Guest</button>
 
                 </form>
 
