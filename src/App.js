@@ -6,6 +6,8 @@ import CreateAccount from "./pages/CreateAccount";
 import OTP from "./pages/OTP";
 import ForgotPassword from "./pages/ForgotPassword";
 
+import OffensePageAdmin from "./pages/OffenseTableAdmin";
+
 
 const App = () => {
   return (
@@ -15,6 +17,8 @@ const App = () => {
               <Route path="/account/create" element={<CreateAccount />} />
               <Route path="/account/otp" element={<OTP />} />
               <Route path="/account/forgot-password" element={<ForgotPassword />} />
+
+              <Route path="/admin/offense" element={<OffensePageAdmin />} />
 
               <Route path="*" element={<Navigate to="/" />} />
           </Routes>
