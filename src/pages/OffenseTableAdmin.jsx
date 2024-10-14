@@ -42,7 +42,7 @@ const OffensePageAdmin = () => {
                 navigate('/login');
             }
         }
-    }, []);
+    }, [navigate]);
 
     const loadOffenses = async () => {
         try {
@@ -160,6 +160,9 @@ const OffensePageAdmin = () => {
             <NavBar handleLogout={handleLogout} />
 
             <div className="offense-container">
+
+                {/* Display message at the top of the page */}
+                {message && <div className="message">{message}</div>}
 
                 <h1 className='head'>OFFENSE</h1>
 
