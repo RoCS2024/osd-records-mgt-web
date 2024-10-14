@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/offenseTableAdmin.css';
-import edit from '../assets/compose.png';
 
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
