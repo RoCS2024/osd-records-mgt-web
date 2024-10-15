@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
+
 import '../styles/AddEditOffenseModal.css';
 
 const AddOffenseModal = ({ isOpen, onClose, onSubmit }) => {
@@ -40,13 +41,14 @@ const AddOffenseModal = ({ isOpen, onClose, onSubmit }) => {
         <Modal isOpen={isOpen} onRequestClose={onClose} className="modal-container">
 
             <button onClick={onClose} className="close-btn">&times;</button>
+
             <h2>Add Offense</h2>
 
             <form onSubmit={handleSubmit} className='offense-form-container'>
 
-                <div className="form-group">
+                <div className="input-container">
                     <label>Offense</label>
-                    <input type="text" name="description" value={newOffense.description} onChange={handleInputChange} required />
+                    <input type="text" className='offense-input' name="description" value={newOffense.description} onChange={handleInputChange} required />
                     {errors.description && <p className="error">{errors.description}</p>}
                 </div>
 
@@ -59,8 +61,9 @@ const AddOffenseModal = ({ isOpen, onClose, onSubmit }) => {
                     </select>
                 </div>
 
-                <button type="submit" className="submit-btn">Submit</button>
-
+                <div className="button-container">
+                    <button type="submit" className="submit-btn">Submit</button>
+                </div>
             </form>
             
         </Modal>
