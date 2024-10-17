@@ -51,15 +51,12 @@
     font-weight: bold;
 }
 
-label {
-    font-weight: bold;
-}
 
-input {
+
+.offense-input{
     width: 100%;
     height: 35px;
 }
-
 
 .form-group input
 .form-group input, select {
