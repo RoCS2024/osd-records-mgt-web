@@ -46,7 +46,7 @@ const OffensePageAdmin = () => {
 
     const loadOffenses = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/Offense/offenses`, {
+            const response = await axios.get(`http://localhost:8080/offense/offenseList`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
@@ -86,7 +86,7 @@ const OffensePageAdmin = () => {
                 type: newOffense.type
             };
 
-            const response = await axios.post("http://localhost:8080/Offense/offense/addOffense", params, {
+            const response = await axios.post("http://localhost:8080/offense/addOffense", params, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
@@ -104,7 +104,7 @@ const OffensePageAdmin = () => {
 
     const handleEditOffense = async (updatedOffense) => {
         try {
-            const response = await axios.put("http://localhost:8080/Offense/offense/updateOffense", updatedOffense, {
+            const response = await axios.put("http://localhost:8080/offense/updateOffense", updatedOffense, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',

@@ -145,6 +145,25 @@
     margin-top: 7px;
 }
 
+.forgot-username-link{
+    width: 100%;
+    display: grid;                      
+    justify-items: end;           
+    align-content: start;
+    margin-top: 15px; 
+    margin: 0;
+    padding: 0;
+}
+
+.forgot-username-link a{
+    font-size: 14px;
+    text-decoration: none;
+    color: #0174BE;
+    margin: 0;
+    padding: 0;
+    margin-top: 7px;
+}
+
 .login-button {
     margin-top: 25px; 
     display: flex;

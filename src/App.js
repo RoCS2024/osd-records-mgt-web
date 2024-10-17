@@ -8,6 +8,8 @@ import ForgotPassword from "./pages/ForgotPassword";
 
 import OffensePageAdmin from "./pages/OffenseTableAdmin";
 
+import ForgotUsername from "./pages/ForgotUsername";
+
 
 const App = () => {
   return (
@@ -17,6 +19,7 @@ const App = () => {
               <Route path="/account/create" element={<CreateAccount />} />
               <Route path="/account/otp" element={<OTP />} />
               <Route path="/account/forgot-password" element={<ForgotPassword />} />
+              <Route path="/account/forgot-username" element={<ForgotUsername />} />
 
               <Route path="/admin/offense" element={<OffensePageAdmin />} />
 

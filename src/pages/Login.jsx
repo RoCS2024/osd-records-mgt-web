@@ -100,6 +100,10 @@ const Login = () => {
                             <input type="text" required onChange={(e) => setUsername(e.target.value)} />
                             <FaUser className="icon" />
                         </div>
+
+                        <div className="forgot-username-link">
+                            <a href="account/forgot-username">Forgot username?</a>
+                        </div> 
                     </div>
 
                     <div className="field-box field-box-password">
