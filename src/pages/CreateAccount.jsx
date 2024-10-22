@@ -72,8 +72,10 @@ const RegisterForm = () => {
             // Register the user
             try {
                 const payload = {
-                    username: formData.username,
-                    password: formData.password,
+                    user: {
+                        username: formData.username,
+                        password: formData.password
+                    },
                     [userType]: {
                         [userType === 'student' ? 'studentNumber' : 'employeeNumber']: formData.memberNumber,
                         email: formData.email
