@@ -64,12 +64,12 @@ const RegisterForm = () => {
         }
 
         if (userType === 'guest') {
-            // Show the Add Guest modal
+            // show add guest modal
             setShowGuestModal(true);
             setIsButtonDisabled(false);
             setIsSubmitting(false);
         } else {
-            // Register the user
+            // register user
             try {
                 const payload = {
                     user: {
@@ -85,7 +85,7 @@ const RegisterForm = () => {
                 if (response.status === 200) {
                     navigate('/account/otp');
                 } else if (response && response.data) {
-                    // Handle other responses if needed
+                   
                 } else {
                     console.error('Response Data is Undefined:', response);
                 }
@@ -117,21 +117,36 @@ const RegisterForm = () => {
     const handleSubmitGuest = async (guestData) => {
         try {
             const guestNumber = `GUEST_${Math.floor(1000 + Math.random() * 9000)}`;
-    
-            const response = await Axios.post('http://localhost:8080/Guest/addGuest', { ...guestData, guestNumber: guestNumber });
             
-            if (response.status === 200) {
+            const guestResponse = await Axios.post('http://localhost:8080/guest/addGuest', { guest: guestData, guestNumber });
+            
+            if (guestResponse.status === 200) {
                 console.log('Guest Added Successfully');
                 
-                const payload = {
-                    username: formData.username,
-                    password: formData.password,
+                const userPayload = {
+                    user: {
+                        username: formData.username,
+                        password: formData.password
+                    },
                     guest: {
-                        guestNumber: guestNumber
+                        guestNumber: guestNumber,
+                        firstName: guestData.firstName,
+                        middleName: guestData.middleName,
+                        lastName: guestData.lastName,
+                        birthdate: guestData.birthdate,
+                        birthplace: guestData.birthplace,
+                        citizenship: guestData.citizenship,
+                        civilStatus: guestData.civilStatus,
+                        contactNumber: guestData.contactNumber,
+                        email: guestData.email,
+                        religion: guestData.religion,
+                        sex: guestData.sex,
+                        address: guestData.address
                     }
                 };
-                const userRegisterResponse = await Axios.post('http://localhost:8080/user/register', payload);
-                
+    
+                const userRegisterResponse = await Axios.post('http://localhost:8080/user/register', userPayload);
+    
                 if (userRegisterResponse.status === 200) {
                     console.log('User Registered Successfully');
                     setShowGuestModal(false);
@@ -146,6 +161,7 @@ const RegisterForm = () => {
             console.error('Error Adding Guest:', error);
         }
     };
+    
 
     return (
         <div className="create-account-container">
@@ -250,7 +266,6 @@ const RegisterForm = () => {
 
             </div>
             
-           
             {showGuestModal && <AddGuestModal onClose={() => setShowGuestModal(false)} onSubmit={handleSubmitGuest} />}
 
         </div>

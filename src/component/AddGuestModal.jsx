@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import '../styles/AddGuestModal.css';
 
@@ -16,7 +15,7 @@ const AddGuestModal = ({ onClose, onSubmit }) => {
         email: '',
         contactNumber: '',
         address: '',
-        guestNumber: ''
+        guestNumber: '' 
     });
 
     const handleInputChange = (e) => {
@@ -26,84 +25,85 @@ const AddGuestModal = ({ onClose, onSubmit }) => {
 
     const handleGuestSubmit = (e) => {
         e.preventDefault();
-        onSubmit(guestData); // Send guest data back to the parent component
+        onSubmit(guestData);
     };
 
     return (
-        <div className="modal2">
+        <div className="gues-modal-container">
 
-            <div className="modal-content">
+            <div className="guest-modal-content">
 
-                <form onSubmit={handleGuestSubmit}>
+                <form className='form-modal' onSubmit={handleGuestSubmit}>
 
                     <span className="close2" onClick={onClose}>&times;</span>
-                    <h2 className='addGuest'>Add Guest</h2>
 
-                    <div className='wrap'>
+                    <h2 className='add-guest-header'>Add Guest</h2>
 
-                        <div className="form-group">
+                    <div className='wrap-modal'>  
+
+                        <div className="form-group-modal">
                             <label>First Name:</label>
                             <input type="text" name="firstName" value={guestData.firstName} onChange={handleInputChange} required />
                         </div>
 
-                        <div className="form-group">
+                        <div className="form-group-modal">
                             <label>Middle Name:</label>
                             <input type="text" name="middleName" value={guestData.middleName} onChange={handleInputChange} />
                         </div>
 
-                        <div className="form-group">
+                        <div className="form-group-modal">
                             <label>Last Name:</label>
                             <input type="text" name="lastName" value={guestData.lastName} onChange={handleInputChange} required />
                         </div>
 
-                        <div className="form-group">
+                        <div className="form-group-modal">
                             <label>Birthdate:</label>
                             <input type="date" name="birthdate" value={guestData.birthdate} onChange={handleInputChange} required />
                         </div>
 
-                        <div className="form-group">
+                        <div className="form-group-modal">
                             <label>Birthplace:</label>
                             <input type="text" name="birthplace" value={guestData.birthplace} onChange={handleInputChange} />
                         </div>
 
-                        <div className="form-group">
+                        <div className="form-group-modal">
                             <label>Citizenship:</label>
                             <input type="text" name="citizenship" value={guestData.citizenship} onChange={handleInputChange} />
                         </div>
 
-                        <div className="form-group">
+                        <div className="form-group-modal">
                             <label>Religion:</label>
                             <input type="text" name="religion" value={guestData.religion} onChange={handleInputChange} />
                         </div>
 
-                        <div className="form-group">
+                        <div className="form-group-modal">
                             <label>Civil Status:</label>
                             <input type="text" name="civilStatus" value={guestData.civilStatus} onChange={handleInputChange} />
                         </div>
 
-                        <div className="form-group">
+                        <div className="form-group-modal">
                             <label>Sex:</label>
                             <input type="text" name="sex" value={guestData.sex} onChange={handleInputChange} />
                         </div>
 
-                        <div className="form-group">
+                        <div className="form-group-modal">
                             <label>Email:</label>
                             <input type="email" name="email" value={guestData.email} onChange={handleInputChange} required />
                         </div>
 
-                        <div className="form-group">
+                        <div className="form-group-modal">
                             <label>Contact Number:</label>
                             <input type="text" name="contactNumber" value={guestData.contactNumber} onChange={handleInputChange} required />
                         </div>
 
-                        <div className="form-group">
+                        <div className="form-group-modal">
                             <label>Address:</label>
                             <input type="text" name="address" value={guestData.address} onChange={handleInputChange} />
                         </div>
 
                     </div>
                     
-                    <button type="submit" className='addguest-button'>Add Guest</button>
+                    <button type="submit" className='add-guest-button'>Add Guest</button>
 
                 </form>
 
