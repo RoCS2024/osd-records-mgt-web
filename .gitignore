@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/jasmine-project/node_modules
 /.pnp
 .pnp.js
 
