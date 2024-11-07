@@ -24,7 +24,7 @@ const EditViolationModal = ({ isOpen, onClose, onSubmit, violationToEdit }) => {
         approvedByName: ""
     });
 
-    // Validation function
+    // Validation
     const validate = () => {
         const studentNumberPattern = /CT[0-9]{2}-[0-9]{4}/;
         const currentDate = new Date().toISOString().split('T')[0];
@@ -83,10 +83,10 @@ const EditViolationModal = ({ isOpen, onClose, onSubmit, violationToEdit }) => {
     }, [violationToEdit]);
 
     useEffect(() => {
-        // Fetch offenses
+        // fetch offense
         const fetchOffenses = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/Offense/offenses', {
+                const response = await axios.get('http://localhost:8080/offense/offenseList', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
@@ -100,15 +100,15 @@ const EditViolationModal = ({ isOpen, onClose, onSubmit, violationToEdit }) => {
         };
         fetchOffenses();
 
-        // Fetch students and employees
+        // fetch student and employee
         const fetchData = async () => {
             try {
                 const token = localStorage.getItem('token');
                 const [studentsResponse, employeesResponse] = await Promise.all([
-                    axios.get('http://localhost:8080/Student/students', {
+                    axios.get('http://localhost:8080/student/studentList', {
                         headers: { 'Authorization': `Bearer ${token}` }
                     }),
-                    axios.get('http://localhost:8080/Employee/employees', {
+                    axios.get('http://localhost:8080/employee/employeeList', {
                         headers: { 'Authorization': `Bearer ${token}` }
                     })
                 ]);

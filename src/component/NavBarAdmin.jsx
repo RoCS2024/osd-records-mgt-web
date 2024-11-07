@@ -2,7 +2,9 @@
 import React from 'react';
 import logo from '../assets/logo_new.png';
 import user from '../assets/user.png';
+
 import '../styles/offenseTableAdmin.css';
+import '../styles/ViolationTableAdmin.css';
 
 const NavBar = ({ handleLogout }) => {
     return (

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
+
 import '../styles/OTP.css';
 import logo from '../assets/logo.png';
 
@@ -56,7 +57,7 @@ const OtpForm = () => {
     };
 
     return (
-        <div className="form-box-otp">
+        <div className="otp-container">
 
                 <div className="header">
 
@@ -68,7 +69,7 @@ const OtpForm = () => {
 
                 </div>
 
-                <form onSubmit={handleSubmit}  className="form-container">
+                <form onSubmit={handleSubmit}  className="otp-form-container">
 
                 <div className="input-box">
                     <label>Username:</label>

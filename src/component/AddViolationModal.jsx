@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
+
 import '../styles/AddEditViolationModal.css';
 
 const AddViolationModal = ({ isOpen, onClose, onSubmit }) => {
@@ -72,13 +73,13 @@ const AddViolationModal = ({ isOpen, onClose, onSubmit }) => {
             try {
                 const token = localStorage.getItem('token');
                 const [offensesResponse, studentsResponse, employeesResponse] = await Promise.all([
-                    axios.get('http://localhost:8080/Offense/offenses', {
+                    axios.get('http://localhost:8080/offense/offenseList', {
                         headers: { 'Authorization': `Bearer ${token}` }
                     }),
-                    axios.get('http://localhost:8080/Student/students', {
+                    axios.get('http://localhost:8080/student/studentList', {
                         headers: { 'Authorization': `Bearer ${token}` }
                     }),
-                    axios.get('http://localhost:8080/Employee/employees', {
+                    axios.get('http://localhost:8080/employee/employeeList', {
                         headers: { 'Authorization': `Bearer ${token}` }
                     })
                 ]);

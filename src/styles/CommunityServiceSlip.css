@@ -9,7 +9,7 @@
     text-decoration: none;
 }
 
-.offense-page-admin {
+.cs-slip-page-admin {
     position: fixed; 
     top: 0;
     left: 0;
@@ -22,7 +22,7 @@
     align-content: start;
 }
 
-.offense-container {
+.csslip-box{
     margin-top: 75px;
     margin-bottom: 80px;
     width: 95%;
@@ -30,10 +30,9 @@
     display: grid;
     justify-items: center;
     align-content: start;
-    border-radius: 6px;
 }
 
-.head {
+h1 {
     font-weight: 700;
     padding: .5vw 3vw;
     width: 100%;
@@ -83,7 +82,7 @@
     max-width: 24px;
 }
 
-.contents { 
+.cs-slip-container{ 
     border-top: .1vw solid black;
     display: grid;
     justify-items: center;
@@ -92,30 +91,49 @@
     width: 100%;
 }
 
-.search-offense-filter {
+.input-container {
+    flex-wrap: wrap;
     display: flex;
     justify-content: start;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     width: 100%;
-    gap: 20px;
+    gap: 25px;
 }
 
-
-
-input, select:focus{
-    outline: none;
+.input-container .field-container label {
+    width: 100%;
+    text-align: left;
+    font-size: 12px;
+    color: #757575;
+    margin-bottom: 5px;
 }
 
-.filter-offense-button {
-    width: 150px;
+.field-container {
+    display: grid;
+    justify-items: flex-start;
+    align-content: space-around;
+}
+
+.input-container input {
+    width: 300px;
     padding: 3px 10px;
     font-size: 14px;
     border-radius: 5px;
-    background-color: #D9D9D9;
+    background-color: white;
+    border: 1px solid #757575;
+    height: 35px;
+}
+
+.select-field {
+    width: 300px;
+    padding: 3px 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    background-color: white;
+    border: 1px solid #757575;
     height: 35px;
     cursor: pointer;
-    border: none;
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -126,96 +144,83 @@ input, select:focus{
     transition: background-color 0.3s;
 }
 
-.offense-table-container {
+.field-container label{
+    font-size: 1vw;
+}
+
+input, select:focus{
+    outline: none;
+}
+
+h2{
+    font-weight: 100;
+    font-style: italic;
+    width: 100%;
+    text-align: left;
+    font-size: 24px;
+}
+
+.cs-slip-table {
     width: 100%;
     margin: 25px 0;
     overflow-x: auto;
-    border-collapse: collapse;
+    border-collapse: collapse; 
 }
 
-.offense-table-container table {
+.cs-slip-table table {
     width: 100%;
     table-layout: fixed;
     border-collapse: collapse;
 }
 
-.offense-table-container th,
-.offense-table-container td {
+.cs-slip-table th,
+.cs-slip-table td {
     border: 1px solid #e1e1e1;
     padding: 5px 10px;
     font-size: 16px;
     text-align: left;
 }
 
-.offense-table-container tr:hover {
+.cs-slip-table tr:hover {
     background-color: #f0f0f0;
 }
 
-.offense-table-container th {
+.cs-slip-table th {
     background-color: #D9D9D9;
 }
 
-.offense-table-container tr:nth-child(even) {
-    background-color: none;
-}
-
-.action-column {
-    max-width: 150px;
-    width: 150px;
-    min-width: 100px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-
-.type-column {
-    max-width: 400px;
-    width: 400px;
-    min-width: 300px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-
-.name-column {
-    min-width: 400px;
-}
-
-.edit-button {
-    height: 42px;
-    width: 42px;
-    background-color: #CCC;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-}
-
-.edit-icon {
-    width: 16px; 
-    height: auto; 
-}
-
-.edit-button:hover {
-    background-color: #d9d9d9;
-}
-
-div .add-offense-btn{
-    display: flex;
-    justify-content: end;
-    align-items: end;
-    gap: 25px;
-    margin: 10px 3vw 20px 3vw;
+.bottom-container{
+    display: grid;
+    justify-items: end;
+    align-content: end;
+    margin: 10px 0 20px 0;
     width: 100%;
 }
 
-.add-offense-button {
+.total-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1vw;
+}
+
+.input-hours {
+    width: 200px;
+    font-size: 12px;
+    width: 150px;
+    padding: 3px 10px;
+    border-radius: 5px;
+    background-color: white;
+    border: 1px solid #757575;
+    height: 35px;
+}
+
+.create-button {
+    margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 180px;
-    height: 50px;
     font-size: 16px;
     background-color: #6BCB77;
     color: #fff;
@@ -225,54 +230,6 @@ div .add-offense-btn{
     transition: background-color 0.3s;
 }
 
-.add-offense-button:hover {
+.create-button:hover {
     background-color: #009713;
-}
-
-/*Search and Dropdown Container */
-.search-filter-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 10px;
-}
-
-.search-offense-input {
-    width: 350px; 
-    padding: 3px 10px;
-    font-size: 14px;
-    border-radius: 5px;
-    background-color: #D9D9D9;
-    height: 35px;
-}
-
-.filter-dropdown {
-    width: 250px; 
-    height: 35px;
-    padding: 3px 10px;
-    font-size: 14px;
-    border-radius: 5px;
-    background-color: #D9D9D9;
-    margin-left: auto;
-    border: none;
-    outline: none;
-}
-
-/*Nav Bar Logout Button*/
-.nav-link-button{
-    outline: none;
-    border: none;
-    background-color: #0C356A;
-    text-decoration: none;
-    color: #fff;
-    transition: color 0.3s;
-    font-size: 14px;
-    font-weight: 700;
-}
-
-.nav-link-button:hover {
-    color: #d1d1d1;
-    border-bottom: 1.5px solid white;
-    cursor: pointer;
 }

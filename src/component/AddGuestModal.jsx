@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import '../styles/AddGuestModal.css';
 
@@ -25,8 +26,13 @@ const AddGuestModal = ({ onClose, onSubmit }) => {
 
     const handleGuestSubmit = (e) => {
         e.preventDefault();
+        if (!guestData.firstName || !guestData.lastName || !guestData.birthdate) {
+            alert('Please fill in all required fields.');
+            return;
+        }
         onSubmit(guestData);
     };
+    
 
     return (
         <div className="gues-modal-container">

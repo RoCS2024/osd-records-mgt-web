@@ -1,6 +1,6 @@
-.form-box-otp {
+.otp-container {
     width: 500px;     
-    height: 530px;   
+    height: 550px;   
     background: rgba(255, 255, 255, 0.85);
     border-radius: 12px;  
     color: black;
@@ -13,7 +13,7 @@
     outline: none;
 }
 
-.form-container {
+.otp-form-container{
     width: 450px;
     height: 500px;
     display: grid;                      
