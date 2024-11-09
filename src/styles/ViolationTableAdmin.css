@@ -236,3 +236,21 @@ input, select:focus{
 .create-cs-button:hover {
     background-color: #0056b3;
 }
+
+
+.nav-link-button{
+    outline: none;
+    border: none;
+    background-color: #0C356A;
+    text-decoration: none;
+    color: #fff;
+    transition: color 0.3s;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.nav-link-button:hover {
+    color: #d1d1d1;
+    border-bottom: 1.5px solid white;
+    cursor: pointer;
+}
