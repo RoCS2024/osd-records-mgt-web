@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import '../styles/ViolationTableAdmin.css';
 import { useNavigate } from "react-router-dom";
-import edit from '../assets/compose.png';
+
 
 import AddViolationModal from '../component/AddViolationModal';
 import EditViolationModal from '../component/EditViolationModal';
@@ -24,6 +24,7 @@ const ViolationPageAdmin = () => {
     const [violationToEdit, setViolationToEdit] = useState(null);
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
+    
 
     useEffect(() => {
         loadViolations();
@@ -44,11 +45,12 @@ const ViolationPageAdmin = () => {
                 navigate('/login');
             }
         }
-    }, []);
+    }, [navigate]);
 
     useEffect(() => {
         filterViolations();
     }, [startDate, endDate, searchInput, violations]);
+    
 
     const loadViolations = async () => {
         try {
