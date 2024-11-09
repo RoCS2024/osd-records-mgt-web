@@ -3,7 +3,6 @@ import axios from "axios";
 import '../styles/ViolationTableAdmin.css';
 import { useNavigate } from "react-router-dom";
 
-
 import AddViolationModal from '../component/AddViolationModal';
 import EditViolationModal from '../component/EditViolationModal';
 
@@ -11,7 +10,6 @@ import DateFilter from "../component/DateFilter";
 import SearchStudentViolation from "../component/SearchStudentViolation";
 import TableViolationAdmin from "../component/TableViolationAdmin";
 import NavBar from "../component/NavBarAdmin";
-
 
 const ViolationPageAdmin = () => {
     const [violations, setViolations] = useState([]);
@@ -22,9 +20,7 @@ const ViolationPageAdmin = () => {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [violationToEdit, setViolationToEdit] = useState(null);
-    const [message, setMessage] = useState("");
     const navigate = useNavigate();
-    
 
     useEffect(() => {
         loadViolations();
@@ -50,7 +46,6 @@ const ViolationPageAdmin = () => {
     useEffect(() => {
         filterViolations();
     }, [startDate, endDate, searchInput, violations]);
-    
 
     const loadViolations = async () => {
         try {
@@ -151,7 +146,6 @@ const ViolationPageAdmin = () => {
             loadViolations();
         } catch (error) {
             console.error('Error Adding Violation:', error);
-            setMessage("Violation cannot be Added");
         }
     };
 
@@ -164,12 +158,10 @@ const ViolationPageAdmin = () => {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 }
             });
-            setMessage(response.data);
             closeEditModal();
             loadViolations();
         } catch (error) {
             console.error('Error editing violation:', error);
-            setMessage("Violation cannot be edited");
         }
     };
 
@@ -247,9 +239,7 @@ const ViolationPageAdmin = () => {
             />
 
         </div>
-
     );
-    
 };
 
 export default ViolationPageAdmin;
