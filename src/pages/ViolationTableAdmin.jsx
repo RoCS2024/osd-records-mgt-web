@@ -22,7 +22,7 @@ const ViolationPageAdmin = () => {
     const [violationToEdit, setViolationToEdit] = useState(null);
     const navigate = useNavigate();
 
-    const filterViolations = () => {
+    const filterViolations = useCallback(() => {
         let filtered = violations.filter(violation => {
             const violationDate = new Date(violation.dateOfNotice);
             const start = startDate ? new Date(startDate) : null;
@@ -33,7 +33,7 @@ const ViolationPageAdmin = () => {
             return matchDate && matchSearch;
         });
         setFilteredViolations(filtered);
-    };
+    }, [violations, startDate, endDate, searchInput]);
 
     useEffect(() => {
         loadViolations();
