@@ -1,5 +1,7 @@
 import React from 'react';
 
+import '../styles/ViolationTableAdmin.css';
+
 const DateFilter = ({ startDate, endDate, handleStartDateChange, handleEndDateChange }) => {
     return (
         <div className="date-filter">

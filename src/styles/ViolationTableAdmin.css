@@ -118,7 +118,9 @@ h2{
 }
 
 .date-filter{
-    margin-top: 15px;
+    display: flex;
+    align-items: center; 
+    gap: 10px; 
 }
 
 .date-input {
@@ -131,7 +133,7 @@ h2{
 }
 
 #to {
-    font-size: 14px;
+    margin: 0 5px;
 }
 
 input, select:focus{
