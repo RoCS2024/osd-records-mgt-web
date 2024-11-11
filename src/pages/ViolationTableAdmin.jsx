@@ -22,6 +22,19 @@ const ViolationPageAdmin = () => {
     const [violationToEdit, setViolationToEdit] = useState(null);
     const navigate = useNavigate();
 
+    const filterViolations = () => {
+        let filtered = violations.filter(violation => {
+            const violationDate = new Date(violation.dateOfNotice);
+            const start = startDate ? new Date(startDate) : null;
+            const end = endDate ? new Date(endDate) : null;
+
+            const matchDate = (!start || violationDate >= start) && (!end || violationDate <= end);
+            const matchSearch = !searchInput || (violation.student && `${violation.student.lastName}, ${violation.student.firstName} ${violation.student.middleName}`.toLowerCase().includes(searchInput.toLowerCase()));
+            return matchDate && matchSearch;
+        });
+        setFilteredViolations(filtered);
+    };
+
     useEffect(() => {
         loadViolations();
         let exp = localStorage.getItem('exp');
@@ -45,7 +58,7 @@ const ViolationPageAdmin = () => {
 
     useEffect(() => {
         filterViolations();
-    }, [startDate, endDate, searchInput, violations]);
+    }, [startDate, endDate, searchInput, violations, filterViolations]);
 
     const loadViolations = async () => {
         try {
@@ -83,19 +96,6 @@ const ViolationPageAdmin = () => {
 
     const handleEndDateChange = (event) => {
         handleDateChange(event, setEndDate, startDate, false);
-    };
-
-    const filterViolations = () => {
-        let filtered = violations.filter(violation => {
-            const violationDate = new Date(violation.dateOfNotice);
-            const start = startDate ? new Date(startDate) : null;
-            const end = endDate ? new Date(endDate) : null;
-
-            const matchDate = (!start || violationDate >= start) && (!end || violationDate <= end);
-            const matchSearch = !searchInput || (violation.student && `${violation.student.lastName}, ${violation.student.firstName} ${violation.student.middleName}`.toLowerCase().includes(searchInput.toLowerCase()));
-            return matchDate && matchSearch;
-        });
-        setFilteredViolations(filtered);
     };
 
     const openAddModal = () => {
@@ -158,12 +158,20 @@ const ViolationPageAdmin = () => {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 }
             });
+    
+            console.log('Edit successful:', response.data);
+    
+            if (response.status === 200) {
+                alert('Violation updated successfull!');
+            }
+    
             closeEditModal();
             loadViolations();
         } catch (error) {
             console.error('Error editing violation:', error);
         }
     };
+    
 
     const handleLogout = () => {
         localStorage.clear();
