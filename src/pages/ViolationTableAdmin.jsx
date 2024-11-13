@@ -3,6 +3,8 @@ import axios from "axios";
 import '../styles/ViolationTableAdmin.css';
 import { useNavigate } from "react-router-dom";
 
+import { config } from '../Constants';
+
 import AddViolationModal from '../component/AddViolationModal';
 import EditViolationModal from '../component/EditViolationModal';
 
@@ -62,7 +64,7 @@ const ViolationPageAdmin = () => {
 
     const loadViolations = async () => {
         try {
-            const response = await axios.get("http://localhost:8080/violation/violationList", {
+            const response = await axios.get(config.url.VIOLATION_LIST, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
@@ -134,7 +136,7 @@ const ViolationPageAdmin = () => {
                 },
             };
 
-            const response = await axios.post("http://localhost:8080/violation/addViolation", formattedViolation, {
+            const response = await axios.post(config.url.ADD_VIOLATION, formattedViolation, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
@@ -151,7 +153,7 @@ const ViolationPageAdmin = () => {
 
     const handleEditViolation = async (updatedViolation) => {
         try {
-            const response = await axios.put("http://localhost:8080/violation/updateViolation", updatedViolation, {
+            const response = await axios.put(config.url.EDIT_VIOLATION, updatedViolation, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
