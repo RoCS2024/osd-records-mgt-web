@@ -56,9 +56,7 @@ const EditViolationModal = ({ isOpen, onClose, onSubmit, violationToEdit }) => {
             validationErrors.studentNumber = "Student Number is required";
         } else if (specialCharPattern.test(violation.studentNumber)) {
             validationErrors.studentNumber = "Input alpha-numeric and dash(-) characters only";
-        } else if (!studentNumberPattern.test(violation.studentNumber)) {
-            validationErrors.studentNumber = "Student Number format is incorrect";
-        }
+        } 
 
         if (!violation.disciplinaryAction) {
             validationErrors.disciplinaryAction = "Disciplinary Action is required";

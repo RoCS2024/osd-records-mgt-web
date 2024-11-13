@@ -56,8 +56,6 @@ const AddViolationModal = ({ isOpen, onClose, onSubmit }) => {
             validationErrors.studentNumber = "Student Number is required";
         } else if (specialCharPattern.test(newViolation.studentNumber)) {
             validationErrors.studentNumber = "Input alpha-numeric and dash(-) characters only";
-        } else if (!studentNumberPattern.test(newViolation.studentNumber)) {
-            validationErrors.studentNumber = "Student Number format is incorrect";
         }
 
         if (!newViolation.disciplinaryAction) {
