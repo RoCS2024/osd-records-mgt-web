@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
+
+import { config } from '../Constants';
+
 import '../styles/AddEditViolationModal.css';
 
 const AddViolationModal = ({ isOpen, onClose, onSubmit }) => {
@@ -25,7 +28,7 @@ const AddViolationModal = ({ isOpen, onClose, onSubmit }) => {
     });
 
     const validate = () => {
-        const studentNumberPattern = /CT[0-9]{2}-[0-9]{4}/;
+        
         const currentDate = new Date().toISOString().split('T')[0];
         const specialCharPattern = /[^a-zA-Z0-9- ]/;
         const numberPattern = /[0-9]/;
@@ -53,8 +56,6 @@ const AddViolationModal = ({ isOpen, onClose, onSubmit }) => {
             validationErrors.studentNumber = "Student Number is required";
         } else if (specialCharPattern.test(newViolation.studentNumber)) {
             validationErrors.studentNumber = "Input alpha-numeric and dash(-) characters only";
-        } else if (!studentNumberPattern.test(newViolation.studentNumber)) {
-            validationErrors.studentNumber = "Student Number format is incorrect";
         }
 
         if (!newViolation.disciplinaryAction) {
@@ -72,13 +73,13 @@ const AddViolationModal = ({ isOpen, onClose, onSubmit }) => {
             try {
                 const token = localStorage.getItem('token');
                 const [offensesResponse, studentsResponse, employeesResponse] = await Promise.all([
-                    axios.get('http://localhost:8080/Offense/offenses', {
+                    axios.get(config.url.OFFENSE_LIST, {
                         headers: { 'Authorization': `Bearer ${token}` }
                     }),
-                    axios.get('http://localhost:8080/Student/students', {
+                    axios.get(config.url.STUDENT_LIST, {
                         headers: { 'Authorization': `Bearer ${token}` }
                     }),
-                    axios.get('http://localhost:8080/Employee/employees', {
+                    axios.get(config.url.EMPLOYEE_LIST, {
                         headers: { 'Authorization': `Bearer ${token}` }
                     })
                 ]);

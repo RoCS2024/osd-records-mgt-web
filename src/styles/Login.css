@@ -1,12 +1,10 @@
-.form-container {
+.login-container {
     display: grid;                      
     justify-items: center; 
     align-content: start;                 
     font-family: sans-serif;            
     min-height: 100vh; 
     min-width: 100%;
-    padding-top: 25px; /* move everything up */
-
 }
 
 .form-box-login {
@@ -15,7 +13,6 @@
     background: rgba(255, 255, 255, 0.85);
     border-radius: 12px;  
     margin-top: 30px; /* move it upwards */
-    margin-right: 10%; /* move the container to the left */
     padding: 27px;        
     display: grid;                      
     justify-items: center;       

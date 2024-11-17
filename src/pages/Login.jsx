@@ -41,7 +41,7 @@ const Login = () => {
                     if(authorities[1] === "ROLE_ROLE_STUDENT"){
                         localStorage.setItem('role', authorities[1])
                         navigate('/student/violation');
-                        localStorage.setItem('userId', response.data.userId);
+                        localStorage.setItem('userId', response.data.Id);
                     } else if (authorities[2] === "ROLE_ROLE_EMPLOYEE"){
                         localStorage.setItem('role', authorities[2])
                         navigate('/employee/cs-list');
@@ -79,7 +79,7 @@ const Login = () => {
     };
 
     return (
-        <div className="form-container">
+        <div className="login-container">
 
             <div className="form-box-login">
 

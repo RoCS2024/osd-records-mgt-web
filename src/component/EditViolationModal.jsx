@@ -3,6 +3,8 @@ import Modal from 'react-modal';
 import axios from 'axios';
 import '../styles/AddEditViolationModal.css';
 
+import { config } from '../Constants';
+
 const EditViolationModal = ({ isOpen, onClose, onSubmit, violationToEdit }) => {
     const [errors, setErrors] = useState({});
     const [offenses, setOffenses] = useState([]);
@@ -24,9 +26,9 @@ const EditViolationModal = ({ isOpen, onClose, onSubmit, violationToEdit }) => {
         approvedByName: ""
     });
 
-    // Validation function
+    // Validation
     const validate = () => {
-        const studentNumberPattern = /CT[0-9]{2}-[0-9]{4}/;
+        
         const currentDate = new Date().toISOString().split('T')[0];
         const specialCharPattern = /[^a-zA-Z0-9- ]/;
         const numberPattern = /^[0-9]*$/;
@@ -54,9 +56,7 @@ const EditViolationModal = ({ isOpen, onClose, onSubmit, violationToEdit }) => {
             validationErrors.studentNumber = "Student Number is required";
         } else if (specialCharPattern.test(violation.studentNumber)) {
             validationErrors.studentNumber = "Input alpha-numeric and dash(-) characters only";
-        } else if (!studentNumberPattern.test(violation.studentNumber)) {
-            validationErrors.studentNumber = "Student Number format is incorrect";
-        }
+        } 
 
         if (!violation.disciplinaryAction) {
             validationErrors.disciplinaryAction = "Disciplinary Action is required";
@@ -83,10 +83,10 @@ const EditViolationModal = ({ isOpen, onClose, onSubmit, violationToEdit }) => {
     }, [violationToEdit]);
 
     useEffect(() => {
-        // Fetch offenses
+        // fetch offense
         const fetchOffenses = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/Offense/offenses', {
+                const response = await axios.get(config.url.OFFENSE_LIST, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
@@ -100,15 +100,15 @@ const EditViolationModal = ({ isOpen, onClose, onSubmit, violationToEdit }) => {
         };
         fetchOffenses();
 
-        // Fetch students and employees
+        // fetch student and employee
         const fetchData = async () => {
             try {
                 const token = localStorage.getItem('token');
                 const [studentsResponse, employeesResponse] = await Promise.all([
-                    axios.get('http://localhost:8080/Student/students', {
+                    axios.get(config.url.STUDENT_LIST, {
                         headers: { 'Authorization': `Bearer ${token}` }
                     }),
-                    axios.get('http://localhost:8080/Employee/employees', {
+                    axios.get(config.url.EMPLOYEE_LIST, {
                         headers: { 'Authorization': `Bearer ${token}` }
                     })
                 ]);
