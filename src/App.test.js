@@ -10,3 +10,10 @@ test('renders login page', () => {
   expect(loginTextElements.length).toBeGreaterThan(0);
 });
 
+test('renders create account page', () => {
+  render(<App />); 
+
+  const createAccountTextElements = screen.getAllByText(/click here/i);
+  expect(createAccountTextElements.length).toBeGreaterThan(0);
+
+});
