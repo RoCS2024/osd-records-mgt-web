@@ -11,7 +11,6 @@ import { jwtDecode } from 'jwt-decode';
 
 import { config } from "../Constants";
 
-
 const Login = () => {
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
@@ -33,33 +32,32 @@ const Login = () => {
             if (response.status === 200) {
                 const token = response.headers.get('jwt-token');
                 const tokenDecoded = jwtDecode(token);
-                const authorities = tokenDecoded.authorities
-                if(token != null){
-                    localStorage.setItem('token', token)
-                    localStorage.setItem('exp', tokenDecoded.exp)
-                    localStorage.setItem('tokenDecoded', tokenDecoded)
-                    if(authorities[1] === "ROLE_ROLE_STUDENT"){
-                        localStorage.setItem('role', authorities[1])
+                const authorities = tokenDecoded.authorities;
+                if (token != null) {
+                    sessionStorage.setItem('token', token);
+                    sessionStorage.setItem('exp', tokenDecoded.exp);
+                    sessionStorage.setItem('tokenDecoded', JSON.stringify(tokenDecoded));
+                    
+                    if (authorities[1] === "ROLE_ROLE_STUDENT") {
+                        sessionStorage.setItem('role', authorities[1]);
+                        sessionStorage.setItem('userId', response.data);
                         navigate('/student/violation');
-                        localStorage.setItem('userId', response.data.Id);
-                    } else if (authorities[2] === "ROLE_ROLE_EMPLOYEE"){
-                        localStorage.setItem('role', authorities[2])
+                    } else if (authorities[2] === "ROLE_ROLE_EMPLOYEE") {
+                        sessionStorage.setItem('role', authorities[2]);
                         navigate('/employee/cs-list');
-                        console.log(response.data.userId);
-                        localStorage.setItem('userId', response.data.userId);
+                        console.log(response.data);
+                        sessionStorage.setItem('userId', response.data.userId);
                     } else if (authorities[2] === "ROLE_ROLE_ADMIN") {
+                        sessionStorage.setItem('role', authorities[2]);
                         navigate('/admin/offense');
-                        localStorage.setItem('role', authorities[2])
                     } else if (authorities[1] === "ROLE_ROLE_GUEST") {
-                        localStorage.setItem('role', authorities[1])
+                        sessionStorage.setItem('role', authorities[1]);
+                        sessionStorage.setItem('userId', response.data);
                         navigate('/guest/violation');
-                        localStorage.setItem('userId', response.data.userId);
-                        console.log(response.data.userId)
                     } else {
-                        navigate('/login')
+                        navigate('/login');
                     }
                 }
-                
             } else {
                 console.error('Login failed:', response.statusText);
                 alert('Login failed. Please check your credentials and try again.');
@@ -80,18 +78,13 @@ const Login = () => {
 
     return (
         <div className="login-container">
-
             <div className="form-box-login">
-
                 <form onSubmit={handleLogin} className="form-container-login">
-
                     <div className="header">
                         <div className="logo">
-                            <img src={logo} alt="Logo" id="logo"/>
+                            <img src={logo} alt="Logo" id="logo" />
                         </div>
-
                         <h1>Login</h1>
-
                     </div>
 
                     <div className="field-box">
@@ -103,7 +96,7 @@ const Login = () => {
 
                         <div className="forgot-username-link">
                             <a href="account/forgot-username">Forgot username?</a>
-                        </div> 
+                        </div>
                     </div>
 
                     <div className="field-box field-box-password">
@@ -116,10 +109,10 @@ const Login = () => {
                                 <TbEyeClosed className="icon" onClick={togglePasswordVisibility} />
                             )}
                         </div>
-                        
+
                         <div className="forgot-password-link">
                             <a href="account/forgot-password">Forgot password?</a>
-                        </div>    
+                        </div>
                     </div>
 
                     {errorMessage && <p className="error-message">{errorMessage}</p>}
@@ -129,15 +122,10 @@ const Login = () => {
                     <div className="register-link">
                         <p className="noAcc">Don't have an Account?<a className="click" href="account/create">Click here</a></p>
                     </div>
-
                 </form>
-
             </div>
-
         </div>
-
     );
-    
 };
 
 export default Login;
