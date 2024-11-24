@@ -37,22 +37,18 @@ const Login = () => {
                     sessionStorage.setItem('token', token);
                     sessionStorage.setItem('exp', tokenDecoded.exp);
                     sessionStorage.setItem('tokenDecoded', JSON.stringify(tokenDecoded));
-                    
+                    sessionStorage.setItem('userId', response.data);
                     if (authorities[1] === "ROLE_ROLE_STUDENT") {
                         sessionStorage.setItem('role', authorities[1]);
-                        sessionStorage.setItem('userId', response.data);
                         navigate('/student/violation');
                     } else if (authorities[2] === "ROLE_ROLE_EMPLOYEE") {
                         sessionStorage.setItem('role', authorities[2]);
                         navigate('/employee/cs-list');
-                        console.log(response.data);
-                        sessionStorage.setItem('userId', response.data.userId);
                     } else if (authorities[2] === "ROLE_ROLE_ADMIN") {
                         sessionStorage.setItem('role', authorities[2]);
                         navigate('/admin/offense');
                     } else if (authorities[1] === "ROLE_ROLE_GUEST") {
                         sessionStorage.setItem('role', authorities[1]);
-                        sessionStorage.setItem('userId', response.data);
                         navigate('/guest/violation');
                     } else {
                         navigate('/login');
