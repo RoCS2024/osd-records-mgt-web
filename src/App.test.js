@@ -18,3 +18,13 @@ test('renders create account page', () => {
 
 });
 
+test('renders OTP form page', () => {
+  render(
+    <MemoryRouter>
+      <OtpForm />
+    </MemoryRouter>
+  );
+
+  const verifyOtpButton = screen.getByRole('button', { name: /verify otp/i });
+  expect(verifyOtpButton).toBeInTheDocument();
+});
