@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../styles/ViolationStudent.css';
@@ -11,17 +11,34 @@ import NavBar from '../component/NavBar';
 
 const ViolationStudent = () => {
     const [violations, setViolations] = useState([]);
-    const [userId, setUserId] = useState('');
-
     const [filteredViolations, setFilteredViolations] = useState([]);
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
-
     const navigate = useNavigate();
+
+    const handleLogout = useCallback(() => {
+        sessionStorage.clear();
+        navigate('/login');
+    }, [navigate]);
+
+    const redirectBasedOnRole = useCallback((role) => {
+        switch (role) {
+            case "ROLE_ROLE_EMPLOYEE":
+                navigate('/employee/cs-list');
+                break;
+            case "ROLE_ROLE_ADMIN":
+                navigate('/admin/offense');
+                break;
+            case "ROLE_ROLE_GUEST":
+                navigate('/guest/violation');
+                break;
+            default:
+                navigate('/login');
+        }
+    }, [navigate]);
 
     useEffect(() => {
         const Id = sessionStorage.getItem('userId');
-        setUserId(Id);
         loadViolations(Id);
 
         const role = sessionStorage.getItem('role');
@@ -33,7 +50,7 @@ const ViolationStudent = () => {
         } else if (role !== "ROLE_ROLE_STUDENT") {
             redirectBasedOnRole(role);
         }
-    }, [navigate]);
+    }, [handleLogout, redirectBasedOnRole]);
 
     const loadViolations = async (userId) => {
         try {
@@ -72,7 +89,7 @@ const ViolationStudent = () => {
         handleDateChange(event, setEndDate, startDate, false);
     };
 
-    const filterViolations = () => {
+    const filterViolations = useCallback(() => {
         let filtered = violations.filter((violation) => {
             const violationDate = new Date(violation.dateOfNotice);
             const start = startDate ? new Date(startDate) : null;
@@ -82,32 +99,11 @@ const ViolationStudent = () => {
             return matchDate;
         });
         setFilteredViolations(filtered);
-    };
+    }, [violations, startDate, endDate]);
 
     useEffect(() => {
         filterViolations();
-    }, [startDate, endDate, violations]);
-
-    const handleLogout = () => {
-        sessionStorage.clear();
-        navigate('/login');
-    };
-
-    const redirectBasedOnRole = (role) => {
-        switch (role) {
-            case "ROLE_ROLE_EMPLOYEE":
-                navigate('/employee/cs-list');
-                break;
-            case "ROLE_ROLE_ADMIN":
-                navigate('/admin/offense');
-                break;
-            case "ROLE_ROLE_GUEST":
-                navigate('/guest/violation');
-                break;
-            default:
-                navigate('/login');
-        }
-    };
+    }, [filterViolations]);
 
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
