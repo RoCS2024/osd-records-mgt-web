@@ -19,6 +19,29 @@ const ViolationGuest = () => {
     const [filteredViolations, setFilteredViolations] = useState([]);
     const navigate = useNavigate();
 
+    const handleLogout = () => {
+        sessionStorage.clear();
+        navigate('/login');
+    };
+
+    const loadBeneficiaries = useCallback(async () => {
+        try {
+            const guestId = sessionStorage.getItem('userId');
+            const response = await axios.get(`${config.url.GUEST_BENEFICIARIES}/${guestId}/Beneficiaries`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+                }
+            });
+            const beneficiaries = response.data.flatMap(guest => guest.beneficiary);
+            const studentIds = beneficiaries.map(beneficiary => beneficiary.id);
+            loadViolations(studentIds);
+        } catch (error) {
+            console.error('Error fetching beneficiaries:', error);
+        }
+    }, []);
+
     useEffect(() => {
         loadBeneficiaries();
         let exp = sessionStorage.getItem('exp');
@@ -39,24 +62,6 @@ const ViolationGuest = () => {
             }
         }
     }, [navigate, loadBeneficiaries]);
-
-    const loadBeneficiaries = useCallback(async () => {
-        try {
-            const guestId = sessionStorage.getItem('userId');
-            const response = await axios.get(`${config.url.GUEST_BENEFICIARIES}/${guestId}/Beneficiaries`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
-                }
-            });
-            const beneficiaries = response.data.flatMap(guest => guest.beneficiary);
-            const studentIds = beneficiaries.map(beneficiary => beneficiary.id);
-            loadViolations(studentIds);
-        } catch (error) {
-            console.error('Error fetching beneficiaries:', error);
-        }
-    }, []);
 
     const loadViolations = async (studentIds) => {
         try {
@@ -122,11 +127,6 @@ const ViolationGuest = () => {
 
     const handleStudentChange = (event) => {
         setSelectedStudentNumber(event.target.value);
-    };
-
-    const handleLogout = () => {
-        sessionStorage.clear();
-        navigate('/login');
     };
 
     const formatDate = (dateString) => {
