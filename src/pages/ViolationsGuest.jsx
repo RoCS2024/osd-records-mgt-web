@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import '../styles/ViolationGuest.css';
 import { useNavigate } from "react-router-dom";
@@ -38,9 +38,9 @@ const ViolationGuest = () => {
                 navigate('/login');
             }
         }
-    }, [navigate]);
+    }, [navigate, loadBeneficiaries]);
 
-    const loadBeneficiaries = async () => {
+    const loadBeneficiaries = useCallback(async () => {
         try {
             const guestId = sessionStorage.getItem('userId');
             const response = await axios.get(`${config.url.GUEST_BENEFICIARIES}/${guestId}/Beneficiaries`, {
@@ -56,7 +56,7 @@ const ViolationGuest = () => {
         } catch (error) {
             console.error('Error fetching beneficiaries:', error);
         }
-    };
+    }, []);
 
     const loadViolations = async (studentIds) => {
         try {
@@ -102,22 +102,22 @@ const ViolationGuest = () => {
         handleDateChange(event, setEndDate, startDate, false);
     };
 
-    const filterViolations = () => {
+    const filterViolations = useCallback(() => {
         let filtered = violations.filter(violation => {
             const violationDate = new Date(violation.dateOfNotice);
             const start = startDate ? new Date(startDate) : null;
             const end = endDate ? new Date(endDate) : null;
-
+    
             const matchDate = (!start || violationDate >= start) && (!end || violationDate <= end);
             const matchStudent = !selectedStudentNumber || violation.student.studentNumber === selectedStudentNumber;
             return matchDate && matchStudent;
         });
         setFilteredViolations(filtered);
-    };
+    }, [startDate, endDate, violations, selectedStudentNumber]);
 
     useEffect(() => {
         filterViolations();
-    }, [startDate, endDate, violations, selectedStudentNumber]);
+    }, [filterViolations]);
 
 
     const handleStudentChange = (event) => {
