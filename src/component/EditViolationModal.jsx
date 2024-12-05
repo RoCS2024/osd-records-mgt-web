@@ -90,7 +90,7 @@ const EditViolationModal = ({ isOpen, onClose, onSubmit, violationToEdit }) => {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
                     }
                 });
                 setOffenses(response.data);
@@ -103,7 +103,7 @@ const EditViolationModal = ({ isOpen, onClose, onSubmit, violationToEdit }) => {
         // fetch student and employee
         const fetchData = async () => {
             try {
-                const token = localStorage.getItem('token');
+                const token = sessionStorage.getItem('token');
                 const [studentsResponse, employeesResponse] = await Promise.all([
                     axios.get(config.url.STUDENT_LIST, {
                         headers: { 'Authorization': `Bearer ${token}` }

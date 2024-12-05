@@ -48,6 +48,7 @@ const Login = () => {
                         sessionStorage.setItem('role', authorities[2]);
                         navigate('/admin/offense');
                     } else if (authorities[1] === "ROLE_ROLE_GUEST") {
+                        alert(response.data);
                         sessionStorage.setItem('role', authorities[1]);
                         navigate('/guest/violation');
                     } else {

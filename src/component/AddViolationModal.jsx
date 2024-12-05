@@ -71,7 +71,7 @@ const AddViolationModal = ({ isOpen, onClose, onSubmit }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const token = localStorage.getItem('token');
+                const token = sessionStorage.getItem('token');
                 const [offensesResponse, studentsResponse, employeesResponse] = await Promise.all([
                     axios.get(config.url.OFFENSE_LIST, {
                         headers: { 'Authorization': `Bearer ${token}` }

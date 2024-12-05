@@ -54,7 +54,7 @@ const ViolationStudent = () => {
 
     const loadViolations = async (userId) => {
         try {
-            const response = await axios.get(`${config.url.violation_studentNumber}/${userId}`, {
+            const response = await axios.get(`${config.url.VIOLATION_STUDENTNUMBER}/${userId}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
-import '../styles/AddEditOffenseModal.css';
+import '../styles/EditOffenseModal.css';
 
 const EditOffenseModal = ({ isOpen, onClose, onSubmit, offenseToEdit }) => {
     const [errors, setErrors] = useState({});
