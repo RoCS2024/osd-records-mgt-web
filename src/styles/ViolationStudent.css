@@ -155,3 +155,20 @@ input:focus{
     background-color: none;
 }
 
+
+.logout-button{
+    outline: none;
+    border: none;
+    background-color: #0C356A;
+    text-decoration: none;
+    color: #fff;
+    transition: color 0.3s;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.logout-button:hover {
+    color: #d1d1d1;
+    border-bottom: 1.5px solid white;
+    cursor: pointer;
+}

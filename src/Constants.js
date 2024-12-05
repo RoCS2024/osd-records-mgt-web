@@ -8,6 +8,8 @@ const prod = {
       OFFENSE_LIST:'http://localhost:8080/offense/offenseList',
       STUDENT_LIST:'http://localhost:8080/student/studentList',
       EMPLOYEE_LIST:'http://localhost:8080/employee/employeeList',
+      
+      violation_studentNumber:'http://localhost:8080/violation/studentNumber',
     },
   };
   
@@ -20,6 +22,8 @@ const prod = {
       OFFENSE_LIST:'http://localhost:8080/offense/offenseList',
       STUDENT_LIST:'http://localhost:8080/student/studentList',
       EMPLOYEE_LIST:'http://localhost:8080/employee/employeeList',
+
+      violation_studentNumber:'http://localhost:8080/violation/studentNumber',
     },
   };
   
