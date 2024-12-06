@@ -4,6 +4,8 @@ import '../styles/offenseTableAdmin.css';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
+import { config } from '../Constants';
+
 import AddOffenseModal from '../component/AddOffenseModal';
 import EditOffenseModal from '../component/EditOffenseModal';
 
@@ -25,9 +27,9 @@ const OffensePageAdmin = () => {
 
     useEffect(() => {
         loadOffenses();
-        let exp = localStorage.getItem('exp');
+        let exp = sessionStorage.getItem('exp');
         let currentDate = new Date();
-        const role = localStorage.getItem('role');
+        const role = sessionStorage.getItem('role');
         if(exp * 1000 < currentDate.getTime()){
             navigate('/login');
         }
@@ -46,11 +48,11 @@ const OffensePageAdmin = () => {
 
     const loadOffenses = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/offense/offenseList`, {
+            const response = await axios.get(config.url.OFFENSE_LIST, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
                 }
             });
             console.log('Fetched Offenses:', response.data); 
@@ -86,11 +88,11 @@ const OffensePageAdmin = () => {
                 type: newOffense.type
             };
 
-            const response = await axios.post("http://localhost:8080/offense/addOffense", params, {
+            const response = await axios.post(config.url.ADD_OFFENSE, params, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
                 }
             });
             setMessage(response.data);
@@ -104,11 +106,11 @@ const OffensePageAdmin = () => {
 
     const handleEditOffense = async (updatedOffense) => {
         try {
-            const response = await axios.put("http://localhost:8080/offense/updateOffense", updatedOffense, {
+            const response = await axios.put(config.url.UPDATE_OFFENSE, updatedOffense, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
                 }
             });
             setMessage(response.data);
@@ -147,9 +149,9 @@ const OffensePageAdmin = () => {
     };
 
     const handleLogout = () => {
-        localStorage.setItem('token', '');
-        localStorage.setItem('role', '');
-        localStorage.setItem('exp', '');
+        sessionStorage.setItem('token', '');
+        sessionStorage.setItem('role', '');
+        sessionStorage.setItem('exp', '');
         navigate('/login');
     };
     
