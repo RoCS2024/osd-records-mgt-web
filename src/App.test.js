@@ -3,6 +3,7 @@ import { MemoryRouter } from 'react-router-dom';
 import App from './App';
 import OtpForm from './pages/OTP';
 import ForgotPassword from './pages/ForgotPassword';
+import OffensePageAdmin from './pages/OffenseTableAdmin';
 
 
 test('renders login page', () => {
@@ -40,4 +41,15 @@ test('renders forgot password page with check username button', () => {
 
   const checkUsernameButton = screen.getByRole('button', { name: /check username/i });
   expect(checkUsernameButton).toBeInTheDocument();
+});
+
+test('renders offense table admin page', () => {
+  render(
+    <MemoryRouter>
+      <OffensePageAdmin />
+    </MemoryRouter>
+  );
+
+  const addOffenseButton = screen.getByRole('button', { name: /add offense/i });
+  expect(addOffenseButton).toBeInTheDocument();
 });
