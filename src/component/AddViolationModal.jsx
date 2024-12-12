@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
 
-import { config } from '../Constants';
+import { getApiUrl, API_ENDPOINTS } from '../Constants';
 
 import '../styles/AddEditViolationModal.css';
 
@@ -71,15 +71,15 @@ const AddViolationModal = ({ isOpen, onClose, onSubmit }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const token = sessionStorage.getItem('token');
+                const token = localStorage.getItem('token');
                 const [offensesResponse, studentsResponse, employeesResponse] = await Promise.all([
-                    axios.get(config.url.OFFENSE_LIST, {
+                    axios.get(getApiUrl(API_ENDPOINTS.OFFENSE.LIST), {
                         headers: { 'Authorization': `Bearer ${token}` }
                     }),
-                    axios.get(config.url.STUDENT_LIST, {
+                    axios.get(getApiUrl(API_ENDPOINTS.STUDENT.LIST), {
                         headers: { 'Authorization': `Bearer ${token}` }
                     }),
-                    axios.get(config.url.EMPLOYEE_LIST, {
+                    axios.get(getApiUrl(API_ENDPOINTS.EMPLOYEE.LIST), {
                         headers: { 'Authorization': `Bearer ${token}` }
                     })
                 ]);

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../styles/ViolationStudent.css';
 
-import { config } from '../Constants';
+import { getApiUrl, API_ENDPOINTS } from '../Constants';
 
 import DateFilter from '../component/DateFilter';
 import TableViolationStudent from '../component/TableViolationStudent';
@@ -42,7 +42,7 @@ const ViolationStudent = () => {
         loadViolations(Id);
 
         const role = sessionStorage.getItem('role');
-        const exp = sessionStorage.getItem('exp');
+        const exp = localStorage.getItem('exp');
         const currentDate = new Date();
 
         if (!role || !exp || exp * 1000 < currentDate.getTime()) {
@@ -54,11 +54,11 @@ const ViolationStudent = () => {
 
     const loadViolations = async (userId) => {
         try {
-            const response = await axios.get(`${config.url.VIOLATION_STUDENTNUMBER}/${userId}`, {
+            const response = await axios.get(getApiUrl(`${API_ENDPOINTS.VIOLATION.BY_STUDENT_NUMBER}/${userId}`), {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 }
             });
             setViolations(response.data);

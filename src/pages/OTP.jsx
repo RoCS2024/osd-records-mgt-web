@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Axios from 'axios';
+import axios from 'axios';
+
+import { getApiUrl, API_ENDPOINTS } from '../Constants';
 
 import '../styles/OTP.css';
 import logo from '../assets/logo.png';
@@ -27,7 +29,7 @@ const OtpForm = () => {
                 username: formData.username,
                 otp: formData.otp
             };
-            const response = await Axios.post('http://localhost:8080/user/verify-otp', payload, {
+            const response = await axios.post(getApiUrl(API_ENDPOINTS.USER.VERIFY_OTP), payload,{
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'

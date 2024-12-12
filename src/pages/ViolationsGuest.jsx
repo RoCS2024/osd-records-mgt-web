@@ -3,7 +3,7 @@ import axios from 'axios';
 import '../styles/ViolationGuest.css';
 import { useNavigate } from "react-router-dom";
 
-import { config } from '../Constants';
+import { getApiUrl, API_ENDPOINTS } from '../Constants';
 
 import DateFilter from '../component/DateFilter';
 import Dropdown from '../component/Dropdown';
@@ -27,11 +27,11 @@ const ViolationGuest = () => {
     const loadBeneficiaries = useCallback(async () => {
         try {
             const guestId = sessionStorage.getItem('userId');
-            const response = await axios.get(`${config.url.GUEST_BENEFICIARIES}/${guestId}/Beneficiaries`, {
+            const response = await axios.get(getApiUrl(`${API_ENDPOINTS.GUEST.BENEFICIARIES}/${guestId}/Beneficiaries`), {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 }
             });
             const beneficiaries = response.data.flatMap(guest => guest.beneficiary);
@@ -44,7 +44,7 @@ const ViolationGuest = () => {
 
     useEffect(() => {
         loadBeneficiaries();
-        let exp = sessionStorage.getItem('exp');
+        let exp = localStorage.getItem('exp');
         let currentDate = new Date();
         const role = sessionStorage.getItem('role');
         if (exp * 1000 < currentDate.getTime()) {
@@ -66,11 +66,11 @@ const ViolationGuest = () => {
     const loadViolations = async (studentIds) => {
         try {
             const promises = studentIds.map(studentId =>
-                axios.get(`${config.url.VIOLATION_STUDENTID}/${studentId}`, {
+                axios.get(getApiUrl(`${API_ENDPOINTS.VIOLATION.BY_STUDENT_ID}/${studentId}`), {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
-                        'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
                     }
                 })
             );
