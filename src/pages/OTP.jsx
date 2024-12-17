@@ -7,7 +7,7 @@ import { getApiUrl, API_ENDPOINTS } from '../Constants';
 import '../styles/OTP.css';
 import logo from '../assets/logo.png';
 
-const OtpForm = () => {
+const OTP = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         username: '',
@@ -113,4 +113,4 @@ const OtpForm = () => {
     
 };
 
-export default OtpForm;
+export default OTP;

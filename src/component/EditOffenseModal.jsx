@@ -50,7 +50,7 @@ const EditOffenseModal = ({ isOpen, onClose, onSubmit, offenseToEdit }) => {
 
             <form onSubmit={handleSubmit} className='offense-form-container'>
 
-                <div className="input-container">
+                <div className="edit-offense-input-container">
                     <label>Offense</label>
                     <input type="text" className='offense-input' name="description" value={offense.description} onChange={handleInputChange} required />
                     {errors.description && <p className="error">{errors.description}</p>}

@@ -11,7 +11,7 @@ import logo from '../assets/logo.png';
 
 import AddGuestModal from '../component/AddGuestModal';
 
-const RegisterForm = () => {
+const CreateAccount = () => {
     const navigate = useNavigate();
     const [userType, setUserType] = useState('student');
     const [showPassword, setShowPassword] = useState(false);
@@ -206,4 +206,4 @@ const RegisterForm = () => {
     );
 };
 
-export default RegisterForm;
+export default CreateAccount;
