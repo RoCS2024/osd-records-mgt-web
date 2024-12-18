@@ -3,7 +3,7 @@ import axios from "axios";
 import '../styles/ViolationTableAdmin.css';
 import { useNavigate } from "react-router-dom";
 
-import { config } from '../Constants';
+import { getApiUrl, API_ENDPOINTS } from '../Constants';
 
 import AddViolationModal from '../component/AddViolationModal';
 import EditViolationModal from '../component/EditViolationModal';
@@ -24,6 +24,11 @@ const ViolationPageAdmin = () => {
     const [violationToEdit, setViolationToEdit] = useState(null);
     const navigate = useNavigate();
 
+    const handleLogout = () => {
+        sessionStorage.clear();
+        navigate('/login');
+    };
+
     const filterViolations = useCallback(() => {
         let filtered = violations.filter(violation => {
             const violationDate = new Date(violation.dateOfNotice);
@@ -41,7 +46,7 @@ const ViolationPageAdmin = () => {
         loadViolations();
         let exp = localStorage.getItem('exp');
         let currentDate = new Date();
-        const role = localStorage.getItem('role');
+        const role = sessionStorage.getItem('role');
         if(exp * 1000 < currentDate.getTime()){
             navigate('/login');
         }
@@ -64,7 +69,7 @@ const ViolationPageAdmin = () => {
 
     const loadViolations = async () => {
         try {
-            const response = await axios.get(config.url.VIOLATION_LIST, {
+            const response = await axios.get(getApiUrl(API_ENDPOINTS.VIOLATION.LIST), {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
@@ -136,7 +141,7 @@ const ViolationPageAdmin = () => {
                 },
             };
 
-            const response = await axios.post(config.url.ADD_VIOLATION, formattedViolation, {
+            const response = await axios.post(getApiUrl(API_ENDPOINTS.VIOLATION.ADD), formattedViolation, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
@@ -153,7 +158,7 @@ const ViolationPageAdmin = () => {
 
     const handleEditViolation = async (updatedViolation) => {
         try {
-            const response = await axios.put(config.url.EDIT_VIOLATION, updatedViolation, {
+            const response = await axios.put(getApiUrl(API_ENDPOINTS.VIOLATION.EDIT), updatedViolation, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
@@ -174,12 +179,6 @@ const ViolationPageAdmin = () => {
         }
     };
     
-
-    const handleLogout = () => {
-        localStorage.clear();
-        navigate('/login');
-    };
-
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         return new Date(dateString).toLocaleDateString(undefined, options);

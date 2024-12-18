@@ -4,6 +4,8 @@ import '../styles/offenseTableAdmin.css';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
+import { getApiUrl, API_ENDPOINTS } from '../Constants';
+
 import AddOffenseModal from '../component/AddOffenseModal';
 import EditOffenseModal from '../component/EditOffenseModal';
 
@@ -27,7 +29,7 @@ const OffensePageAdmin = () => {
         loadOffenses();
         let exp = localStorage.getItem('exp');
         let currentDate = new Date();
-        const role = localStorage.getItem('role');
+        const role = sessionStorage.getItem('role');
         if(exp * 1000 < currentDate.getTime()){
             navigate('/login');
         }
@@ -46,7 +48,7 @@ const OffensePageAdmin = () => {
 
     const loadOffenses = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/offense/offenseList`, {
+            const response = await axios.get(getApiUrl(API_ENDPOINTS.OFFENSE.LIST), {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
@@ -86,7 +88,7 @@ const OffensePageAdmin = () => {
                 type: newOffense.type
             };
 
-            const response = await axios.post("http://localhost:8080/offense/addOffense", params, {
+            const response = await axios.post(getApiUrl(API_ENDPOINTS.OFFENSE.ADD), params, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
@@ -104,7 +106,7 @@ const OffensePageAdmin = () => {
 
     const handleEditOffense = async (updatedOffense) => {
         try {
-            const response = await axios.put("http://localhost:8080/offense/updateOffense", updatedOffense, {
+            const response = await axios.put(getApiUrl(API_ENDPOINTS.OFFENSE.UPDATE), updatedOffense, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
@@ -148,7 +150,7 @@ const OffensePageAdmin = () => {
 
     const handleLogout = () => {
         localStorage.setItem('token', '');
-        localStorage.setItem('role', '');
+        sessionStorage.setItem('role', '');
         localStorage.setItem('exp', '');
         navigate('/login');
     };

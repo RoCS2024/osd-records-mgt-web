@@ -1,5 +1,5 @@
 import React from "react";
-import '../styles/ViolationTableAdmin.css';
+
 import edit from '../assets/compose.png';
 
 const TableViolationAdmin = ({ filteredViolations, openEditModal, formatDate }) => {

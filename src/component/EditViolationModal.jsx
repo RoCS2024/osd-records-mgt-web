@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 import axios from 'axios';
 import '../styles/AddEditViolationModal.css';
 
-import { config } from '../Constants';
+import { getApiUrl, API_ENDPOINTS } from '../Constants';
 
 const EditViolationModal = ({ isOpen, onClose, onSubmit, violationToEdit }) => {
     const [errors, setErrors] = useState({});
@@ -86,7 +86,7 @@ const EditViolationModal = ({ isOpen, onClose, onSubmit, violationToEdit }) => {
         // fetch offense
         const fetchOffenses = async () => {
             try {
-                const response = await axios.get(config.url.OFFENSE_LIST, {
+                const response = await axios.get(getApiUrl(API_ENDPOINTS.OFFENSE.LIST), {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
@@ -105,10 +105,10 @@ const EditViolationModal = ({ isOpen, onClose, onSubmit, violationToEdit }) => {
             try {
                 const token = localStorage.getItem('token');
                 const [studentsResponse, employeesResponse] = await Promise.all([
-                    axios.get(config.url.STUDENT_LIST, {
+                    axios.get(getApiUrl(API_ENDPOINTS.STUDENT.LIST), {
                         headers: { 'Authorization': `Bearer ${token}` }
                     }),
-                    axios.get(config.url.EMPLOYEE_LIST, {
+                    axios.get(getApiUrl(API_ENDPOINTS.EMPLOYEE.LIST), {
                         headers: { 'Authorization': `Bearer ${token}` }
                     })
                 ]);

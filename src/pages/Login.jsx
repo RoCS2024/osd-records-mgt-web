@@ -9,7 +9,7 @@ import logo from '../assets/logo.png';
 
 import { jwtDecode } from 'jwt-decode';
 
-import { config } from "../Constants";
+import { getApiUrl, API_ENDPOINTS } from '../Constants';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -28,15 +28,15 @@ const Login = () => {
         };
 
         try {
-            const response = await axios.post(config.url.API_URL, userData);
+            const response = await axios.post(getApiUrl(API_ENDPOINTS.LOGIN), userData);
             if (response.status === 200) {
-                const token = response.headers.get('jwt-token');
+                const token = response.headers['jwt-token'];
                 const tokenDecoded = jwtDecode(token);
                 const authorities = tokenDecoded.authorities;
                 if (token != null) {
-                    sessionStorage.setItem('token', token);
-                    sessionStorage.setItem('exp', tokenDecoded.exp);
-                    sessionStorage.setItem('tokenDecoded', JSON.stringify(tokenDecoded));
+                    localStorage.setItem('token', token);
+                    localStorage.setItem('exp', tokenDecoded.exp);
+                    localStorage.setItem('tokenDecoded', JSON.stringify(tokenDecoded));
                     sessionStorage.setItem('userId', response.data);
                     if (authorities[1] === "ROLE_ROLE_STUDENT") {
                         sessionStorage.setItem('role', authorities[1]);
@@ -90,9 +90,9 @@ const Login = () => {
                             <FaUser className="icon" />
                         </div>
 
-                        <div className="forgot-username-link">
+                        {/* <div className="forgot-username-link">
                             <a href="account/forgot-username">Forgot username?</a>
-                        </div>
+                        </div> */}
                     </div>
 
                     <div className="field-box field-box-password">

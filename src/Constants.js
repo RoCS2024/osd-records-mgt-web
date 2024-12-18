@@ -1,32 +1,44 @@
 const prod = {
-    url: {
-      API_URL: 'https://myapp.osdapp.com',
-      API_URL_USERS: 'https://myapp.osdapp.com/users',
-      VIOLATION_LIST:'http://localhost:8080/violation/violationList',
-      ADD_VIOLATION:'http://localhost:8080/violation/addViolation',
-      EDIT_VIOLATION: 'http://localhost:8080/violation/updateViolation',
-      OFFENSE_LIST:'http://localhost:8080/offense/offenseList',
-      STUDENT_LIST:'http://localhost:8080/student/studentList',
-      EMPLOYEE_LIST:'http://localhost:8080/employee/employeeList',
-      
-      violation_studentNumber:'http://localhost:8080/violation/studentNumber',
-    },
-  };
-  
-  const dev = {
-    url: {
-      API_URL: 'http://localhost:8080/user/login',
-      VIOLATION_LIST:'http://localhost:8080/violation/violationList',
-      ADD_VIOLATION:'http://localhost:8080/violation/addViolation',
-      EDIT_VIOLATION:'http://localhost:8080/violation/updateViolation',
-      OFFENSE_LIST:'http://localhost:8080/offense/offenseList',
-      STUDENT_LIST:'http://localhost:8080/student/studentList',
-      EMPLOYEE_LIST:'http://localhost:8080/employee/employeeList',
+  BASE_URL: 'https://myapp.osdapp.com',
+};
 
-      violation_studentNumber:'http://localhost:8080/violation/studentNumber',
-    },
-  };
-  
-  
-  export const config = process.env.NODE_ENV === 'development' ? dev : prod;
-  
+const dev = {
+  BASE_URL: 'http://localhost:8080',
+};
+
+const config = process.env.NODE_ENV === 'development' ? dev : prod;
+
+export const API_ENDPOINTS = {
+  LOGIN: '/user/login',
+  USER: {
+    VERIFY_OTP: '/user/verify-otp',
+    FORGOT_PASSWORD: '/user/forgot-password',
+    VERIFY_PASSWORD: '/user/verify-forgot-password',
+    REGISTER: '/user/register',
+  },
+  VIOLATION: {
+    LIST: '/violation/violationList',
+    ADD: '/violation/addViolation',
+    EDIT: '/violation/updateViolation',
+    BY_STUDENT_NUMBER: '/violation/studentNumber',
+    BY_STUDENT_ID: '/violation/studentId',
+  },
+  OFFENSE: {
+    LIST: '/offense/offenseList',
+    ADD: '/offense/addOffense',
+    UPDATE: '/offense/updateOffense',
+  },
+  STUDENT: {
+    LIST: '/student/studentList',
+  },
+  EMPLOYEE: {
+    LIST: '/employee/employeeList',
+  },
+  GUEST: {
+    BENEFICIARIES: '/guest',
+  },
+};
+
+export const getApiUrl = (endpoint) => `${config.BASE_URL}${endpoint}`;
+
+export default config;

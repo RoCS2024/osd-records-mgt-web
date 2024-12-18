@@ -17,7 +17,7 @@ const TableViolationGuest = ({ filteredViolations, formatDate }) => {
                 {filteredViolations.map(violation => (
                     <tr key={violation.id}>
                         <td>{`${violation.student.lastName}, ${violation.student.firstName} ${violation.student.middleName}`}</td>
-                        <td>{violation.offense.id}</td>
+                        <td>{violation.offense.description}</td>
                         <td>{formatDate(violation.dateOfNotice)}</td>
                         <td>{violation.warningNumber}</td>
                         <td>{violation.disciplinaryAction}</td>

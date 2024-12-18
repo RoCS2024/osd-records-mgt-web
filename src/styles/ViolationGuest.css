@@ -148,6 +148,7 @@ input:focus{
     border-collapse: collapse;
 }
 
+
 .my-violation-table table {
     width: 100%;
     table-layout: fixed;
@@ -172,5 +173,16 @@ input:focus{
 
 .my-violation-table tr:nth-child(even) {
     background-color: none;
+}
+
+.beneficiary-button{
+    margin-bottom: 16px;
+    width: 200px;
+    padding: 3px 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    background-color: #D9D9D9;
+    height: 35px;
+    border: none;
 }
 
