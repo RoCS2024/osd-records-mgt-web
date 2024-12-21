@@ -13,8 +13,6 @@ import ViolationStudent from "./pages/ViolationStudent";
 import ViolationGuest from "./pages/ViolationsGuest";
 import ViolationPageAdmin from "./pages/ViolationTableAdmin";
 
-import CsSlipPageAdmin from "./pages/CommunityServiceSlip";
-
 
 const App = () => {
   return (
