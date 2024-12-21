@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/ForgotPassword.css';
 
+import { getApiUrl, API_ENDPOINTS } from '../Constants';
+
 import { TbEyeClosed, TbEyeUp} from "react-icons/tb";
 import logo from '../assets/logo.png';
 
@@ -58,7 +60,7 @@ const ForgotPassword = () => {
 
             const userData = { username };
             try {
-                const response = await axios.post('http://localhost:8080/user/forgot-password', userData);
+                const response = await axios.post(getApiUrl(API_ENDPOINTS.USER.FORGOT_PASSWORD), userData);
                 if (response.status === 200) {
                     setShowPasswordAndOTP(true);
                 } else {
@@ -93,7 +95,7 @@ const ForgotPassword = () => {
             const updateData = { username, otp, password };
 
             try {
-                const response = await axios.post('http://localhost:8080/user/verify-forgot-password', updateData);
+                const response = await axios.post(getApiUrl(API_ENDPOINTS.USER.VERIFY_PASSWORD), updateData);
                 if (response.status === 200) {
                     navigate('/Login');
                 } else {

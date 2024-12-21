@@ -38,13 +38,13 @@
 }
 
 
-.input-container{
+.edit-offense-input-container{
     width: 300px;
     margin-top: 15px;
     margin-bottom: 15px;
 }   
 
-.input-container label {
+.edit-offense-input-container label {
     display: block;
     margin-bottom: 5px;
     margin-top: -4px;
