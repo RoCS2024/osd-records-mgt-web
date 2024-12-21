@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 
-import '../styles/AddEditOffenseModal.css';
+import '../styles/AddOffenseModal.css';
 
 const AddOffenseModal = ({ isOpen, onClose, onSubmit }) => {
     const [errors, setErrors] = useState({});
@@ -46,15 +46,15 @@ const AddOffenseModal = ({ isOpen, onClose, onSubmit }) => {
 
             <form onSubmit={handleSubmit} className='offense-form-container'>
 
-                <div className="input-container">
+                <div className="add-offense-input-container">
                     <label>Offense</label>
-                    <input type="text" className='offense-input' name="description" value={newOffense.description} onChange={handleInputChange} required />
+                    <input type="text" className='add-offense-input' name="description" value={newOffense.description} onChange={handleInputChange} required />
                     {errors.description && <p className="error">{errors.description}</p>}
                 </div>
 
-                <div className="form-group">
+                <div className="add-offense-form-group">
                     <label>Type</label>
-                    <select name="type" value={newOffense.type} onChange={handleInputChange} className='selectOffense' required>
+                    <select name="type" value={newOffense.type} onChange={handleInputChange} className='add-offense-selectOffense' required>
                         <option value="" disabled>Select type</option>
                         <option value="Major">Major</option>
                         <option value="Minor">Minor</option>

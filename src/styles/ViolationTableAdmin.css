@@ -110,6 +110,7 @@ h2{
 
 .violation-search-input {
     width: 360px;
+    margin-bottom: 15px;
     padding: 3px 10px;
     font-size: 14px;
     border-radius: 5px;
@@ -256,3 +257,5 @@ input, select:focus{
     border-bottom: 1.5px solid white;
     cursor: pointer;
 }
+
+

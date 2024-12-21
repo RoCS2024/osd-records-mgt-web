@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Axios from 'axios';
+import axios from 'axios';
 import '../styles/CreateAccount.css';
+
+import { getApiUrl, API_ENDPOINTS } from '../Constants';
 
 import { FaUser } from "react-icons/fa";
 import { TbEyeClosed, TbEyeUp } from "react-icons/tb";
@@ -9,7 +11,7 @@ import logo from '../assets/logo.png';
 
 import AddGuestModal from '../component/AddGuestModal';
 
-const RegisterForm = () => {
+const CreateAccount = () => {
     const navigate = useNavigate();
     const [userType, setUserType] = useState('student');
     const [showPassword, setShowPassword] = useState(false);
@@ -97,7 +99,7 @@ const RegisterForm = () => {
                 };
             }
 
-            const response = await Axios.post('http://localhost:8080/user/register', payload);
+            const response = await axios.post(getApiUrl(API_ENDPOINTS.USER.REGISTER), payload);
             if (response.status === 200) {
                 navigate(userType === 'guest' ? '/login' : '/account/otp');
             } else {
@@ -204,4 +206,4 @@ const RegisterForm = () => {
     );
 };
 
-export default RegisterForm;
+export default CreateAccount;
