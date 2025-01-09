@@ -26,7 +26,7 @@ const EditViolationModal = ({ isOpen, onClose, onSubmit, violationToEdit }) => {
         approvedByName: ""
     });
 
-    // Validation
+    
     const validate = () => {
         
         const currentDate = new Date().toISOString().split('T')[0];
@@ -83,7 +83,7 @@ const EditViolationModal = ({ isOpen, onClose, onSubmit, violationToEdit }) => {
     }, [violationToEdit]);
 
     useEffect(() => {
-        // fetch offense
+       
         const fetchOffenses = async () => {
             try {
                 const response = await axios.get(getApiUrl(API_ENDPOINTS.OFFENSE.LIST), {

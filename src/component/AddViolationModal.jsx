@@ -87,7 +87,7 @@ const AddViolationModal = ({ isOpen, onClose, onSubmit }) => {
     };
 
     const handleOffenseInputChange = (input) => {
-        setOffenseInput(input); // Track input for validation
+        setOffenseInput(input); 
     };
     
 
@@ -109,7 +109,7 @@ const AddViolationModal = ({ isOpen, onClose, onSubmit }) => {
                 setOffenses(offensesResponse.data.map(offense => ({
                     value: offense.id,
                     label: offense.description
-                }))); // Transform offenses for react-select
+                }))); 
                 setStudents(studentsResponse.data);
                 setEmployees(employeesResponse.data);
             } catch (error) {
@@ -127,7 +127,7 @@ const AddViolationModal = ({ isOpen, onClose, onSubmit }) => {
             fetchStudentDetails(value);
             setNewViolation((prevState) => ({
                 ...prevState,
-                // warningNumber: value ? '1' : '', // Automatically set to 1 if studentNumber is valid
+                // warningNumber: value ? '1' : '', 
             }));
         } else if (name === 'approvedByNumber') {
             fetchEmployeeDetails(value);
@@ -211,14 +211,13 @@ const AddViolationModal = ({ isOpen, onClose, onSubmit }) => {
                     <div className="form-class">
                         <label>Offense</label>
                         <Select
-                            className="searchable-offense-dropdown"
-                            classNamePrefix="dropdown"
-                            options={offenses}
-                            onChange={(selectedOption) =>
-                                setNewViolation({ ...newViolation, offenseId: selectedOption ? selectedOption.value : "" })
-                            }
-                            value={offenses.find((option) => option.value === newViolation.offenseId) || null}
-                            placeholder="Select an offense"
+                        className="searchable-offense-dropdown"
+                        classNamePrefix="dropdown"
+                        options={offenses}
+                        onChange={handleOffenseChange} 
+                        onInputChange={handleOffenseInputChange} 
+                        value={offenses.find((option) => option.value === newViolation.offenseId) || null}
+                        placeholder="Select an offense"
                         />
                         {errors.offenseId && <p className="error-offense">{errors.offenseId}</p>}
                     </div>
