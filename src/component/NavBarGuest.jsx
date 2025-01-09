@@ -7,13 +7,13 @@ import '../styles/ViolationStudent.css';
 import '../styles/ViolationGuest.css';
 import '../styles/CsSlipStudent.css';
 
-const NavBar = ({ handleLogout }) => {
+const NavBarGuest = ({ handleLogout }) => {
     return (
         <nav className="nav-bar">
             <img src={logo} alt="Logo" className="rc-logo" />
             <div className="nav-links">
-                <a href="/student/violation">Violation</a>
-                <a href="/student/cs-slip">Cs Slips</a>
+                <a href="/guest/violation">Violation</a>
+                <a href="/guest/cs-slip">Cs Slips</a>
                 <button onClick={handleLogout} className="logout-button">Logout</button>
                 <img src={user} alt="profile" className="profile" />
             </div>
@@ -21,4 +21,4 @@ const NavBar = ({ handleLogout }) => {
     );
 };
 
-export default NavBar;
+export default NavBarGuest;

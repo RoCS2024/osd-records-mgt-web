@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
-import '../styles/AddEditViolationModal.css';
+import '../styles/EditViolationModal.css';
 
 import { getApiUrl, API_ENDPOINTS } from '../Constants';
 
@@ -37,31 +37,31 @@ const EditViolationModal = ({ isOpen, onClose, onSubmit, violationToEdit }) => {
         if (!violation.dateOfNotice) {
             validationErrors.dateOfNotice = "Date of Notice is required";
         } else if (violation.dateOfNotice > currentDate) {
-            validationErrors.dateOfNotice = "Date of Notice cannot be in the future";
+            validationErrors.dateOfNotice = "Date cannot be in the future";
         }
 
         if (!violation.warningNumber) {
             validationErrors.warningNumber = "Number of Occurrence is required";
         } else if (!numberPattern.test(violation.warningNumber) || violation.warningNumber <= 0) {
-            validationErrors.warningNumber = "Number of Occurrence should only be positive numbers";
+            validationErrors.warningNumber = "Invalid input";
         }
 
         if (!violation.csHours) {
             validationErrors.csHours = "Community Service Hours is required";
         } else if (!numberPattern.test(violation.csHours) || violation.csHours <= 0) {
-            validationErrors.csHours = "Community Service Hours should only be positive numbers";
+            validationErrors.csHours = "Please enter valid hour";
         }
 
         if (!violation.studentNumber) {
             validationErrors.studentNumber = "Student Number is required";
         } else if (specialCharPattern.test(violation.studentNumber)) {
-            validationErrors.studentNumber = "Input alpha-numeric and dash(-) characters only";
+            validationErrors.studentNumber = "This entry can only accept alpha-numeric and (-)";
         } 
 
         if (!violation.disciplinaryAction) {
             validationErrors.disciplinaryAction = "Disciplinary Action is required";
         } else if (specialCharPattern.test(violation.disciplinaryAction)) {
-            validationErrors.disciplinaryAction = "Disciplinary Action should not contain special characters";
+            validationErrors.disciplinaryAction = "Input must not contain special characters";
         }
 
         setErrors(validationErrors);
@@ -178,6 +178,7 @@ const EditViolationModal = ({ isOpen, onClose, onSubmit, violationToEdit }) => {
         <Modal isOpen={isOpen} onRequestClose={onClose} className="modal">
 
             <button onClick={onClose} className="close-btn">&times;</button>
+            
             <h2>Edit Violation</h2>
 
             <form onSubmit={handleSubmit} className='violation-form-container'>
@@ -187,7 +188,7 @@ const EditViolationModal = ({ isOpen, onClose, onSubmit, violationToEdit }) => {
                     <div className="form-group">
                         <label>Student Number</label>
                         <input type="text" name="studentNumber" value={violation.studentNumber} onChange={handleInputChange} />
-                        {errors.studentNumber && <p className="error">{errors.studentNumber}</p>}
+                        {errors.studentNumber && <p className="error-studentNumber">{errors.studentNumber}</p>}
                     </div>
 
                     <div className="form-group">
@@ -208,25 +209,39 @@ const EditViolationModal = ({ isOpen, onClose, onSubmit, violationToEdit }) => {
                     <div className="form-group">
                         <label>Date of Notice</label>
                         <input type="date" name="dateOfNotice" value={violation.dateOfNotice} onChange={handleInputChange} required />
-                        {errors.dateOfNotice && <p className="error">{errors.dateOfNotice}</p>}
+                        {errors.dateOfNotice && <p className="error-date-notice">{errors.dateOfNotice}</p>}
                     </div>
 
                     <div className="form-group">
                         <label>Number of Occurrence</label>
-                        <input type="text" name="warningNumber" value={violation.warningNumber} onChange={handleInputChange} required />
-                        {errors.warningNumber && <p className="error">{errors.warningNumber}</p>}
+                        <input type="text" name="warningNumber" value={violation.warningNumber} disabled />
                     </div>
 
                     <div className="form-group">
                         <label>Disciplinary Action</label>
-                        <input type="text" name="disciplinaryAction" value={violation.disciplinaryAction} onChange={handleInputChange} required />
-                        {errors.disciplinaryAction && <p className="error">{errors.disciplinaryAction}</p>}
+                        <input
+                            list="disciplinaryActions"
+                            type="text"
+                            name="disciplinaryAction"
+                            value={violation.disciplinaryAction}
+                            onChange={handleInputChange}
+                            required
+                            placeholder="Select or type an action"
+                        />
+                        <datalist id="disciplinaryActions">
+                            <option value="First Offense" />
+                            <option value="Second Offense" />
+                            <option value="Probation" />
+                            <option value="Suspension" />
+                            <option value="Expulsion" />
+                        </datalist>
+                        {errors.disciplinaryAction && <p className="error-disciplinary-cation">{errors.disciplinaryAction}</p>}
                     </div>
 
                     <div className="form-group">
                         <label>Community Service Hours</label>
                         <input type="number" name="csHours" value={violation.csHours} onChange={handleInputChange} required />
-                        {errors.csHours && <p className="error">{errors.csHours}</p>}
+                        {errors.csHours && <p className="error-cs-hours">{errors.csHours}</p>}
                     </div>
 
                     <div className="form-group">

@@ -9,7 +9,7 @@
     text-decoration: none;
 }
 
-.cs-slip-page-admin {
+.csreport-guest {
     position: fixed; 
     top: 0;
     left: 0;
@@ -22,7 +22,7 @@
     align-content: start;
 }
 
-.csslip-box{
+.list-container {
     margin-top: 75px;
     margin-bottom: 80px;
     width: 95%;
@@ -38,6 +38,21 @@ h1 {
     width: 100%;
     text-align: left;
     font-size: 28px;
+}
+
+h2{
+    font-weight: 100;
+    font-style: italic;
+    width: 100%;
+    text-align: left;
+    font-size: 18px;
+}
+
+h3{
+    font-weight: 700;
+    width: 100%;
+    text-align: left;
+    font-size: 16px;
 }
 
 .nav-bar {
@@ -82,7 +97,7 @@ h1 {
     max-width: 24px;
 }
 
-.cs-slip-container{ 
+.content-container { 
     border-top: .1vw solid black;
     display: grid;
     justify-items: center;
@@ -91,49 +106,15 @@ h1 {
     width: 100%;
 }
 
-.input-container {
-    flex-wrap: wrap;
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    margin-bottom: 12px;
-    width: 100%;
-    gap: 25px;
-}
-
-.input-container .field-container label {
-    width: 100%;
-    text-align: left;
-    font-size: 12px;
-    color: #757575;
-    margin-bottom: 5px;
-}
-
-.field-container {
-    display: grid;
-    justify-items: flex-start;
-    align-content: space-around;
-}
-
-.input-container input {
-    width: 300px;
+.beneficiary-button{
+    width: 250px;
     padding: 3px 10px;
     font-size: 14px;
     border-radius: 5px;
-    background-color: white;
-    border: 1px solid #757575;
-    height: 35px;
-}
-
-.select-field {
-    width: 300px;
-    padding: 3px 10px;
-    font-size: 14px;
-    border-radius: 5px;
-    background-color: white;
-    border: 1px solid #757575;
+    background-color: #D9D9D9;
     height: 35px;
     cursor: pointer;
+    border: none;
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -144,11 +125,16 @@ h1 {
     transition: background-color 0.3s;
 }
 
-.field-container label{
-    font-size: 1vw;
+.table2-container { 
+    border-top: .1vw solid black;
+    display: grid;
+    justify-items: center;
+    align-content: start;
+    padding: 20px 3vw;
+    width: 100%;
 }
 
-input, select:focus{
+select:focus{
     outline: none;
 }
 
@@ -160,103 +146,111 @@ h2{
     font-size: 24px;
 }
 
-.cs-slip-table {
+.date-input {
+    width: 160px;
+    padding: 3px 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    background-color: #D9D9D9;
+    height: 35px;
+}
+
+#to {
+    font-size: 14px;
+}
+
+.list-table {
     width: 100%;
     margin: 25px 0;
     overflow-x: auto;
-    border-collapse: collapse; 
+    border-collapse: collapse;
 }
 
-.cs-slip-table table {
+.list-table table {
     width: 100%;
     table-layout: fixed;
     border-collapse: collapse;
 }
 
-.cs-slip-table th,
-.cs-slip-table td {
+.list-table th,
+.list-table td {
     border: 1px solid #e1e1e1;
     padding: 5px 10px;
     font-size: 16px;
     text-align: left;
 }
 
-.cs-slip-table tr:hover {
+.list-table tr:hover {
     background-color: #f0f0f0;
 }
 
-.cs-slip-table th {
+.list-table th {
     background-color: #D9D9D9;
 }
 
-.bottom-container{
-    display: grid;
-    justify-items: end;
-    align-content: end;
-    margin: 10px 0 20px 0;
+.list-table tr:nth-child(even) {
+    background-color: none;
+}
+
+
+/* table2 */
+.guest-cs-report-table {
     width: 100%;
+    margin: 25px 0;
+    overflow-x: auto;
+    border-collapse: collapse;
 }
 
-.total-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1vw;
+.guest-cs-report-table table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
 }
 
-.input-hours {
-    width: 200px;
-    font-size: 12px;
-    width: 150px;
-    padding: 3px 10px;
-    border-radius: 5px;
-    background-color: white;
-    border: 1px solid #757575;
-    height: 35px;
-}
-
-.create-csslip-button {
-    margin: 0;
-    margin-top: 45px;
-    margin-right: -5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 180px;
+.guest-cs-report-table th,
+.guest-cs-report-table td {
+    border: 1px solid #e1e1e1;
+    padding: 5px 10px;
     font-size: 16px;
-    background-color: #6BCB77;
+    text-align: left;
+}
+
+.guest-cs-report-table tr:hover {
+    background-color: #f0f0f0;
+}
+
+.guest-cs-report-table th {
+    background-color: #D9D9D9;
+}
+
+.guest-cs-report-table tr:nth-child(even) {
+    background-color: none;
+}
+
+
+.view-button {
+    height: 42px;
+    width: 42px;
+    background-color: #CCC;
     color: #fff;
     border: none;
     cursor: pointer;
-    border-radius: .5vw;
+    border-radius: 5px;
     transition: background-color 0.3s;
 }
 
-.create-csslip-button:hover {
-    background-color: #009713;
+.view-icon {
+    height: auto;
+    width: 100%;
 }
 
-.error-studentId {
-    display: block;
-    color: #dc3545;
-    margin-top: 5px;
-    min-height: 5px; 
-    font-size: 12px;
-}
+.dropdown-filter {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    margin-bottom: 1vw;
+    width: 100%;
+    gap: 1.5vw;
 
-.error-hours-deduct {
-    display: block;
-    color: #dc3545;
-    margin-top: 5px;
-    min-height: 5px; 
-    font-size: 12px;
-}
-
-.error-reason-cs {
-    display: block;
-    color: #dc3545;
-    margin-top: 5px;
-    min-height: 5px; 
-    font-size: 12px;
 }
 

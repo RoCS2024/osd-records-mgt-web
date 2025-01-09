@@ -39,25 +39,32 @@ const CreateAccount = () => {
 
         // Validations
         if (formData.username === '' || !/^[a-zA-Z0-9]+$/.test(formData.username)) {
-            setErrorMessage('Please enter a valid username (use alphanumeric characters only).');
+            setErrorMessage('Please enter a valid username');
             setIsButtonDisabled(false);
             setIsSubmitting(false);
             return;
         }
         if (formData.password === '') {
-            setErrorMessage('Please Enter a Password.');
+            setErrorMessage('Please enter a password.');
+            setIsButtonDisabled(false);
+            setIsSubmitting(false);
+            return;
+        }
+          // Password validation to disallow special characters
+        if (/[^a-zA-Z0-9]/.test(formData.password)) {
+            setErrorMessage('Password should not contain special characters.');
             setIsButtonDisabled(false);
             setIsSubmitting(false);
             return;
         }
         if (userType !== 'guest' && formData.memberNumber === '') {
-            setErrorMessage('Please Enter your Member Number.');
+            setErrorMessage('Please enter your member number.');
             setIsButtonDisabled(false);
             setIsSubmitting(false);
             return;
         }
         if (userType !== 'guest' && !/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(formData.email)) {
-            setErrorMessage('Please Enter a valid Email Address.');
+            setErrorMessage('Please enter a valid email');
             setIsButtonDisabled(false);
             setIsSubmitting(false);
             return;
@@ -160,7 +167,7 @@ const CreateAccount = () => {
                             <input type="text" name="username" value={formData.username} onChange={handleChange} />
                             <FaUser className="icon" />
                         </div>
-                        {errorMessage && (errorMessage === 'Please enter a valid username (alphanumeric characters only).' || errorMessage === 'USERNAME ALREADY EXISTS.') && <p className="error-message">{errorMessage}</p>}
+                        {errorMessage && (errorMessage === 'Please enter a valid username' || errorMessage === 'Username already exist.') && <p className="error-message">{errorMessage}</p>}
                     </div>
 
                     <div className="input-box">
@@ -173,7 +180,7 @@ const CreateAccount = () => {
                                 <TbEyeClosed className="icon" onClick={togglePasswordVisibility} />
                             )}
                         </div>  
-                        {errorMessage && (errorMessage === 'Please Enter a Password.' || errorMessage === 'PLEASE CREATE A STRONGER PASSWORD. PASSWORD SHOULD CONTAIN SPECIAL CHARACTERS.') && <p className="error-message">{errorMessage}</p>}
+                        {errorMessage && (errorMessage === 'Please enter a password.' || errorMessage === 'Please create a stronger password.') && <p className="error-message">{errorMessage}</p>}
                     </div>
 
                     {userType !== 'guest' && (
@@ -182,14 +189,14 @@ const CreateAccount = () => {
                             <input type="text" name="memberNumber" value={formData.memberNumber} onChange={handleChange} />
                         </div>
                     )}
-                    {errorMessage && (errorMessage === 'STUDENT NUMBER DOES NOT EXIST!!' || errorMessage === 'STUDENT ALREADY EXISTS!') && <p className="error-message">{errorMessage}</p>}
-                    {errorMessage && (errorMessage === 'EMPLOYEE NUMBER DOES NOT EXIST!!' || errorMessage === 'EMPLOYEE ALREADY EXISTS!') && <p className="error-message">{errorMessage}</p>}
+                    {errorMessage && (errorMessage === 'Student number does not exist' || errorMessage === 'Student already exists') && <p className="error-message">{errorMessage}</p>}
+                    {errorMessage && (errorMessage === 'Employee number does not exist' || errorMessage === 'Employee already exists') && <p className="error-message">{errorMessage}</p>}
                     
                     {userType !== 'guest' && (
                         <div className="input-box">
                             <label>Email:</label>
                             <input type="email" name="email" value={formData.email} onChange={handleChange} />
-                            {errorMessage && errorMessage === 'Please Enter a valid Email Address.' && <p className="error-message">{errorMessage}</p>}
+                            {errorMessage && errorMessage === 'Please enter a valid email' && <p className="error-message">{errorMessage}</p>}
                         </div>
                     )}
                     <p className="error-message">{errorMessage}</p>

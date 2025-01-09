@@ -16,7 +16,9 @@ const EditOffenseModal = ({ isOpen, onClose, onSubmit, offenseToEdit }) => {
         if (!offense.description) {
             validationErrors.description = "Offense is required";
         } else if (specialCharPattern.test(offense.description)) {
-            validationErrors.description = "Invalid Input. Please try again.";
+            validationErrors.description = "Invalid Input. Please try again";
+        } else if (offense.description.length > 32) {
+            validationErrors.description = "Use at least 32 characters";
         }
 
         setErrors(validationErrors);
@@ -53,7 +55,7 @@ const EditOffenseModal = ({ isOpen, onClose, onSubmit, offenseToEdit }) => {
                 <div className="edit-offense-input-container">
                     <label>Offense</label>
                     <input type="text" className='offense-input' name="description" value={offense.description} onChange={handleInputChange} required />
-                    {errors.description && <p className="error">{errors.description}</p>}
+                    {errors.description && <p className="error-edit-offense">{errors.description}</p>}
                 </div>
 
                 <div className="form-group">

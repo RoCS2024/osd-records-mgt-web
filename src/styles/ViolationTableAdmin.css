@@ -22,6 +22,23 @@
     align-content: start;
 }
 
+.content-container { 
+    border-top: .1vw solid #0C356A; /* Eto yung line sa ilalim ng Offense */
+    display: grid;
+    justify-items: center;
+    align-content: start;
+    padding: 20px 3vw;
+    width: 100%;
+}
+
+.head-violation {
+    font-weight: 700;
+    padding: .5vw 3vw;
+    width: 100%;
+    text-align: left;
+    font-size: 28px;
+}
+
 .container {
     margin-top: 75px;
     margin-bottom: 80px;
@@ -256,6 +273,18 @@ input, select:focus{
     color: #d1d1d1;
     border-bottom: 1.5px solid white;
     cursor: pointer;
+}
+
+.filter-cluster {
+    width: 250px; 
+    height: 35px;
+    padding: 3px 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    background-color: #D9D9D9;
+    margin-left: auto;
+    border: none;
+    outline: none;
 }
 
 

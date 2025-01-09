@@ -12,7 +12,7 @@ import EditOffenseModal from '../component/EditOffenseModal';
 import SearchOffense from '../component/SearchOffense';
 import DropdownMajorMinor from '../component/DropdownMinorMajor';
 import TableOffenseAdmin from '../component/TableOffenseAdmin';
-import NavBar from '../component/NavBarAdmin';
+import NavBarAdmin from '../component/NavBarAdmin';
 
 const OffensePageAdmin = () => {
     const [offenses, setOffenses] = useState([]);
@@ -22,7 +22,7 @@ const OffensePageAdmin = () => {
     const navigate = useNavigate();
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-    const [message, setMessage] = useState("");
+    const [message] = useState("");
     const [offenseToEdit, setOffenseToEdit] = useState(null);
 
     useEffect(() => {
@@ -55,7 +55,7 @@ const OffensePageAdmin = () => {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 }
             });
-            console.log('Fetched Offenses:', response.data); 
+            console.log('Fetched offenses:', response.data); 
             setOffenses(response.data);
             setFilteredOffenses(response.data); 
         } catch (error) {
@@ -95,12 +95,12 @@ const OffensePageAdmin = () => {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 }
             });
-            setMessage(response.data);
+            alert(response.data || "Offense successfully added!");
             closeAddModal();
             loadOffenses();
         } catch (error) {
-            console.error('Error Adding Offense:', error);
-            setMessage("Offense Cannot be Added");
+            console.error('Error adding offense:', error);
+            alert("Offense cannot be added");
         }
     };
 
@@ -113,12 +113,12 @@ const OffensePageAdmin = () => {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 }
             });
-            setMessage(response.data);
+            alert(response.data || "Offense successfully updated!");
             closeEditModal();
             loadOffenses();
         } catch (error) {
-            console.error('Error Editing Offense:', error);
-            setMessage("Offense Cannot be Edited");
+            console.error('Error editing offense:', error);
+            alert("Offense cannot be edited");
         }
     };
 
@@ -159,7 +159,7 @@ const OffensePageAdmin = () => {
         <div className="offense-page-admin">
 
             {/*  NavBar component */}
-            <NavBar handleLogout={handleLogout} />
+            <NavBarAdmin handleLogout={handleLogout} />
 
             <div className="offense-container">
 

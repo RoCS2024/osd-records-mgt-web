@@ -8,7 +8,7 @@ import { getApiUrl, API_ENDPOINTS } from '../Constants';
 import DateFilter from '../component/DateFilter';
 import Dropdown from '../component/Dropdown';
 import TableViolationGuest from '../component/TableViolationGuest';
-import NavBar from '../component/NavBar';
+import NavBarGuest from '../component/NavBarGuest';
 
 const ViolationGuest = () => {
     const [violations, setViolations] = useState([]);
@@ -138,7 +138,7 @@ const ViolationGuest = () => {
         <div className="violation-guest">
 
             {/* NavBar component */}
-            <NavBar handleLogout={handleLogout} /> 
+            <NavBarGuest handleLogout={handleLogout} /> 
 
             <div className="container">
                 
