@@ -253,11 +253,16 @@ const AddViolationModal = ({ isOpen, onClose, onSubmit }) => {
                             placeholder="Select or type an action"
                         />
                         <datalist id="disciplinaryActions">
-                            <option value="First Offense" />
-                            <option value="Second Offense" />
-                            <option value="Probation" />
-                            <option value="Suspension" />
-                            <option value="Expulsion" />
+                            <option value="Reminder from Discipline Officer" />
+                            <option value="Reminder from Discipline Officer w/ Written Warning" />
+                            <option value="Dialogue with Prefect of Discipline" />
+                            <option value="Probation for 1 Semester" />
+                            <option value="Conference with the DSSS" />
+                            <option value="Meeting of the DSSS w/ the student's parent/guardian" />
+                            <option value="Issuance of notice of violation" />
+                            <option value="Non-admission for 1 semester" />
+                            <option value="Non-admission for 2 semesters" />
+                            <option value="Recommendation for dismissal" />
                         </datalist>
                         {errors.disciplinaryAction && <p className="error-disciplinary-cation">{errors.disciplinaryAction}</p>}
                     </div>

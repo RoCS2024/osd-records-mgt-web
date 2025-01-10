@@ -2,17 +2,14 @@ import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import '../styles/ViolationTableAdmin.css';
 import { useNavigate } from "react-router-dom";
-
 import { getApiUrl, API_ENDPOINTS } from '../Constants';
 
 import AddViolationModal from '../component/AddViolationModal';
 import EditViolationModal from '../component/EditViolationModal';
-
 import DateFilter from "../component/DateFilter";
 import SearchStudentViolation from "../component/SearchStudentViolation";
 import TableViolationAdmin from "../component/TableViolationAdmin";
 import NavBarAdmin from "../component/NavBarAdmin";
-
 import DropdownCluster from "../component/DropdownCluster";
 
 const ViolationPageAdmin = () => {

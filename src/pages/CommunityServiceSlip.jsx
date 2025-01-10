@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { debounce } from 'lodash';
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import logo from '../assets/logo_new.png';
 import user from '../assets/user.png';
-
 import { getApiUrl, API_ENDPOINTS } from '../Constants';
-
 import '../styles/CommunityServiceSlip.css';
 
-
 const CsSlipPageAdmin = () => {
+    const navigate = useNavigate();
+    const [stations, setStations] = useState([]);
+    const [students, setStudents] = useState([]);
     const [formData, setFormData] = useState({
         studentId: '',
         deduction: '',
@@ -21,18 +20,14 @@ const CsSlipPageAdmin = () => {
         head: ''
     });
 
-    /// track and manage different piece of data
-    const [stations, setStations] = useState([]);
+    const [errors, setErrors] = useState({});
     const [violations, setViolations] = useState([]);
     const [totalHoursRequired, setTotalHoursRequired] = useState('');
-    const [students, setStudents] = useState([]);
     const [message, setMessage] = useState('');
-    const [errors, setErrors] = useState({});
+    
     const [successMessage, setSuccessMessage] = useState('');
     const [isFormValid, setIsFormValid] = useState(false);
 
-    const navigate = useNavigate();
-    
     useEffect(() => {
         const role = sessionStorage.getItem('role');
         let exp = localStorage.getItem('exp');
@@ -52,79 +47,145 @@ const CsSlipPageAdmin = () => {
                 navigate('/login');
             }
         }
-        const fetchData = async () => {
-            try {
-                const token = localStorage.getItem('token');
-                const headers = {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                };
-                const [stationsResponse, studentsResponse] = await Promise.all([
-                    axios.get(getApiUrl(API_ENDPOINTS.STATION.LIST), { headers }),
-                    axios.get(getApiUrl(API_ENDPOINTS.STUDENT.LIST), { headers })
-                ]);
-                setStations(stationsResponse.data);
-                setStudents(studentsResponse.data);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                setMessage('An error occurred while fetching data.');
-            }
-        };
 
-        fetchData();
-    }, [navigate]);
-    useEffect(() => {
-        const fetchData = async () => {
+        const fetchInitialData = async () => {
             try {
-                if (formData.studentId.trim() !== '' && !errors.studentId) {
-                    debouncedFetchStudentDetails(formData.studentId);
-                    debouncedFetchStudentViolation(formData.studentId);
-                    fetchTotalHoursRequired(formData.studentId);
-                } else {
-                    setFormData(prevState => ({
-                        ...prevState,
-                        name: '',
-                        section: '',
-                        head: ''
-                    }));
-                    setViolations([]);
-                    setTotalHoursRequired('');
-                }
+              const token = localStorage.getItem('token');
+              const headers = {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${token}`,
+              };
+              const [stationsResponse, studentsResponse] = await Promise.all([
+                axios.get(getApiUrl(API_ENDPOINTS.STATION.LIST), { headers }),
+                axios.get(getApiUrl(API_ENDPOINTS.STUDENT.LIST), { headers })
+              ]);
+              setStations(stationsResponse.data);
+              setStudents(studentsResponse.data);
             } catch (error) {
-                console.error('Error:', error);
-                setMessage('An error occurred while fetching data.');
+              console.error('Error fetching data:', error);
+              setMessage('An error occurred while fetching data.');
             }
-        };
+          };
+      
+          fetchInitialData();
+        }, [navigate]);
 
-        fetchData();
-    }, [formData.studentId, errors.studentId]);
+     useEffect(() => {
+    const fetchStudentData = async () => {
+      if (formData.studentId.trim() !== '' && !errors.studentId) {
+        try {
+          const [studentDetails, studentViolations, totalHours] = await Promise.all([
+            fetchStudentDetails(formData.studentId),
+            fetchStudentViolation(formData.studentId),
+            fetchTotalHoursRequired(formData.studentId)
+          ]);
+
+          setFormData(prevState => ({
+            ...prevState,
+            name: studentDetails ? `${studentDetails.lastName}, ${studentDetails.firstName} ${studentDetails.middleName}` : '',
+            section: studentDetails ? studentDetails.section.sectionName : '',
+            head: studentDetails ? studentDetails.section.clusterHead : ''
+          }));
+          setViolations(studentViolations);
+          setTotalHoursRequired(totalHours);
+        } catch (error) {
+          console.error('Error:', error);
+          setMessage('An error occurred while fetching data.');
+        }
+      } else {
+        setFormData(prevState => ({
+          ...prevState,
+          name: '',
+          section: '',
+          head: ''
+        }));
+        setViolations([]);
+        setTotalHoursRequired('');
+      }
+    };
+
+    fetchStudentData();
+  }, [formData.studentId, errors.studentId]);
 
     useEffect(() => {
         setIsFormValid(Object.keys(errors).length === 0 && formData.studentId && formData.deduction && formData.areaId && formData.reasonOfCs);
     }, [errors, formData]);
 
-    const handleInputChange = (e) => {
+    const fetchStudentDetails = async (studentId) => {
+        const student = students.find(student => student.studentNumber === studentId);
+        const id = student && student.id;
+        if (id) {
+          const token = localStorage.getItem('token');
+          const response = await axios.get(getApiUrl(`${API_ENDPOINTS.STUDENT.DETAILS}/${id}`), {
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'Authorization': `Bearer ${token}`,
+            }
+          });
+          return response.data;
+        }
+        return null;
+      };
+    
+      const fetchStudentViolation = async (studentId) => {
+        const student = students.find(student => student.studentNumber === studentId);
+        const id = student && student.id;
+        if (id) {
+          const token = localStorage.getItem('token');
+          const response = await axios.get(getApiUrl(`${API_ENDPOINTS.VIOLATION.BY_STUDENT_ID}/${id}`), {
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'Authorization': `Bearer ${token}`,
+            }
+          });
+          return response.data;
+        }
+        return [];
+      };    
+
+      const fetchTotalHoursRequired = async (studentId) => {
+        const student = students.find(student => student.studentNumber === studentId);
+        const id = student && student.studentNumber;
+        if (id) {
+          const token = localStorage.getItem('token');
+          const response = await axios.get(getApiUrl(`${API_ENDPOINTS.CSSLIP.TOTAL_CS_HOURS}${id}`), {
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'Authorization': `Bearer ${token}`,
+            }
+          });
+          return response.data;
+        }
+        return '';
+      };
+
+      const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevState => ({
-            ...prevState,
-            [name]: value
+          ...prevState,
+          [name]: value
         }));
     
         let newErrors = { ...errors };
     
         if (name === 'studentId') {
-            const studentIdPattern = /^CT\d{2}-\d{4}$/;
-            if (!studentIdPattern.test(value)) {
-                newErrors.studentId = 'Please try again';
+          const studentIdPattern = /^CT\d{2}-\d{4}$/;
+          if (!studentIdPattern.test(value)) {
+            newErrors.studentId = 'Please try again';
+          } else {
+            const studentExists = students.some(student => student.studentNumber === value);
+            if (!studentExists) {
+              newErrors.studentId = 'Student not registered';
             } else {
-                const studentExists = students.some(student => student.studentNumber === value);
-                if (!studentExists) {
-                    newErrors.studentId = 'Student not registered';
-                } else {
-                    delete newErrors.studentId;
-                }
+              delete newErrors.studentId;
+              // Trigger immediate data fetching
+              fetchStudentData(value);
             }
+          }
         }
     
         if (name === 'reasonOfCs') {
@@ -153,7 +214,6 @@ const CsSlipPageAdmin = () => {
                 delete newErrors.areaId;
             }
         }
-    
         setErrors(newErrors);
     };
 
@@ -188,75 +248,28 @@ const CsSlipPageAdmin = () => {
     
         return errors;
     };
-
-    const fetchStudentDetails = async (studentId) => {
-        try {
-            const student = students.find(student => student.studentNumber === studentId);
-            const id = student && student.id;
-            if (id) {
-                const token = localStorage.getItem('token');
-                const response = await axios.get(getApiUrl(`${API_ENDPOINTS.STUDENT.DETAILS}/${id}`), {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Authorization': `Bearer ${token}`,
-                    }
-                });
-                const studentData = response.data;
-                if (studentData !== null) {
-                    setFormData(prevState => ({
-                        ...prevState,
-                        name: `${studentData.lastName}, ${studentData.firstName} ${studentData.middleName}`,
-                        section: studentData.section.sectionName,
-                        head: studentData.section.clusterHead
-                    }));
-                }
-            }
-        } catch (error) {
-            console.error('Error getting student info:', error);
-        }
-    };
     
-
-    const fetchStudentViolation = async (studentId) => {
+    const fetchStudentData = async (studentId) => {
         try {
-            const student = students.find(student => student.studentNumber === studentId);
-            const id = student && student.id;
-            if (id) {
-                const token = localStorage.getItem('token');
-                const response = await axios.get(getApiUrl(`${API_ENDPOINTS.VIOLATION.BY_STUDENT_ID}/${id}`), {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Authorization': `Bearer ${token}`,
-                    }
-                });
-                setViolations(response.data);
-            }
+          const [studentDetails, studentViolations, totalHours] = await Promise.all([
+            fetchStudentDetails(studentId),
+            fetchStudentViolation(studentId),
+            fetchTotalHoursRequired(studentId)
+          ]);
+    
+          setFormData(prevState => ({
+            ...prevState,
+            name: studentDetails ? `${studentDetails.lastName}, ${studentDetails.firstName} ${studentDetails.middleName}` : '',
+            section: studentDetails ? studentDetails.section.sectionName : '',
+            head: studentDetails ? studentDetails.section.clusterHead : ''
+          }));
+          setViolations(studentViolations);
+          setTotalHoursRequired(totalHours);
         } catch (error) {
-            console.error('Error getting violations:', error);
+          console.error('Error:', error);
+          setMessage('An error occurred while fetching data.');
         }
-    };
-
-    const fetchTotalHoursRequired = async (studentId) => {
-        try {
-            const student = students.find(student => student.studentNumber === studentId);
-            const id = student && student.id;
-            if (id) {
-                const token = localStorage.getItem('token');
-                const response = await axios.get(getApiUrl(`${API_ENDPOINTS.CSSLIP.TOTAL_CS_HOURS}${id}`), {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Authorization': `Bearer ${token}`,
-                    }
-                });
-                setTotalHoursRequired(response.data);
-            }
-        } catch (error) {
-            console.error('Error getting total hours required:', error);
-        }
-    };
+      };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -287,7 +300,7 @@ const CsSlipPageAdmin = () => {
 
                 if (response && response.data) {
                     setMessage('');
-                    setSuccessMessage('CS slip created successfully!');
+                    alert('CS slip created successfully!');
                     setTimeout(() => {
                         setSuccessMessage('');
                     }, 5000);
@@ -306,16 +319,13 @@ const CsSlipPageAdmin = () => {
         }
     };
 
-    // Prevent too many function calls in a short time.
-    const debouncedFetchStudentDetails = debounce(fetchStudentDetails, 300);
-    const debouncedFetchStudentViolation = debounce(fetchStudentViolation, 300);
-
     const handleLogout = () => {
         localStorage.removeItem('token');
         sessionStorage.removeItem('role');
         localStorage.removeItem('exp');
         navigate('/login');
     };
+
     return (
         <div className="cs-slip-page-admin">
 
@@ -327,7 +337,7 @@ const CsSlipPageAdmin = () => {
                     <a className="nav-link" href="/admin/offense">Offense</a>
                     <a className="nav-link" href="/admin/violation">Violation</a>
                     <a className="nav-link" href="/admin/cs-list">CS Slips</a>
-                    <a className="nav-link" href="#" onMouseDown={handleLogout}>Logout</a>
+                    <a className="nav-link" href="#" onMouseDown={handleLogout} role="button" style={{ textDecoration: "none" }}>Logout</a>
                     <img src={user} alt="profile" className="profile"/>
                 </div>
 

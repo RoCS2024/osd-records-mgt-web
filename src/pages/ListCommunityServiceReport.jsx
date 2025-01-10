@@ -2,12 +2,11 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import '../styles/ListCommunityServiceReport.css';
 import { useNavigate } from "react-router-dom";
+import { API_ENDPOINTS, getApiUrl } from "../Constants";
 
 import SearchListCsReport from "../component/SearchListCsReport";
 import TableListCsReport from "../component/TableListCsReport";
 import NavBarAdmin from "../component/NavBarAdmin";
-import { API_ENDPOINTS, getApiUrl } from "../Constants";
-
 import DropdownCluster from "../component/DropdownCluster";
 
 const CsListPageAdmin = () => {
@@ -42,8 +41,8 @@ const CsListPageAdmin = () => {
 
     useEffect(() => {
         filterCsSlips();
-    }, [searchInput, csSlips]);
-
+    }, [searchInput, filterType, csSlips]);
+    
     const loadCsSlips = async () => {
         try {
             const response = await axios.get(getApiUrl(`${API_ENDPOINTS.CSSLIP.CS_LIST}`), {
@@ -66,27 +65,20 @@ const CsListPageAdmin = () => {
     const filterCsSlips = () => {
         const filtered = csSlips.filter(csSlip => {
             const studentName = `${csSlip.student.firstName} ${csSlip.student.lastName}`.toLowerCase();
-            return studentName.includes(searchInput.toLowerCase());
+            const matchesSearch = studentName.includes(searchInput.toLowerCase());
+            const matchesCluster = filterType === 'All' || csSlip.student.section.clusterName === filterType;
+            return matchesSearch && matchesCluster;
         });
         setFilteredCsSlips(filtered);
     };
-
-    const csSlipsToDisplay = searchInput ? filteredCsSlips : csSlips;
-
-    const filterByCluster = (filter) => {
-        let filtered = csSlips;
-
-        if (filter !== 'All') {
-            filtered = filtered.filter(csSlip => csSlip.student.section.clusterName === filter);
-        }
-        setFilterType(filtered);
-    };
+    
+    const csSlipsToDisplay = filteredCsSlips;
 
     const handleFilterChange = (event) => {
         setFilterType(event.target.value);
-        filterByCluster(event.target.value);
+        filterCsSlips(); 
     };
-
+    
     const handleLogout = () => {
         localStorage.setItem('token', '');
         sessionStorage.setItem('role', '');
