@@ -13,19 +13,10 @@ const EmployeeCsSlip = ({ data }) => {
     const [completedHours, setCompletedHours] = useState(0);
     const [remainingHours, setRemainingHours] = useState(0);
 
-    useEffect(() => {
-        loadTotalHours();
-        console.log("Student Number:", data.studentNumber);
-    }, [data]);
-
-    useEffect(() => {
-        calculateTotalHoursCompleted();
-        updateRemainingHours();
-    }, [totalCsHours, data.deduction, data.reports]);
-
-    const loadTotalHours = async () => {
+    
+    const loadTotalHours = useCallback(async () => {
         if (!data || !data.studentNumber) {
-            console.warn("No data or student number provided. Skipping loadTotalHours.");
+            console.warn("No data or student number provided");
             return; 
         }
     
@@ -41,17 +32,16 @@ const EmployeeCsSlip = ({ data }) => {
         } catch (error) {
             console.error('Error fetching total community service hours:', error.response || error.message);
         }
-    };
+    }, [data]);
+
+    useEffect(() => {
+        loadTotalHours();
+        console.log("Student Number:", data.studentNumber);
+        navigate();
+    }, [loadTotalHours, navigate, data]);
+
     
-
-    const updateRemainingHours = () => {
-        const requiredHours = parseFloat(totalCsHours);
-        const deduction = parseFloat(data.deduction);
-        const remaining = requiredHours - (completedHours + deduction);
-        setRemainingHours(remaining);
-    };
-
-    const calculateTotalHoursCompleted = () => {
+    const calculateTotalHoursCompleted = useCallback(() => {
         let totalHours = 0;
         if (data) {
             data.reports.forEach(report => {
@@ -60,7 +50,20 @@ const EmployeeCsSlip = ({ data }) => {
         }
         setCompletedHours(totalHours);
         return totalHours;
-    };
+    }, [data]);
+
+     
+    const updateRemainingHours = useCallback(() => {
+        const requiredHours = parseFloat(totalCsHours);
+        const deduction = parseFloat(data.deduction);
+        const remaining = requiredHours - (completedHours + deduction);
+        setRemainingHours(remaining);
+    }, [totalCsHours, completedHours, data.deduction]);
+
+    useEffect(() => {
+        calculateTotalHoursCompleted();
+        updateRemainingHours();
+    }, [totalCsHours, data.deduction, data.reports, calculateTotalHoursCompleted, updateRemainingHours]);
 
     const openModal = useCallback(() => {
         setIsModalOpen(true);

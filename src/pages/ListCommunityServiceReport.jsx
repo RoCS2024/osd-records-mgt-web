@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import '../styles/ListCommunityServiceReport.css';
 import { useNavigate } from "react-router-dom";
@@ -39,10 +39,23 @@ const CsListPageAdmin = () => {
         }
     }, [navigate]);
 
+    const filterCsSlips = useCallback(() => {
+        const filtered = csSlips.filter(csSlip => {
+            const studentName = `${csSlip.student.firstName} ${csSlip.student.lastName}`.toLowerCase();
+            const matchesSearch = studentName.includes(searchInput.toLowerCase());
+            const matchesCluster = filterType === 'All' || csSlip.student.section.clusterName === filterType;
+            return matchesSearch && matchesCluster;
+        });
+        setFilteredCsSlips(filtered);
+    }, [csSlips, searchInput, filterType]);
+
+    
+    const csSlipsToDisplay = filteredCsSlips;
+
     useEffect(() => {
         filterCsSlips();
-    }, [searchInput, filterType, csSlips]);
-    
+    }, [filterCsSlips]);
+
     const loadCsSlips = async () => {
         try {
             const response = await axios.get(getApiUrl(`${API_ENDPOINTS.CSSLIP.CS_LIST}`), {
@@ -61,18 +74,6 @@ const CsListPageAdmin = () => {
     const handleSearchChange = (event) => {
         setSearchInput(event.target.value);
     };
-
-    const filterCsSlips = () => {
-        const filtered = csSlips.filter(csSlip => {
-            const studentName = `${csSlip.student.firstName} ${csSlip.student.lastName}`.toLowerCase();
-            const matchesSearch = studentName.includes(searchInput.toLowerCase());
-            const matchesCluster = filterType === 'All' || csSlip.student.section.clusterName === filterType;
-            return matchesSearch && matchesCluster;
-        });
-        setFilteredCsSlips(filtered);
-    };
-    
-    const csSlipsToDisplay = filteredCsSlips;
 
     const handleFilterChange = (event) => {
         setFilterType(event.target.value);
