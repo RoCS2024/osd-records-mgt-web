@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from "axios";
 import '../styles/CsSlipStudent.css';
 import { useNavigate } from "react-router-dom";
@@ -10,10 +10,10 @@ import NavBar from '../component/NavBar';
 const CsSlipStudent = () => {
 
     const [csSlips, setCsSlips] = useState([]);
-    const [userId, setUserId] = useState('');
+    const [userId,setUserId] = useState('');
 
     const [selectedSlip, setSelectedSlip] = useState(null);
-    const [totalHoursRequired, setTotalHoursRequired] = useState(0);
+    const [totalHoursRequired,setTotalHoursRequired] = useState(0);
     const [totalHoursCompleted, setTotalHoursCompleted] = useState(0);
     const navigate = useNavigate();
 
@@ -41,7 +41,7 @@ const CsSlipStudent = () => {
                 navigate('/login');
             }
         }
-    }, []);
+    },[navigate]);
 
     const loadCsSlips = async (userId) => {
         try {
@@ -110,7 +110,7 @@ const CsSlipStudent = () => {
         return new Date(timeString).toLocaleTimeString(undefined, options);
     };
 
-    const calculateTotalHoursCompleted = () => {
+    const calculateTotalHoursCompleted = useCallback(() => {
         let totalHours = 0;
         if (selectedSlip) {
             selectedSlip.reports.forEach(report => {
@@ -118,12 +118,20 @@ const CsSlipStudent = () => {
             });
         }
         return totalHours;
-    };
+    }, [selectedSlip]);
 
     useEffect(() => {
         const totalHours = calculateTotalHoursCompleted();
         setTotalHoursCompleted(totalHours);
-    }, [csSlips, selectedSlip]);
+    }, [csSlips, selectedSlip, calculateTotalHoursCompleted]);
+
+    useEffect(() => {
+        console.log('Loaded userId:', userId);
+    }, [userId]);
+
+    useEffect(() => {
+        console.log('Total Hours Required:', totalHoursRequired);
+    }, [totalHoursRequired]);
 
     return (
         <div className="csreport-student">

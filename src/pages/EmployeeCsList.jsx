@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
-// Styles
 import '../styles/EmployeeCsList.css';
 import '../styles/EmployeeCsSlip.css';
-
-// Components
 import EmployeeCsSlip from "./EmployeeCsSlip";
-
-// Assets
 import logo from '../assets/logo_new.png';
 import user from '../assets/user.png';
 
@@ -33,22 +27,7 @@ const EmployeeCsList = () => {
         reports: []
     });
 
-    // Effects
     useEffect(() => {
-        const id = sessionStorage.getItem('userId');
-        setUserId(id);
-        loadUser(id);
-        checkAuthentication();
-    }, []);
-
-    useEffect(() => {
-        if (employee) {
-            loadCsSlips(employee);
-        }
-    }, [employee]);
-
-    // Authentication
-    const checkAuthentication = () => {
         const exp = localStorage.getItem('exp');
         const currentDate = new Date();
         const role = sessionStorage.getItem('role');
@@ -73,7 +52,17 @@ const EmployeeCsList = () => {
             default:
                 navigate('/login');
         }
-    };
+        const id = sessionStorage.getItem('userId');
+        console.log(userId);
+        setUserId(id);
+        loadUser(id);
+    }, [navigate]);
+
+    useEffect(() => {
+        if (employee) {
+            loadCsSlips(employee);
+        }
+    }, [employee]);
 
     // API calls
     const loadUser = async (userId) => {
@@ -130,11 +119,11 @@ const EmployeeCsList = () => {
     // Render helpers
     const renderNavBar = () => (
         <nav className="nav-bar">
-            <img src={logo} alt="Logo" className="rc-logo"/>
+            <img src={logo} alt="Logo" className="rc-logo" />
             <div className="nav-links">
                 <a href="/student/violation">Reports</a>
-                <a href="#" onMouseDown={handleLogout}>Logout</a>
-                <img src={user} alt="profile" className="profile"/>
+                <button className="logout-button" onClick={handleLogout}>Logout</button>
+                <img src={user} alt="profile" className="profile" />
             </div>
         </nav>
     );
