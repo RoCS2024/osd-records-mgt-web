@@ -126,7 +126,7 @@ const EmployeeCsSlip = ({ data }) => {
             console.error('Error adding CsReport:', error);
             setMessage("CS Report cannot be added");
         }
-    }, [closeModal, data.reports, completedHours, totalCsHours, data.deduction, remainingHours]);
+    }, [closeModal, data.reports, completedHours, totalCsHours, data.deduction, remainingHours, calculateTotalHoursCompleted]);
     
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: 'long', day: 'numeric' };

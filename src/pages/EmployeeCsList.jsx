@@ -56,7 +56,7 @@ const EmployeeCsList = () => {
         console.log(userId);
         setUserId(id);
         loadUser(id);
-    }, [navigate]);
+    }, [navigate, userId]);
 
     useEffect(() => {
         if (employee) {

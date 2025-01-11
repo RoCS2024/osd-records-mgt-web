@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import logo from '../assets/logo_new.png';
-import user from '../assets/user.png';
 import { getApiUrl, API_ENDPOINTS } from '../Constants';
 import '../styles/CommunityServiceSlip.css';
+import NavBarAdmin from "../component/NavBarAdmin";
 
 const CsSlipPageAdmin = () => {
     const navigate = useNavigate();
@@ -70,43 +69,6 @@ const CsSlipPageAdmin = () => {
       
           fetchInitialData();
         }, [navigate]);
-
-     useEffect(() => {
-    const fetchStudentData = async () => {
-      if (formData.studentId.trim() !== '' && !errors.studentId) {
-        try {
-          const [studentDetails, studentViolations, totalHours] = await Promise.all([
-            fetchStudentDetails(formData.studentId),
-            fetchStudentViolation(formData.studentId),
-            fetchTotalHoursRequired(formData.studentId)
-          ]);
-
-          setFormData(prevState => ({
-            ...prevState,
-            name: studentDetails ? `${studentDetails.lastName}, ${studentDetails.firstName} ${studentDetails.middleName}` : '',
-            section: studentDetails ? studentDetails.section.sectionName : '',
-            head: studentDetails ? studentDetails.section.clusterHead : ''
-          }));
-          setViolations(studentViolations);
-          setTotalHoursRequired(totalHours);
-        } catch (error) {
-          console.error('Error:', error);
-          setMessage('An error occurred while fetching data.');
-        }
-      } else {
-        setFormData(prevState => ({
-          ...prevState,
-          name: '',
-          section: '',
-          head: ''
-        }));
-        setViolations([]);
-        setTotalHoursRequired('');
-      }
-    };
-
-    fetchStudentData();
-  }, [formData.studentId, errors.studentId]);
 
     useEffect(() => {
         setIsFormValid(Object.keys(errors).length === 0 && formData.studentId && formData.deduction && formData.areaId && formData.reasonOfCs);
@@ -271,6 +233,43 @@ const CsSlipPageAdmin = () => {
         }
       };
 
+      useEffect(() => {
+        const fetchStudentData = async () => {
+          if (formData.studentId.trim() !== '' && !errors.studentId) {
+            try {
+              const [studentDetails, studentViolations, totalHours] = await Promise.all([
+                fetchStudentDetails(formData.studentId),
+                fetchStudentViolation(formData.studentId),
+                fetchTotalHoursRequired(formData.studentId)
+              ]);
+    
+              setFormData(prevState => ({
+                ...prevState,
+                name: studentDetails ? `${studentDetails.lastName}, ${studentDetails.firstName} ${studentDetails.middleName}` : '',
+                section: studentDetails ? studentDetails.section.sectionName : '',
+                head: studentDetails ? studentDetails.section.clusterHead : ''
+              }));
+              setViolations(studentViolations);
+              setTotalHoursRequired(totalHours);
+            } catch (error) {
+              console.error('Error:', error);
+              setMessage('An error occurred while fetching data.');
+            }
+          } else {
+            setFormData(prevState => ({
+              ...prevState,
+              name: '',
+              section: '',
+              head: ''
+            }));
+            setViolations([]);
+            setTotalHoursRequired('');
+          }
+        };
+    
+        fetchStudentData();
+      }, [formData.studentId, errors.studentId, fetchStudentDetails, fetchStudentViolation, fetchTotalHoursRequired]);      
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const validationErrors = validate();
@@ -329,116 +328,91 @@ const CsSlipPageAdmin = () => {
     return (
         <div className="cs-slip-page-admin">
 
-            <nav className="nav-bar">
-
-                <img src={logo} alt="Logo" className="rc-logo"/>
-
-                <div className="nav-links">
-                    <a className="nav-link" href="/admin/offense">Offense</a>
-                    <a className="nav-link" href="/admin/violation">Violation</a>
-                    <a className="nav-link" href="/admin/cs-list">CS Slips</a>
-                    <a className="nav-link" href="#" onMouseDown={handleLogout} role="button" style={{ textDecoration: "none" }}>Logout</a>
-                    <img src={user} alt="profile" className="profile"/>
-                </div>
-
-            </nav>
+          {/*  NavBar component */}
+          <NavBarAdmin handleLogout={handleLogout} />
             <div className="csslip-box">
-
-                <h1>COMMUNITY SERVICE SLIP</h1>
-
+              <h1>COMMUNITY SERVICE SLIP</h1>
                 <div className="cs-slip-container">
+                  <form onSubmit={handleSubmit}>
+                    <div className="input-container">
+                      <div className="field-container">
+                        <label>Student ID:</label>
+                        <input type="text" className="cs-input-field" name="studentId" value={formData.studentId} onChange={handleInputChange} />
+                        {errors.studentId && <span className="error-studentId">{errors.studentId}</span>}
+                      </div>
 
-                    <form onSubmit={handleSubmit}>
+                      <div className="field-container">
+                        <label>Full Name:</label>
+                        <input type="text" disabled className="cs-input-field" name="name" value={                                formData.name} onChange={handleInputChange} />
+                      </div>
 
-                        <div className="input-container">
+                      <div className="field-container">
+                        <label>Section:</label>
+                        <input type="text" disabled className="cs-input-field" name="section" value={formData.section} onChange={handleInputChange} />
+                      </div>
 
-                            <div className="field-container">
-                                <label>Student ID:</label>
-                                <input type="text" className="cs-input-field" name="studentId" value={formData.studentId} onChange={handleInputChange} />
-                                {errors.studentId && <span className="error-studentId">{errors.studentId}</span>}
-                            </div>
+                      <div className="field-container">
+                        <label>Cluster Head:</label>
+                        <input type="text" disabled className="cs-input-field" name="head" value={formData.head} onChange={handleInputChange} />
+                      </div>
 
-                            <div className="field-container">
-                                <label>Full Name:</label>
-                                <input type="text" disabled className="cs-input-field" name="name" value={                                formData.name} onChange={handleInputChange} />
-                            </div>
+                      <div className="field-container">
+                        <label>Hours to Deduct:</label>
+                        <input type="text" className="cs-input-field" name="deduction" value={formData.deduction} onChange={handleInputChange} />
+                        {errors.deduction && <span className="error-hours-deduct">{errors.deduction}</span>}
+                      </div>
 
-                            <div className="field-container">
-                                <label>Section:</label>
-                                <input type="text" disabled className="cs-input-field" name="section" value={formData.section} onChange={handleInputChange} />
-                            </div>
+                      <div className="field-container">
+                        <label>Area of Community Service:</label>
+                        <select className="select-field" name="areaId" value={formData.areaId} onChange={handleInputChange}>
+                        <option value="">Select an area</option>
+                          {stations.map(station => (
+                            <option key={station.id} value={station.id}>{station.stationName}</option>
+                          ))}
+                        </select>
+                        {errors.areaId && <span className="error">{errors.areaId}</span>}
+                      </div>
 
-                            <div className="field-container">
-                                <label>Cluster Head:</label>
-                                <input type="text" disabled className="cs-input-field" name="head" value={formData.head} onChange={handleInputChange} />
-                            </div>
+                      <div className="field-container">
+                        <label>Reason for Community Service:</label>
+                        <input type="text" className="cs-input-field" name="reasonOfCs" value={formData.reasonOfCs} onChange={handleInputChange} />
+                        {errors.reasonOfCs && <span className="error-reason-cs">{errors.reasonOfCs}</span>}
+                      </div>
+                    </div>
 
-                            <div className="field-container">
-                                <label>Hours to Deduct:</label>
-                                <input type="text" className="cs-input-field" name="deduction" value={formData.deduction} onChange={handleInputChange} />
-                                {errors.deduction && <span className="error-hours-deduct">{errors.deduction}</span>}
-                            </div>
+                    <table className="cs-slip-table">
+                      <thead>
+                        <tr>
+                          <th>STUDENT</th>
+                          <th>OFFENSE</th>
+                          <th>CS HOURS</th>
+                        </tr>
+                      </thead>
 
-                            <div className="field-container">
-                                <label>Area of Community Service:</label>
-                                <select className="select-field" name="areaId" value={formData.areaId} onChange={handleInputChange}>
-                                    <option value="">Select an area</option>
-                                    {stations.map(station => (
-                                        <option key={station.id} value={station.id}>{station.stationName}</option>
-                                    ))}
-                                </select>
-                                {errors.areaId && <span className="error">{errors.areaId}</span>}
-                            </div>
+                      <tbody>
+                        {violations.map(violation => (
+                        <tr key={violation.id}>
+                          <td>{violation.student.studentNumber}</td>
+                          <td>{violation.offense.description}</td>
+                          <td>{violation.csHours}</td>
+                        </tr>
+                        ))}
+                      </tbody>
+                    </table>
 
-                            <div className="field-container">
-                            <label>Reason for Community Service:</label>
-                            <input type="text" className="cs-input-field" name="reasonOfCs" value={formData.reasonOfCs} onChange={handleInputChange} />
-                            {errors.reasonOfCs && <span className="error-reason-cs">{errors.reasonOfCs}</span>}
-                            </div>
+                    <div className="bottom-container">
+                      <div className="total-container">
+                        <label>Total Hours Required: </label>
+                        <input type="text" disabled className="input-hours" name="hoursRequired" value={totalHoursRequired} readOnly />
+                      </div>
 
-                        </div>
-
-                        <table className="cs-slip-table">
-
-                            <thead>
-                                <tr>
-                                    <th>STUDENT</th>
-                                    <th>OFFENSE</th>
-                                    <th>CS HOURS</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                {violations.map(violation => (
-                                    <tr key={violation.id}>
-                                        <td>{violation.student.studentNumber}</td>
-                                        <td>{violation.offense.description}</td>
-                                        <td>{violation.csHours}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-
-                        </table>
-
-                        <div className="bottom-container">
-
-                            <div className="total-container">
-                                <label>Total Hours Required: </label>
-                                <input type="text" disabled className="input-hours" name="hoursRequired" value={totalHoursRequired} readOnly />
-                            </div>
-
-                            <button type="submit" className="create-csslip-button" disabled={!isFormValid} >CREATE</button>
-                            {message && <div className="message error">{message}</div>}
-                            {successMessage && <div className="message success">{successMessage}</div>}
-                            
-                        </div>
-
-                    </form>
-
+                      <button type="submit" className="create-csslip-button" disabled={!isFormValid} >CREATE</button>
+                      {message && <div className="message error">{message}</div>}
+                      {successMessage && <div className="message success">{successMessage}</div>}                   
+                    </div>
+                  </form>
                 </div>
-
             </div>
-            
         </div>
     );
 };
