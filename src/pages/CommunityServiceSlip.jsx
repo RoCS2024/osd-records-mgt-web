@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { getApiUrl, API_ENDPOINTS } from '../Constants';
@@ -74,7 +74,7 @@ const CsSlipPageAdmin = () => {
         setIsFormValid(Object.keys(errors).length === 0 && formData.studentId && formData.deduction && formData.areaId && formData.reasonOfCs);
     }, [errors, formData]);
 
-    const fetchStudentDetails = async (studentId) => {
+    const fetchStudentDetails = useCallback(async (studentId) => {
         const student = students.find(student => student.studentNumber === studentId);
         const id = student && student.id;
         if (id) {
@@ -89,9 +89,9 @@ const CsSlipPageAdmin = () => {
           return response.data;
         }
         return null;
-      };
+      }, [students]);
     
-      const fetchStudentViolation = async (studentId) => {
+    const fetchStudentViolation = useCallback(async (studentId) => {
         const student = students.find(student => student.studentNumber === studentId);
         const id = student && student.id;
         if (id) {
@@ -106,9 +106,9 @@ const CsSlipPageAdmin = () => {
           return response.data;
         }
         return [];
-      };    
+      }, [students]);    
 
-      const fetchTotalHoursRequired = async (studentId) => {
+    const fetchTotalHoursRequired = useCallback(async (studentId) => {
         const student = students.find(student => student.studentNumber === studentId);
         const id = student && student.studentNumber;
         if (id) {
@@ -123,9 +123,9 @@ const CsSlipPageAdmin = () => {
           return response.data;
         }
         return '';
-      };
+      }, [students]);
 
-      const handleInputChange = (e) => {
+    const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevState => ({
           ...prevState,
@@ -211,7 +211,7 @@ const CsSlipPageAdmin = () => {
         return errors;
     };
     
-    const fetchStudentData = async (studentId) => {
+    const fetchStudentData = useCallback(async (studentId) => {
         try {
           const [studentDetails, studentViolations, totalHours] = await Promise.all([
             fetchStudentDetails(studentId),
@@ -231,30 +231,12 @@ const CsSlipPageAdmin = () => {
           console.error('Error:', error);
           setMessage('An error occurred while fetching data.');
         }
-      };
+      }, [fetchStudentDetails, fetchStudentViolation, fetchTotalHoursRequired]);
 
-      useEffect(() => {
-        const fetchStudentData = async () => {
+    useEffect(() => {
+        const fetchData = async () => {
           if (formData.studentId.trim() !== '' && !errors.studentId) {
-            try {
-              const [studentDetails, studentViolations, totalHours] = await Promise.all([
-                fetchStudentDetails(formData.studentId),
-                fetchStudentViolation(formData.studentId),
-                fetchTotalHoursRequired(formData.studentId)
-              ]);
-    
-              setFormData(prevState => ({
-                ...prevState,
-                name: studentDetails ? `${studentDetails.lastName}, ${studentDetails.firstName} ${studentDetails.middleName}` : '',
-                section: studentDetails ? studentDetails.section.sectionName : '',
-                head: studentDetails ? studentDetails.section.clusterHead : ''
-              }));
-              setViolations(studentViolations);
-              setTotalHoursRequired(totalHours);
-            } catch (error) {
-              console.error('Error:', error);
-              setMessage('An error occurred while fetching data.');
-            }
+            await fetchStudentData(formData.studentId);
           } else {
             setFormData(prevState => ({
               ...prevState,
@@ -267,8 +249,8 @@ const CsSlipPageAdmin = () => {
           }
         };
     
-        fetchStudentData();
-      }, [formData.studentId, errors.studentId, fetchStudentDetails, fetchStudentViolation, fetchTotalHoursRequired]);      
+        fetchData();
+      }, [formData.studentId, errors.studentId, fetchStudentData]);      
 
     const handleSubmit = async (e) => {
         e.preventDefault();
