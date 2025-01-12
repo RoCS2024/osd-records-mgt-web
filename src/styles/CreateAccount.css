@@ -162,3 +162,11 @@ button.button-enabled1 {
     cursor: pointer; 
     color: white; 
 }
+
+.error-message {
+    display: block;
+    color: #dc3545;
+    margin-top: 5px;
+    min-height: 5px; 
+    font-size: 12px;
+}

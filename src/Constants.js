@@ -30,6 +30,7 @@ export const API_ENDPOINTS = {
   },
   STUDENT: {
     LIST: '/student/studentList',
+    DETAILS: '/student/studentId',
   },
   EMPLOYEE: {
     LIST: '/employee/employeeList',
@@ -37,6 +38,14 @@ export const API_ENDPOINTS = {
   GUEST: {
     BENEFICIARIES: '/guest',
   },
+  CSSLIP:{
+    TOTAL_CS_HOURS: '/csSlip/totalCsHours/', 
+    CREATE: '/csSlip/addCsSlip', 
+    CS_LIST: '/csSlip/commServSlipList',
+  },
+  STATION:{
+    LIST: '/station/stationList',
+  }
 };
 
 export const getApiUrl = (endpoint) => `${config.BASE_URL}${endpoint}`;

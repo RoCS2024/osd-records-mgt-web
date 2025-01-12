@@ -44,12 +44,14 @@ const Login = () => {
                     } else if (authorities[2] === "ROLE_ROLE_EMPLOYEE") {
                         sessionStorage.setItem('role', authorities[2]);
                         navigate('/employee/cs-list');
+                        
                     } else if (authorities[2] === "ROLE_ROLE_ADMIN") {
                         sessionStorage.setItem('role', authorities[2]);
                         navigate('/admin/offense');
                     } else if (authorities[1] === "ROLE_ROLE_GUEST") {
                         sessionStorage.setItem('role', authorities[1]);
                         navigate('/guest/violation');
+                        
                     } else {
                         navigate('/login');
                     }

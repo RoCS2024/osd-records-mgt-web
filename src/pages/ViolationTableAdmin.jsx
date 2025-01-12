@@ -2,16 +2,15 @@ import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import '../styles/ViolationTableAdmin.css';
 import { useNavigate } from "react-router-dom";
-
 import { getApiUrl, API_ENDPOINTS } from '../Constants';
 
 import AddViolationModal from '../component/AddViolationModal';
 import EditViolationModal from '../component/EditViolationModal';
-
 import DateFilter from "../component/DateFilter";
 import SearchStudentViolation from "../component/SearchStudentViolation";
 import TableViolationAdmin from "../component/TableViolationAdmin";
-import NavBar from "../component/NavBarAdmin";
+import NavBarAdmin from "../component/NavBarAdmin";
+import DropdownCluster from "../component/DropdownCluster";
 
 const ViolationPageAdmin = () => {
     const [violations, setViolations] = useState([]);
@@ -22,6 +21,7 @@ const ViolationPageAdmin = () => {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [violationToEdit, setViolationToEdit] = useState(null);
+    const [filterType, setFilterType] = useState('All');
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -89,9 +89,9 @@ const ViolationPageAdmin = () => {
         const currentYear = new Date().getFullYear();
 
         if (date.getFullYear() > currentYear) {
-            alert('Date exceeds the current year');
+            alert('Date cannot be in the future');
         } else if (!isStartDate && opposingDate && date < opposing) {
-            alert('Start date cannot be earlier than End date');
+            alert('Start date cannot be earlier than end date');
         } else {
             setDate(event.target.value);
         }
@@ -133,7 +133,6 @@ const ViolationPageAdmin = () => {
                 offense: {
                     id: parseInt(newViolation.offenseId)
                 },
-                warningNumber: parseInt(newViolation.warningNumber),
                 csHours: parseInt(newViolation.csHours),
                 disciplinaryAction: newViolation.disciplinaryAction,
                 approvedBy: {
@@ -152,7 +151,7 @@ const ViolationPageAdmin = () => {
             closeAddModal();
             loadViolations();
         } catch (error) {
-            console.error('Error Adding Violation:', error);
+            console.error('Error adding violation:', error);
         }
     };
 
@@ -169,7 +168,7 @@ const ViolationPageAdmin = () => {
             console.log('Edit successful:', response.data);
     
             if (response.status === 200) {
-                alert('Violation updated successfull!');
+                alert('Violation updated successfully!');
             }
     
             closeEditModal();
@@ -177,6 +176,20 @@ const ViolationPageAdmin = () => {
         } catch (error) {
             console.error('Error editing violation:', error);
         }
+    };
+
+    const filterByCluster = (filter) => {
+        let filtered = violations;
+
+        if (filter !== 'All') {
+            filtered = filtered.filter(violation => violation.student.section.clusterName === filter);
+        }
+        setFilteredViolations(filtered);
+    };
+
+    const handleFilterChange = (event) => {
+        setFilterType(event.target.value);
+        filterByCluster(event.target.value);
     };
     
     const formatDate = (dateString) => {
@@ -188,11 +201,11 @@ const ViolationPageAdmin = () => {
         <div className="violation-page-admin">
 
            {/*  NavBar component */}
-           <NavBar handleLogout={handleLogout} />
+           <NavBarAdmin handleLogout={handleLogout} />
 
-            <div className="container">
+            <div className="violation-container">
 
-                <h1>VIOLATION</h1>
+                <h1 className="head-violation">VIOLATION</h1>
 
                 <div className="content-container">
 
@@ -210,6 +223,12 @@ const ViolationPageAdmin = () => {
                             endDate={endDate}
                             handleStartDateChange={handleStartDateChange}
                             handleEndDateChange={handleEndDateChange}
+                        />
+
+                         {/* Dropdown Component */}
+                         <DropdownCluster
+                            filterType={filterType}
+                            onFilterChange={handleFilterChange}
                         />
 
                     </div>
