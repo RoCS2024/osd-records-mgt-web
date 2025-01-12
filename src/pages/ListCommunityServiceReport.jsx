@@ -88,7 +88,7 @@ const CsListPageAdmin = () => {
     };
 
     return (
-        <div className="list-cs-page-admin">
+        <div className="list-cs-page-admin" >
 
            {/*  NavBar component */}
            <NavBarAdmin handleLogout={handleLogout} />

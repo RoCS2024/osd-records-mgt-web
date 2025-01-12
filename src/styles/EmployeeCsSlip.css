@@ -180,6 +180,7 @@ h2{
     justify-content: center;
     align-items: center;
     width: 180px;
+    height: 45px;
     font-size: 16px;
     background-color: #6BCB77;
     color: #fff;
@@ -193,3 +194,5 @@ h2{
 .add-report-button:hover {
     background-color: #009713;
 }
+
+

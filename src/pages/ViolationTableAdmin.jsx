@@ -203,7 +203,7 @@ const ViolationPageAdmin = () => {
            {/*  NavBar component */}
            <NavBarAdmin handleLogout={handleLogout} />
 
-            <div className="container">
+            <div className="violation-container">
 
                 <h1 className="head-violation">VIOLATION</h1>
 

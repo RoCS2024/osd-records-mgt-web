@@ -39,7 +39,7 @@
     font-size: 28px;
 }
 
-.container {
+.violation-container {
     margin-top: 75px;
     margin-bottom: 80px;
     width: 95%;
@@ -47,6 +47,7 @@
     display: grid;
     justify-items: center;
     align-content: start;
+    border-radius: 6px;
 }
 
 h1 {
@@ -224,7 +225,7 @@ input, select:focus{
     justify-content: center;
     align-items: center;
     width: 180px;
-    height: 50px;
+    height: 45px;
     font-size: 16px;
     background-color: #6BCB77;
     color: #fff;
@@ -243,7 +244,7 @@ input, select:focus{
     justify-content: center;
     align-items: center;
     width: 180px;
-    height: 50px;
+    height: 45px;
     font-size: 16px;
     background-color: #0174BE;
     color: #fff;
