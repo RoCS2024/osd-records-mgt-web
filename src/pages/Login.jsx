@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import '../styles/Login.css';
-
 import { FaUser } from "react-icons/fa";
 import { TbEyeClosed, TbEyeUp } from "react-icons/tb";
 import logo from '../assets/logo.png';
-
+import '../styles/Login.css';
 import { jwtDecode } from 'jwt-decode';
-
 import { getApiUrl, API_ENDPOINTS } from '../Constants';
 
 const Login = () => {
@@ -44,21 +41,19 @@ const Login = () => {
                     } else if (authorities[2] === "ROLE_ROLE_EMPLOYEE") {
                         sessionStorage.setItem('role', authorities[2]);
                         navigate('/employee/cs-list');
-                        
                     } else if (authorities[2] === "ROLE_ROLE_ADMIN") {
                         sessionStorage.setItem('role', authorities[2]);
                         navigate('/admin/offense');
                     } else if (authorities[1] === "ROLE_ROLE_GUEST") {
                         sessionStorage.setItem('role', authorities[1]);
                         navigate('/guest/violation');
-                        
                     } else {
                         navigate('/login');
                     }
                 }
             } else {
                 console.error('Login failed:', response.statusText);
-                alert('Login failed. Please check your credentials and try again.');
+                setErrorMessage('Login failed. Please check your credentials and try again.');
             }
         } catch (error) {
             console.error('Error:', error.message);
@@ -86,28 +81,33 @@ const Login = () => {
                     </div>
 
                     <div className="field-box">
-                        <label>Username</label>
+                        <label htmlFor="username">Username</label>
                         <div className="insert">
-                            <input type="text" required onChange={(e) => setUsername(e.target.value)} />
+                            <input
+                                type="text"
+                                id="username"
+                                required
+                                onChange={(e) => setUsername(e.target.value)}
+                            />
                             <FaUser className="icon" />
                         </div>
-
-                        {/* <div className="forgot-username-link">
-                            <a href="account/forgot-username">Forgot username?</a>
-                        </div> */}
                     </div>
 
                     <div className="field-box field-box-password">
-                        <label>Password</label>
+                        <label htmlFor="password">Password</label>
                         <div className="insert">
-                            <input type={showPassword ? "text" : "password"} required onChange={(e) => setPassword(e.target.value)} />
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                id="password"
+                                required
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
                             {showPassword ? (
                                 <TbEyeUp className="icon" onClick={togglePasswordVisibility} />
                             ) : (
                                 <TbEyeClosed className="icon" onClick={togglePasswordVisibility} />
                             )}
                         </div>
-
                         <div className="forgot-password-link">
                             <a href="account/forgot-password">Forgot password?</a>
                         </div>
@@ -118,7 +118,7 @@ const Login = () => {
                     <button type="submit" className="login-button">Login</button>
 
                     <div className="register-link">
-                        <p className="noAcc">Don't have an Account?<a className="click" href="account/create">Click here</a></p>
+                        <p>Don't have an Account? <a className="click" href="account/create">Click here</a></p>
                     </div>
                 </form>
             </div>
@@ -127,3 +127,4 @@ const Login = () => {
 };
 
 export default Login;
+

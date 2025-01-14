@@ -4,7 +4,6 @@ import App from './App';
 import OtpForm from './pages/OTP';
 import ForgotPassword from './pages/ForgotPassword';
 
-
 test('renders login page', () => {
   render(<App />);
 

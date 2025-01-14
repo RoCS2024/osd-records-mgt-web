@@ -29,6 +29,7 @@
     margin-bottom: 25px; 
     font-size: 24px;
     font-style: normal;
+    font-weight: bold;
 }
 
 .required-asterisk-header {
@@ -36,6 +37,7 @@
     margin-bottom: 20px; 
     font-size: 15px;
     font-style: italic;
+    font-weight: lighter;
 }
 
 .form-modal {

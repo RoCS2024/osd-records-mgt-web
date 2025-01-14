@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+import { FaUser } from 'react-icons/fa';
+import { MdLockOutline } from 'react-icons/md';
 import { getApiUrl, API_ENDPOINTS } from '../Constants';
-
 import '../styles/OTP.css';
 import logo from '../assets/logo.png';
 
@@ -42,10 +42,12 @@ const OTP = () => {
             });
 
             if (response.status === 200) {
-                setMessage('OTP verified successfully!');
+                setMessage('');
+                alert('OTP verified successfully! Redirecting to login...');
+                setErrorType(''); // Ensure it's not an error message
                 setTimeout(() => {
                     navigate('/login');
-                }, 2000);
+                }, 3000); // Increased delay to 3 seconds for better user experience
             }
         } catch (error) {
             setIsSubmitting(false);
@@ -70,49 +72,59 @@ const OTP = () => {
 
     return (
         <div className="otp-container">
-
-            <div className="header">
-                <div className="logo">
-                    <img src={logo} alt="Logo" id="logo" />
+            <div className="form-box-otp">
+                <div className="header">
+                    <div className="logo">
+                        <img src={logo} alt="Logo" id="logo" />
+                    </div>
+                    <h1>Verify OTP</h1>
                 </div>
-                <h1>Verify OTP</h1>
+
+                <form onSubmit={handleSubmit} className="form-container">
+                    <div className={`input-box ${errorType === 'username' ? 'error' : ''}`}>
+                        <label htmlFor="username">Username:</label>
+                        <div className="insert">
+                            <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                value={formData.username}
+                                onChange={handleChange}
+                                disabled={isSubmitting}
+                            />
+                            <FaUser className="icon" />
+                        </div>
+                    </div>
+
+                    <div className={`input-box ${errorType === 'otp' ? 'error' : ''}`}>
+                        <label htmlFor="otp">Enter OTP:</label>
+                        <div className="insert">
+                            <input
+                                type="text"
+                                id="otp"
+                                name="otp"
+                                value={formData.otp}
+                                onChange={handleChange}
+                                disabled={isSubmitting}
+                            />
+                            <MdLockOutline className="icon" />
+                        </div>
+                    </div>
+
+                    <button
+                        className="otp-button"
+                        type="submit"
+                        disabled={isSubmitting || formData.otp.length === 0 || formData.username.length === 0}
+                    >
+                        {isSubmitting ? 'Verifying...' : 'Verify OTP'}
+                    </button>
+                </form>
+
+                {message && <p className={`message ${errorType ? 'error-message' : 'success-message'}`}>{message}</p>}
             </div>
-
-            <form onSubmit={handleSubmit} className="otp-form-container">
-                <div className={`input-box ${errorType === 'username' ? 'error' : ''}`}>
-                    <label>Username:</label>
-                    <input
-                        type="text"
-                        name="username"
-                        value={formData.username}
-                        onChange={handleChange}
-                        disabled={isSubmitting}
-                    />
-                </div>
-
-                <div className={`input-box ${errorType === 'otp' ? 'error' : ''}`}>
-                    <label>Enter OTP:</label>
-                    <input
-                        type="text"
-                        name="otp"
-                        value={formData.otp}
-                        onChange={handleChange}
-                        disabled={isSubmitting}
-                    />
-                </div>
-
-                <button
-                    className="otp-button"
-                    type="submit"
-                    disabled={isSubmitting || formData.otp.length === 0 || formData.username.length === 0}
-                >
-                    {isSubmitting ? 'Submitting...' : 'Verify OTP'}
-                </button>
-            </form>
-
-            {message && <p className={`message ${errorType ? 'error-message' : 'success-message'}`}>{message}</p>}
         </div>
     );
 };
 
 export default OTP;
+
