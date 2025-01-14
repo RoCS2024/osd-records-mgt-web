@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import '../styles/ForgotPassword.css';
-
-import { getApiUrl, API_ENDPOINTS } from '../Constants';
-
-import { TbEyeClosed, TbEyeUp} from "react-icons/tb";
+import { FaUser } from 'react-icons/fa';
+import { TbEyeClosed, TbEyeUp } from "react-icons/tb";
 import logo from '../assets/logo.png';
+import '../styles/ForgotPassword.css';
+import { getApiUrl, API_ENDPOINTS } from '../Constants';
 
 const ForgotPassword = () => {
     const navigate = useNavigate();
@@ -15,7 +14,7 @@ const ForgotPassword = () => {
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [showPasswordAndOTP, setShowPasswordAndOTP] = useState(false);
-    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [errors, setErrors] = useState({
         username: '',
         otp: '',
@@ -23,38 +22,36 @@ const ForgotPassword = () => {
         form: ''
     });
 
-    const oldPassword = ""; // Assuming you have the old password stored somewhere
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         if (name === 'username') {
             setUsername(value);
             if (/[^a-zA-Z0-9]/.test(value)) {
-                setErrors({ ...errors, username: 'Please Enter a Valid Input (alphanumeric characters only).' });
+                setErrors({ ...errors, username: 'Please enter a valid input (alphanumeric characters only).' });
             } else {
                 setErrors({ ...errors, username: '' });
             }
         }
         if (name === 'otp') setOtp(value);
         if (name === 'password') setPassword(value);
-        setErrors({ ...errors, [name]: '' });
+        setErrors({ ...errors, [name]: '', form: '' });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErrors({ username: '', otp: '', password: '', form: '' });
-        setIsButtonDisabled(true);
+        setIsSubmitting(true);
 
         if (!showPasswordAndOTP) {
             if (!username) {
-                setErrors({ ...errors, username: 'Username is Required' });
-                setIsButtonDisabled(false);
+                setErrors({ ...errors, username: 'Username is required' });
+                setIsSubmitting(false);
                 return;
             }
 
             if (/[^a-zA-Z0-9]/.test(username)) {
-                setErrors({ ...errors, username: 'Please Enter a Valid Input (alphanumeric characters only).' });
-                setIsButtonDisabled(false);
+                setErrors({ ...errors, username: 'Please enter a valid input (alphanumeric characters only).' });
+                setIsSubmitting(false);
                 return;
             }
 
@@ -64,7 +61,7 @@ const ForgotPassword = () => {
                 if (response.status === 200) {
                     setShowPasswordAndOTP(true);
                 } else {
-                    setErrors({ ...errors, form: 'Request Failed. Please check your credentials and try again.' });
+                    setErrors({ ...errors, form: 'Request failed. Please check your credentials and try again.' });
                 }
             } catch (error) {
                 if (error.response && error.response.data && error.response.data.message) {
@@ -73,22 +70,16 @@ const ForgotPassword = () => {
                     setErrors({ ...errors, form: 'An error occurred while processing your request.' });
                 }
             } finally {
-                setIsButtonDisabled(false);
+                setIsSubmitting(false);
             }
         } else {
-            if (password === oldPassword) {
-                setErrors({ ...errors, password: 'You cannot use the same password. Please enter a new one.' });
-                setIsButtonDisabled(false);
-                return;
-            }
-
             let validationErrors = {};
-            if (!otp) validationErrors.otp = 'OTP is Required';
-            if (!password) validationErrors.password = 'Password is Required';
+            if (!otp) validationErrors.otp = 'OTP is required';
+            if (!password) validationErrors.password = 'Password is required';
 
             if (Object.keys(validationErrors).length > 0) {
                 setErrors(validationErrors);
-                setIsButtonDisabled(false);
+                setIsSubmitting(false);
                 return;
             }
 
@@ -97,18 +88,18 @@ const ForgotPassword = () => {
             try {
                 const response = await axios.post(getApiUrl(API_ENDPOINTS.USER.VERIFY_PASSWORD), updateData);
                 if (response.status === 200) {
-                    navigate('/Login');
+                    navigate('/login');
                 } else {
-                    setErrors({ ...errors, form: 'Request Failed. Please check your credentials and try again.' });
+                    setErrors({ ...errors, form: 'Request failed. Please check your credentials and try again.' });
                 }
             } catch (error) {
                 if (error.response && error.response.data && error.response.data.message) {
                     setErrors({ ...errors, form: error.response.data.message });
                 } else {
-                    setErrors({ ...errors, form: 'An Error occurred while processing your request.' });
+                    setErrors({ ...errors, form: 'An error occurred while processing your request.' });
                 }
             } finally {
-                setIsButtonDisabled(false);
+                setIsSubmitting(false);
             }
         }
     };
@@ -119,11 +110,8 @@ const ForgotPassword = () => {
 
     return (
         <div className="forgot-password">
-
-            <div className= "form-box-forgot">
-
+            <div className="form-box-forgot">
                 <form onSubmit={handleSubmit} className="form-container-forgot">
-
                     <div className="header">
                         <div className="logo">
                             <img src={logo} alt="Logo" id="logo" />
@@ -134,49 +122,46 @@ const ForgotPassword = () => {
                     {errors.form && <p className="error-message">{errors.form}</p>}
 
                     <div className="label-input-box">
-
-                        <label>Username</label>
-
-                        <div className="input-with-icon"></div>
-
-                        <input
-                            type="text"
-                            name="username"
-                            required
-                            value={username}
-                            onChange={handleChange}
-                        />
+                        <label htmlFor="username">Username</label>
+                        <div className="show-password">
+                            <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                value={username}
+                                onChange={handleChange}
+                                disabled={showPasswordAndOTP || isSubmitting}
+                            />
+                            <FaUser className="icon" />
+                        </div>
                         {errors.username && <p className="error-message">{errors.username}</p>}
                     </div>
 
                     {showPasswordAndOTP && (
                         <>
                             <div className="label-input-box">
-
-                                <label>OTP</label>
-
+                                <label htmlFor="otp">OTP</label>
                                 <input
                                     type="text"
+                                    id="otp"
                                     name="otp"
-                                    required
                                     value={otp}
                                     onChange={handleChange}
+                                    disabled={isSubmitting}
                                 />
                                 {errors.otp && <p className="error-message">{errors.otp}</p>}
                             </div>
 
                             <div className="label-input-box">
-
-                                <label>Password</label>
-
+                                <label htmlFor="password">New Password</label>
                                 <div className='show-password'>
-                                    
                                     <input
                                         type={showPassword ? "text" : "password"}
+                                        id="password"
                                         name="password"
-                                        required
                                         value={password}
                                         onChange={handleChange}
+                                        disabled={isSubmitting}
                                     />
                                     {showPassword ? (
                                         <TbEyeUp className="icon" onClick={togglePasswordVisibility} />
@@ -184,51 +169,45 @@ const ForgotPassword = () => {
                                         <TbEyeClosed className="icon" onClick={togglePasswordVisibility} />
                                     )}
                                 </div>
-
                                 {errors.password && <p className="error-message">{errors.password}</p>}
-
                             </div>
                         </>
                     )}
+
                     {!showPasswordAndOTP ? (
                         <div className="center-button">
                             <button
                                 type="submit"
-                                disabled={isButtonDisabled || !username || /[^a-zA-Z0-9]/.test(username)}
-                                className={isButtonDisabled ? 'button-disabled' : 'button-enabled'}
+                                disabled={isSubmitting || !username || /[^a-zA-Z0-9]/.test(username)}
+                                className={isSubmitting ? 'button-disabled' : 'button-enabled'}
                             >
-                                Check Username
+                                {isSubmitting ? 'Checking...' : 'Check Username'}
                             </button>
                         </div>
                     ) : (
                         <div className="button-container">
-                            
                             <button
                                 type="button"
                                 className="forgotcancel-button"
-                                onClick={() => navigate('/Login')}
+                                onClick={() => navigate('/login')}
+                                disabled={isSubmitting}
                             >
                                 Cancel
                             </button>
                             <button
                                 type="submit"
-                                disabled={isButtonDisabled}
-                                className={isButtonDisabled ? 'button-disabled' : 'button-enabled'}
+                                disabled={isSubmitting}
+                                className={isSubmitting ? 'button-disabled' : 'button-enabled'}
                             >
-                                Save
+                                {isSubmitting ? 'Saving...' : 'Save'}
                             </button>
-
                         </div>
-
                     )}
-
                 </form>
-
             </div>
-            
         </div>
     );
-    
 };
 
 export default ForgotPassword;
+

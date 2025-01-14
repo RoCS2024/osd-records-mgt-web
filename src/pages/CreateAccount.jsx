@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import '../styles/CreateAccount.css';
-
-import { getApiUrl, API_ENDPOINTS } from '../Constants';
-
-import { FaUser } from "react-icons/fa";
-import { TbEyeClosed, TbEyeUp } from "react-icons/tb";
+import { FaUser } from 'react-icons/fa';
+import { TbEyeClosed, TbEyeUp } from 'react-icons/tb';
 import logo from '../assets/logo.png';
-
+import '../styles/CreateAccount.css';
+import { getApiUrl, API_ENDPOINTS } from '../Constants';
 import AddGuestModal from '../component/AddGuestModal';
 
 const CreateAccount = () => {
@@ -21,117 +18,103 @@ const CreateAccount = () => {
         memberNumber: '',
         email: ''
     });
-    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+    const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
     const [showGuestModal, setShowGuestModal] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
+    // Handle input changes
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
+        setErrors((prev) => ({ ...prev, [name]: '' }));
     };
 
+    // Form validation
+    const validateForm = () => {
+        const newErrors = {};
+        if (!formData.username) newErrors.username = 'Username is required';
+        if (!formData.password) newErrors.password = 'Password is required';
+        if (userType !== 'guest') {
+            if (!formData.memberNumber) {
+                newErrors.memberNumber = `${userType === 'student' ? 'Student' : 'Employee'} Number is required`;
+            }
+            if (!formData.email) newErrors.email = 'Email is required';
+        }
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
+    // Submit handler
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErrorMessage('');
-        setIsButtonDisabled(true);
-        setIsSubmitting(true);
+        if (!validateForm()) return;
 
-        // Validations
-        if (formData.username === '' || !/^[a-zA-Z0-9]+$/.test(formData.username)) {
-            setErrorMessage('Please enter a valid username');
-            setIsButtonDisabled(false);
-            setIsSubmitting(false);
-            return;
-        }
-        if (formData.password === '') {
-            setErrorMessage('Please enter a password.');
-            setIsButtonDisabled(false);
-            setIsSubmitting(false);
-            return;
-        }
-          // Password validation to disallow special characters
-        if (/[^a-zA-Z0-9]/.test(formData.password)) {
-            setErrorMessage('Password should not contain special characters.');
-            setIsButtonDisabled(false);
-            setIsSubmitting(false);
-            return;
-        }
-        if (userType !== 'guest' && formData.memberNumber === '') {
-            setErrorMessage('Please enter your member number.');
-            setIsButtonDisabled(false);
-            setIsSubmitting(false);
-            return;
-        }
-        if (userType !== 'guest' && !/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(formData.email)) {
-            setErrorMessage('Please enter a valid email');
-            setIsButtonDisabled(false);
-            setIsSubmitting(false);
-            return;
-        }
+        setIsSubmitting(true);
 
         if (userType === 'guest') {
             setShowGuestModal(true);
-            setIsButtonDisabled(false);
-            setIsSubmitting(false);
         } else {
             await registerUser();
         }
-    };
 
-    const registerUser = async (guestData = null) => {
-        try {
-            let payload;
-            if (userType === 'guest') {
-                payload = {
-                    user: {
-                        username: formData.username,
-                        password: formData.password
-                    },
-                    guest: {
-                        guestNumber: `GUEST_${Math.floor(1000 + Math.random() * 9000)}`,
-                        ...guestData
-                    }
-                };
-            } else {
-                payload = {
-                    user: {
-                        username: formData.username,
-                        password: formData.password
-                    },
-                    [userType]: {
-                        [userType === 'student' ? 'studentNumber' : 'employeeNumber']: formData.memberNumber,
-                        email: formData.email
-                    }
-                };
-            }
-
-            const response = await axios.post(getApiUrl(API_ENDPOINTS.USER.REGISTER), payload);
-            if (response.status === 200) {
-                navigate(userType === 'guest' ? '/login' : '/account/otp');
-            } else {
-                console.error('Unexpected response:', response);
-                setErrorMessage('An unexpected error occurred. Please try again.');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            if (error.response && error.response.data && error.response.data.message) {
-                setErrorMessage(error.response.data.message);
-            } else {
-                setErrorMessage('An error occurred while processing your request.');
-            }
-        }
-        setIsButtonDisabled(false);
         setIsSubmitting(false);
     };
 
+    // Register user
+    const registerUser = async (guestData = null) => {
+        const payload = {
+            user: {
+                username: formData.username,
+                password: formData.password
+            },
+            [userType]: userType === 'guest'
+                ? { guestNumber: `GUEST_${Math.floor(1000 + Math.random() * 9000)}`, ...guestData }
+                : {
+                    [userType === 'student' ? 'studentNumber' : 'employeeNumber']: formData.memberNumber,
+                    email: formData.email
+                }
+        };
+
+        try {
+            const response = await axios.post(getApiUrl(API_ENDPOINTS.USER.REGISTER), payload);
+            if (response.status === 200) {
+                navigate(userType === 'guest' ? '/login' : '/account/otp');
+            }
+        } catch (error) {
+            handleErrorResponse(error);
+        }
+    };
+
+    // Handle errors from API
+    const handleErrorResponse = (error) => {
+        console.error('Error:', error);
+        if (error.response) {
+            const { status, data } = error.response;
+            if (status === 500) {
+                setErrorMessage('A server error occurred. Please try again later.');
+            } else if (data?.message) {
+                setErrorMessage(data.message);
+            } else {
+                setErrorMessage('An unexpected error occurred. Please try again.');
+            }
+        } else if (error.request) {
+            setErrorMessage('Network error. Please check your internet connection.');
+        } else {
+            setErrorMessage('An error occurred while processing your request.');
+        }
+    };
+
+    // Toggle password visibility
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
 
+    // Handle guest modal submission
     const handleGuestSubmit = async (guestData) => {
-        await registerUser(guestData);
         setShowGuestModal(false);
+        await registerUser(guestData);
     };
 
     return (
@@ -139,7 +122,7 @@ const CreateAccount = () => {
             <div className="form-box-register">
                 <div className="header">
                     <div className="logo">
-                        <img src={logo} alt="Logo" id="logo"/>
+                        <img src={logo} alt="Logo" id="logo" />
                     </div>
                     <h1>Register</h1>
                 </div>
@@ -150,7 +133,11 @@ const CreateAccount = () => {
                         <select
                             name="userType"
                             value={userType}
-                            onChange={(e) => setUserType(e.target.value)}
+                            onChange={(e) => {
+                                setUserType(e.target.value);
+                                setFormData({ username: '', password: '', memberNumber: '', email: '' });
+                                setErrorMessage('');
+                            }}
                             className="select-style"
                         >
                             <option value="student">Student</option>
@@ -158,7 +145,6 @@ const CreateAccount = () => {
                             <option value="external">External</option>
                             <option value="guest">Guest</option>
                         </select>
-                        {errorMessage && errorMessage === 'User Type is required.' && <p className="error-message">{errorMessage}</p>}
                     </div>
 
                     <div className="input-box">
@@ -167,42 +153,66 @@ const CreateAccount = () => {
                             <input type="text" name="username" value={formData.username} onChange={handleChange} />
                             <FaUser className="icon" />
                         </div>
-                        {errorMessage && (errorMessage === 'Please enter a valid username' || errorMessage === 'Username already exist.') && <p className="error-message">{errorMessage}</p>}
+                        {errors.username && <p className="error-message">{errors.username}</p>}
                     </div>
 
                     <div className="input-box">
-                        <label>Password</label>
+                        <label>Password:</label>
                         <div className="insert">
-                            <input type={showPassword ? "text" : "password"} name="password" value={formData.password} onChange={handleChange} required />
+                            <input
+                                type={showPassword ? 'text' : 'password'}
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                            />
                             {showPassword ? (
-                                <TbEyeUp className="icon" onClick={togglePasswordVisibility} />
+                                <TbEyeUp className="icon" onClick={togglePasswordVisibility} aria-label="Hide password" />
                             ) : (
-                                <TbEyeClosed className="icon" onClick={togglePasswordVisibility} />
+                                <TbEyeClosed className="icon" onClick={togglePasswordVisibility} aria-label="Show password" />
                             )}
-                        </div>  
-                        {errorMessage && (errorMessage === 'Please enter a password.' || errorMessage === 'Please create a stronger password.') && <p className="error-message">{errorMessage}</p>}
+                        </div>
+                        {errors.password && <p className="error-message">{errors.password}</p>}
                     </div>
 
                     {userType !== 'guest' && (
-                        <div className="input-box">
-                            <label>{userType === 'student' ? 'Student Number:' : 'Employee Number:'}</label>
-                            <input type="text" name="memberNumber" value={formData.memberNumber} onChange={handleChange} />
-                        </div>
+                        <>
+                            <div className="input-box">
+                                <label>{userType === 'student' ? 'Student Number:' : 'Employee Number:'}</label>
+                                <input
+                                    type="text"
+                                    name="memberNumber"
+                                    value={formData.memberNumber}
+                                    onChange={handleChange}
+                                />
+                                {errors.memberNumber && <p className="error-message">{errors.memberNumber}</p>}
+                            </div>
+
+                            <div className="input-box">
+                                <label>Email:</label>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                />
+                                {errors.email && <p className="error-message">{errors.email}</p>}
+                            </div>
+                        </>
                     )}
-                    {errorMessage && (errorMessage === 'Student number does not exist' || errorMessage === 'Student already exists') && <p className="error-message">{errorMessage}</p>}
-                    {errorMessage && (errorMessage === 'Employee number does not exist' || errorMessage === 'Employee already exists') && <p className="error-message">{errorMessage}</p>}
-                    
-                    {userType !== 'guest' && (
-                        <div className="input-box">
-                            <label>Email:</label>
-                            <input type="email" name="email" value={formData.email} onChange={handleChange} />
-                            {errorMessage && errorMessage === 'Please enter a valid email' && <p className="error-message">{errorMessage}</p>}
-                        </div>
-                    )}
-                    <p className="error-message">{errorMessage}</p>
-                    <button type="submit" className={`register-button ${isButtonDisabled ? 'disabled' : ''}`} disabled={isButtonDisabled || isSubmitting}>
+
+                    {errorMessage && <p className="error-message general">{errorMessage}</p>}
+
+                    <button
+                        type="submit"
+                        className={`register-button ${isSubmitting ? 'disabled' : ''}`}
+                        disabled={isSubmitting}
+                    >
                         {isSubmitting ? 'Submitting...' : 'Register'}
                     </button>
+
+                    <div className="login-link">
+                        <p>Already have an Account? <Link to="/login" className="click">Login here</Link></p>
+                    </div>
                 </form>
             </div>
 
