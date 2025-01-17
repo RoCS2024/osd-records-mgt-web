@@ -6,7 +6,6 @@ import styles from '../styles/CsSlipPageAdmin.module.css';
 import NavBarAdmin from "../components/NavBarAdmin";
 import { useCsSlipForm } from '../hooks/useCsSlipForm';
 import { useAuth } from '../hooks/useAuth';
-import { useCsSlips } from '../hooks/useCsSlips';
 import Table from '../components/Table';
 
 const CsSlipPageAdmin = () => {
