@@ -98,7 +98,7 @@ describe('ViolationStudent', () => {
       </MemoryRouter>
     );
 
-    fireEvent.click(screen.getByText(/logout/i)); // Trigger logout
+    fireEvent.click(screen.getByText(/logout/i)); 
 
     expect(sessionStorage.getItem('token')).toBeNull();
     expect(sessionStorage.getItem('role')).toBeNull();

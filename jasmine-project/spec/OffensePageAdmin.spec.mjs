@@ -136,7 +136,7 @@ describe('OffensePageAdmin Component', () => {
       </MemoryRouter>
     );
 
-    const editButton = screen.getAllByRole('button')[0]; // First edit button in the table
+    const editButton = screen.getAllByRole('button')[0]; 
     fireEvent.click(editButton);
 
     expect(screen.getByText(/Edit Offense Modal/i)).toBeInTheDocument();
