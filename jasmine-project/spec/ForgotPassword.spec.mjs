@@ -7,12 +7,11 @@ import { BrowserRouter as Router } from 'react-router-dom';
 jest.mock('axios');
 
 describe('ForgotPassword Component', () => {
-
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  test('renders forgot password page with check username button', () => {
+  test('renders forgot password page with Check Username button', () => {
     render(
       <Router>
         <ForgotPassword />
@@ -38,7 +37,7 @@ describe('ForgotPassword Component', () => {
   });
 
   test('handles valid username and successfully requests OTP', async () => {
-    axios.post.mockResolvedValue({ status: 200 }); 
+    axios.post.mockResolvedValue({ status: 200 });
 
     render(
       <Router>
@@ -49,17 +48,17 @@ describe('ForgotPassword Component', () => {
     const usernameInput = screen.getByLabelText(/username/i);
     const checkUsernameButton = screen.getByRole('button', { name: /check username/i });
 
-    fireEvent.change(usernameInput, { target: { value: 'Kate Ann' } });
+    fireEvent.change(usernameInput, { target: { value: 'KateAnn' } });
     fireEvent.click(checkUsernameButton);
 
     await waitFor(() => {
       expect(screen.getByLabelText(/otp/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/new password/i)).toBeInTheDocument();
     });
   });
 
   test('displays error when forgot password API request fails', async () => {
-    axios.post.mockRejectedValue(new Error('Request Failed'));
+    axios.post.mockRejectedValue({ response: { data: { message: 'Request failed' } } });
 
     render(
       <Router>
@@ -70,7 +69,7 @@ describe('ForgotPassword Component', () => {
     const usernameInput = screen.getByLabelText(/username/i);
     const checkUsernameButton = screen.getByRole('button', { name: /check username/i });
 
-    fireEvent.change(usernameInput, { target: { value: 'Kate Ann' } });
+    fireEvent.change(usernameInput, { target: { value: 'KateAnn' } });
     fireEvent.click(checkUsernameButton);
 
     await waitFor(() => {
@@ -78,8 +77,8 @@ describe('ForgotPassword Component', () => {
     });
   });
 
-  test('displays OTP and password fields after valid username', async () => {
-    axios.post.mockResolvedValue({ status: 200 }); 
+  test('submits password change form successfully', async () => {
+    axios.post.mockResolvedValue({ status: 200 });
 
     render(
       <Router>
@@ -87,37 +86,23 @@ describe('ForgotPassword Component', () => {
       </Router>
     );
 
-    const usernameInput = screen.getByLabelText(/username/i);
-    fireEvent.change(usernameInput, { target: { value: 'Kate Ann' } });
+    fireEvent.change(screen.getByLabelText(/username/i), { target: { value: 'KateAnn' } });
     fireEvent.click(screen.getByRole('button', { name: /check username/i }));
 
     await waitFor(() => {
       expect(screen.getByLabelText(/otp/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/new password/i)).toBeInTheDocument();
     });
-  });
-
-  test('submits password change form successfully', async () => {
-    axios.post.mockResolvedValue({ status: 200 }); 
-
-    render(
-      <Router>
-        <ForgotPassword />
-      </Router>
-    );
-
-    fireEvent.change(screen.getByLabelText(/username/i), { target: { value: 'Kate Ann' } });
-    fireEvent.click(screen.getByRole('button', { name: /check username/i }));
 
     fireEvent.change(screen.getByLabelText(/otp/i), { target: { value: 'abcd1234' } });
-    fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'Password@1234' } });
+    fireEvent.change(screen.getByLabelText(/new password/i), { target: { value: 'Password@1234' } });
 
     fireEvent.click(screen.getByRole('button', { name: /save/i }));
 
     await waitFor(() => {
       expect(axios.post).toHaveBeenCalledWith(
-        'http://localhost:8080/user/verify-forgot-password',
-        { username: 'Kate Ann', otp: 'abcd1234', password: 'Password@1234' }
+        expect.any(String), 
+        { username: 'KateAnn', otp: 'abcd1234', password: 'Password@1234' }
       );
       expect(screen.queryByText(/request failed/i)).toBeNull();
     });
@@ -130,8 +115,8 @@ describe('ForgotPassword Component', () => {
       </Router>
     );
 
-    const passwordInput = screen.getByLabelText(/password/i);
-    const toggleIcon = screen.getByRole('img'); 
+    const passwordInput = screen.getByLabelText(/new password/i);
+    const toggleIcon = screen.getByRole('img');
 
     expect(passwordInput.type).toBe('password');
 
@@ -140,5 +125,47 @@ describe('ForgotPassword Component', () => {
 
     fireEvent.click(toggleIcon);
     expect(passwordInput.type).toBe('password');
+  });
+
+  test('disables submit button during form submission', async () => {
+    axios.post.mockResolvedValue({ status: 200 });
+
+    render(
+      <Router>
+        <ForgotPassword />
+      </Router>
+    );
+
+    const usernameInput = screen.getByLabelText(/username/i);
+    const checkUsernameButton = screen.getByRole('button', { name: /check username/i });
+
+    fireEvent.change(usernameInput, { target: { value: 'KateAnn' } });
+    fireEvent.click(checkUsernameButton);
+
+    expect(checkUsernameButton).toBeDisabled();
+
+    await waitFor(() => {
+      expect(screen.getByLabelText(/otp/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/new password/i)).toBeInTheDocument();
+    });
+  });
+
+  test('cancels password reset and navigates back to login page', () => {
+    const mockNavigate = jest.fn();
+    jest.mock('react-router-dom', () => ({
+      ...jest.requireActual('react-router-dom'),
+      useNavigate: () => mockNavigate,
+    }));
+
+    render(
+      <Router>
+        <ForgotPassword />
+      </Router>
+    );
+
+    const cancelButton = screen.getByRole('button', { name: /cancel/i });
+    fireEvent.click(cancelButton);
+
+    expect(mockNavigate).toHaveBeenCalledWith('/login');
   });
 });

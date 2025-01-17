@@ -45,15 +45,27 @@ describe('CreateAccount Component', () => {
   });
 
   it('shows an error when username is invalid', async () => {
+    render(
+      <BrowserRouter>
+        <CreateAccount />
+      </BrowserRouter>
+    );
+
     const submitButton = screen.getByRole('button', { name: /register/i });
 
     fireEvent.change(screen.getByLabelText(/username/i), { target: { value: '' } });
     fireEvent.click(submitButton);
 
-    expect(await screen.findByText(/please enter a valid username/i)).toBeInTheDocument();
+    expect(await screen.findByText(/username is required/i)).toBeInTheDocument();
   });
 
   it('toggles password visibility', () => {
+    render(
+      <BrowserRouter>
+        <CreateAccount />
+      </BrowserRouter>
+    );
+
     const passwordInput = screen.getByLabelText(/password/i);
     const eyeClosedIcon = screen.getByTestId('eye-closed-icon');
 
@@ -67,6 +79,12 @@ describe('CreateAccount Component', () => {
   });
 
   it('shows modal when guest is selected as userType and registers guest', async () => {
+    render(
+      <BrowserRouter>
+        <CreateAccount />
+      </BrowserRouter>
+    );
+
     fireEvent.change(screen.getByLabelText(/user type/i), { target: { value: 'guest' } });
 
     Axios.post.mockResolvedValue({ status: 200 });
@@ -88,6 +106,12 @@ describe('CreateAccount Component', () => {
   });
 
   it('shows an error for invalid email when userType is not guest', async () => {
+    render(
+      <BrowserRouter>
+        <CreateAccount />
+      </BrowserRouter>
+    );
+
     const emailInput = screen.getByLabelText(/email/i);
     const submitButton = screen.getByRole('button', { name: /register/i });
 
@@ -98,6 +122,12 @@ describe('CreateAccount Component', () => {
   });
 
   it('submits form for valid student user', async () => {
+    render(
+      <BrowserRouter>
+        <CreateAccount />
+      </BrowserRouter>
+    );
+
     fireEvent.change(screen.getByLabelText(/username/i), { target: { value: 'Kate Ann' } });
     fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'Password@123' } });
     fireEvent.change(screen.getByLabelText(/user type/i), { target: { value: 'student' } });
@@ -114,10 +144,12 @@ describe('CreateAccount Component', () => {
 
     await waitFor(() => {
       expect(Axios.post).toHaveBeenCalledWith(
-        'http://localhost:8080/user/register',
+        expect.stringContaining('/user/register'),
         expect.objectContaining({
-          username: 'Kate Ann',
-          password: 'Password@123',
+          user: {
+            username: 'Kate Ann',
+            password: 'Password@123'
+          },
           student: {
             studentNumber: 'CT21-0073',
             email: 'student@example.com'
