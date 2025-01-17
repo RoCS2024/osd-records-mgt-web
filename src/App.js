@@ -6,16 +6,16 @@ import OTP from "./pages/OTP";
 import ForgotPassword from "./pages/ForgotPassword";
 import CreateAccount from "./pages/CreateAccount";
 
-import OffensePageAdmin from "./pages/OffenseTableAdmin";
-import ViolationPageAdmin from "./pages/ViolationTableAdmin";
-import CsSlipPageAdmin from "./pages/CommunityServiceSlip";
-import CsListPageAdmin from "./pages/ListCommunityServiceReport";
-import CsReportPageAdmin from "./pages/CommunityServiceReport";
+import OffensePageAdmin from "./pages/OffensePageAdmin";
+import ViolationPageAdmin from "./pages/ViolationPageAdmin";
+import CsSlipPageAdmin from "./pages/CsSlipPageAdmin";
+import CsListPageAdmin from "./pages/CsListPageAdmin";
+import CsReportPageAdmin from "./pages/CsReportPageAdmin";
 
 import ViolationStudent from "./pages/ViolationStudent";
 import CsSlipStudent from "./pages/CsSlipStudent";
 
-import ViolationGuest from "./pages/ViolationsGuest";
+import ViolationGuest from "./pages/ViolationGuest";
 import CsSlipGuest from "./pages/CsSlipGuest";
 
 import EmployeeCsList from "./pages/EmployeeCsList";

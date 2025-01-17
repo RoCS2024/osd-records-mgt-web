@@ -1,0 +1,28 @@
+.collapsible {
+    border: 1px solid #e2e8f0;
+    border-radius: 0.375rem;
+    margin-bottom: 1rem;
+}
+
+.trigger {
+    background-color: #f8fafc;
+    padding: 1rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+}
+
+.arrow {
+    transition: transform 0.3s ease;
+}
+
+.arrow.open {
+    transform: rotate(180deg);
+}
+
+.content {
+    padding: 1rem;
+}
+

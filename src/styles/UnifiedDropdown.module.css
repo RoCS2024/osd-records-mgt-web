@@ -1,0 +1,82 @@
+.dropdownContainer {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .dropdownButton {
+    height: 45px;
+    width: 300px;
+    padding: 0.75rem 2.5rem 0.75rem 1rem;
+    font-size: 1rem;
+    color: var(--text-color);
+    background-color: var(--form-background);
+    border: 1px solid var(--input-border);
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: left;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .dropdownButton:focus {
+    outline: none;
+    border-color: var(--input-focus);
+    box-shadow: 0 0 0 3px rgba(1, 116, 190, 0.1);
+  }
+  
+  .dropdownIcon {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    pointer-events: none;
+  }
+  
+  .dropdownMenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 300px;
+    overflow-y: auto;
+    background-color: var(--form-background);
+    border: 1px solid var(--input-border);
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+  }
+  
+  .dropdownSearch {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    border: none;
+    border-bottom: 1px solid var(--input-border);
+  }
+  
+  .dropdownOptions {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .dropdownOption {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+  }
+  
+  .dropdownOption:hover {
+    background-color: var(--hover-background);
+  }
+  
+  .dropdownLabel {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+  }
+  
+  

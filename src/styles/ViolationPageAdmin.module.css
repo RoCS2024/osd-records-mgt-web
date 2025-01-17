@@ -1,0 +1,100 @@
+.violationPageAdmin {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.violationContainer {
+  position: fixed; 
+  top: 60px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  flex: 1;
+  padding: 20px;
+  background-color: #f0f4f8;
+  overflow-y: auto;
+}
+
+.head {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1e3a8a;
+  margin-bottom: 20px;
+}
+
+.contents {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.searchFilterContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.leftContainer {
+  display: flex;
+  justify-content: flex-start;
+  gap: 20px;
+}
+
+.tableContainer {
+  margin-bottom: 20px;
+}
+
+.addViolationBtn {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.createCsButton,
+.addViolationButton {
+  background-color: #3b82f6;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.createCsButton:hover,
+.addViolationButton:hover {
+  background-color: #2563eb;
+}
+
+.editButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #3b82f6;
+  transition: color 0.3s ease;
+}
+
+.editButton:hover {
+  color: #2563eb;
+}
+
+.nameColumn {
+  width: 30%;
+}
+
+.dateColumn {
+  width: 20%;
+}
+
+.offenseColumn {
+  width: 30%;
+}
+
+.actionColumn {
+  width: 20%;
+  text-align: center;
+}
+

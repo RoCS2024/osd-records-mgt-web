@@ -1,104 +1,101 @@
-.guest-modal-overlay {
+.offenseModalOverlay {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    right: 0;
+    bottom: 0;
     background-color: rgba(0, 0, 0, 0.5);
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     z-index: 1000;
 }
 
-.guest-modal-content {
+.offenseModalContent {
+    position: relative;
     background-color: var(--form-background);
     border-radius: 12px;
     padding: 2rem;
     width: 90%;
-    max-width: 600px;
+    max-width: 500px;
     max-height: 90vh;
     overflow-y: auto;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-}
-
-.modal-header h2 {
-    font-size: 1.5rem;
-    color: var(--primary-color);
-    margin: 0;
-}
-
-.close-button {
+.offenseCloseBtn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
     background: none;
     border: none;
     font-size: 1.5rem;
     cursor: pointer;
     color: var(--text-color);
+    transition: color 0.3s ease;
 }
 
-.required-info {
-    font-size: 0.8rem;
-    color: var(--text-color);
-    margin-bottom: 1rem;
+.offenseCloseBtn:hover {
+    color: var(--primary-color);
 }
 
-.form-fields {
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+.offenseModalHeader {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
 }
 
-.form-group-modal {
+.offenseModalTitle {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin: 0;
+}
+
+.offenseFormContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.offenseFormGroup {
     display: flex;
     flex-direction: column;
 }
 
-.form-group-modal label {
+.offenseFormGroup label {
     font-size: 0.9rem;
     margin-bottom: 0.25rem;
     color: var(--text-color);
+    font-weight: 600;
 }
 
-.form-group-modal input {
+.offenseFormGroup input,
+.offenseFormGroup select {
     height: 40px;
     padding: 0.5rem;
     border: 1px solid var(--input-border);
     border-radius: 4px;
     font-size: 1rem;
-    transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
 }
 
-.form-group-modal input:focus {
+.offenseFormGroup input:focus,
+.offenseFormGroup select:focus {
     outline: none;
     border-color: var(--input-focus);
     box-shadow: 0 0 0 3px rgba(1, 116, 190, 0.1);
 }
 
-.form-group-modal .input-error {
-    border-color: var(--error-color);
-}
-
-.error-message {
+.offenseErrorMessage {
     color: var(--error-color);
     font-size: 0.8rem;
     margin-top: 0.25rem;
 }
 
-.required {
-    color: var(--error-color);
-}
-
-.add-guest-button {
+.offenseSubmitBtn {
     width: 100%;
     padding: 0.75rem;
-    margin-top: 1.5rem;
     font-size: 1rem;
     font-weight: 600;
     color: white;
@@ -107,20 +104,17 @@
     border-radius: 4px;
     cursor: pointer;
     transition: background-color var(--transition-speed), transform var(--transition-speed);
+    margin-top: 1rem;
 }
 
-.add-guest-button:hover {
+.offenseSubmitBtn:hover {
     background-color: var(--primary-hover);
     transform: translateY(-2px);
 }
 
 @media (max-width: 600px) {
-    .guest-modal-content {
+    .offenseModalContent {
         padding: 1.5rem;
-    }
-
-    .form-fields {
-        grid-template-columns: 1fr;
     }
 }
 

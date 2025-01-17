@@ -1,0 +1,53 @@
+.violationStudent {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  .container {
+    position: fixed; 
+    top: 60px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    flex: 1;
+    padding: 20px;
+    background-color: #f0f4f8;
+    overflow-y: auto;
+  }
+  
+  .head {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1e3a8a;
+    margin-bottom: 20px;
+  }
+  
+  .contentContainer {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .tableContainer {
+    margin-top: 20px;
+  }
+  
+  .dateColumn {
+    width: 25%;
+  }
+  
+  .offenseColumn {
+    width: 35%;
+  }
+  
+  .typeColumn {
+    width: 20%;
+  }
+  
+  .statusColumn {
+    width: 20%;
+  }
+  
+  
