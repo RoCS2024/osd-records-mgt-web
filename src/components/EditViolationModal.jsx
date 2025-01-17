@@ -10,7 +10,7 @@ const EditViolationModal = ({ isOpen, onClose, onSubmit, violationToEdit }) => {
     const [offenses, setOffenses] = useState([]);
     const [students, setStudents] = useState([]);
     const [employees, setEmployees] = useState([]);
-    const [disciplinaryActions, setDisciplinaryActions] = useState([
+    const disciplinaryActions = [
         { value: 'Reminder from Discipline Officer', label: 'Reminder from Discipline Officer' },
         { value: 'Reminder from Discipline Officer w/ Written Warning', label: 'Reminder from Discipline Officer w/ Written Warning' },
         { value: 'Dialogue with Prefect of Discipline', label: 'Dialogue with Prefect of Discipline' },
@@ -21,7 +21,8 @@ const EditViolationModal = ({ isOpen, onClose, onSubmit, violationToEdit }) => {
         { value: 'Non-admission for 1 semester', label: 'Non-admission for 1 semester' },
         { value: 'Non-admission for 2 semesters', label: 'Non-admission for 2 semesters' },
         { value: 'Recommendation for dismissal', label: 'Recommendation for dismissal' },
-    ]);
+    ];    
+    
     const [violation, setViolation] = useState({
         studentId: "",
         studentNumber: "",

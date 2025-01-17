@@ -1,5 +1,5 @@
+//create of cs slip
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { getApiUrl, API_ENDPOINTS } from '../Constants';
 import styles from '../styles/CsSlipPageAdmin.module.css';
@@ -10,7 +10,6 @@ import { useCsSlips } from '../hooks/useCsSlips';
 import Table from '../components/Table';
 
 const CsSlipPageAdmin = () => {
-    const navigate = useNavigate();
     const { handleLogout } = useAuth();
     const [stations, setStations] = useState([]);
     const [students, setStudents] = useState([]);
@@ -27,8 +26,6 @@ const CsSlipPageAdmin = () => {
         handleSubmit,
         clearForm
     } = useCsSlipForm(students);
-
-    const { } = useCsSlips('ROLE_ROLE_ADMIN');
 
     useEffect(() => {
         const fetchInitialData = async () => {

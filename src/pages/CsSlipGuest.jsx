@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styles from '../styles/CsSlipGuest.module.css';
 
 import DropdownCsSlipGuest from '../components/DropdownCsSlipGuest';
@@ -8,7 +7,6 @@ import NavBarGuest from '../components/NavBarGuest';
 import { useCsSlips } from '../hooks/useCsSlips';
 
 const CsSlipGuest = () => {
-    const navigate = useNavigate();
     const role = sessionStorage.getItem('role');
     const { 
         csSlips, 
