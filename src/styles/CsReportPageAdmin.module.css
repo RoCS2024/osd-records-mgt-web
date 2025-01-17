@@ -1,0 +1,24 @@
+.csReportPageAdmin {
+    margin-top: 20px;
+  }
+  
+  .reportContainer {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .reportHeader {
+    font-size: 20px;
+    font-weight: bold;
+    color: #1e3a8a;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .tableContainer {
+    overflow-x: auto;
+  }
+  
+  

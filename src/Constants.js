@@ -34,18 +34,25 @@ export const API_ENDPOINTS = {
   },
   EMPLOYEE: {
     LIST: '/employee/employeeList',
+    DETAILS: '/employee/employeeNumber',
   },
   GUEST: {
     BENEFICIARIES: '/guest',
   },
-  CSSLIP:{
-    TOTAL_CS_HOURS: '/csSlip/totalCsHours/', 
-    CREATE: '/csSlip/addCsSlip', 
+  CSSLIP: {
+    TOTAL_CS_HOURS: '/csSlip/totalCsHours/',
+    CREATE: '/csSlip/addCsSlip',
     CS_LIST: '/csSlip/commServSlipList',
+    BY_AREA: '/csSlip/areaOfCs', 
+    BY_STUDENT_NUMBER: '/csSlip/studentNumber/',
+    BY_STUDENT_ID: '/csSlip/studentId/',
   },
-  STATION:{
+  CSREPORT: {
+    CREATE: '/csreport/addCsReportForSlip',
+  },
+  STATION: {
     LIST: '/station/stationList',
-  }
+  },
 };
 
 export const getApiUrl = (endpoint) => `${config.BASE_URL}${endpoint}`;

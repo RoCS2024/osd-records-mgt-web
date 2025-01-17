@@ -1,0 +1,44 @@
+.dateFilterContainer {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .dateInputGroup {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .dateLabel {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: var(--text-color);
+  }
+  
+  .dateInput {
+    height: 45px;
+    padding: 0.5rem;
+    border: 1px solid var(--input-border);
+    border-radius: 4px;
+    font-size: 1rem;
+    color: var(--text-color);
+    background-color: var(--form-background);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .dateInput:focus {
+    outline: none;
+    border-color: var(--input-focus);
+    box-shadow: 0 0 0 3px rgba(1, 116, 190, 0.1);
+  }
+  
+  .dateRangeSeparator {
+    font-size: 1rem;
+    color: var(--text-color);
+    margin: 0 0.05rem;
+    align-self: flex-end;
+    margin-bottom: 0.5rem;
+  }
+  
+  

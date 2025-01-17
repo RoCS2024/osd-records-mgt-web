@@ -6,7 +6,7 @@ import { TbEyeClosed, TbEyeUp } from 'react-icons/tb';
 import logo from '../assets/logo.png';
 import '../styles/CreateAccount.css';
 import { getApiUrl, API_ENDPOINTS } from '../Constants';
-import AddGuestModal from '../component/AddGuestModal';
+import AddGuestModal from '../components/AddGuestModal';
 
 const CreateAccount = () => {
     const navigate = useNavigate();

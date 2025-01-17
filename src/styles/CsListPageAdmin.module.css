@@ -1,0 +1,94 @@
+.csListPageAdmin {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.csListContainer {
+  position: fixed; 
+  top: 60px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  flex: 1;
+  padding: 20px;
+  background-color: #f0f4f8;
+  overflow-y: auto;
+}
+
+.head {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1e3a8a;
+  margin-bottom: 20px;
+}
+
+.contents {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.searchFilterContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.tableContainer {
+  margin-bottom: 20px;
+  overflow-x: auto;
+}
+
+.studentIdColumn {
+  width: 15%;
+}
+
+.studentNameColumn {
+  width: 25%;
+}
+
+.areaColumn {
+  width: 30%;
+}
+
+.hoursColumn {
+  width: 15%;
+}
+
+.selectedSlipDetails {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f0f4f8;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.selectedSlipDetails h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.reportTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.reportTable th,
+.reportTable td {
+  border: 1px solid #e5e7eb;
+  padding: 8px;
+  text-align: left;
+}
+
+.reportTable th {
+  background-color: #f3f4f6;
+  font-weight: bold;
+}
+
+.reportTable tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+

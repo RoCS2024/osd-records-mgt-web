@@ -1,0 +1,65 @@
+.listCsPageAdmin {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.employeeContainer {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  flex: 1;
+  padding: 20px;
+  background-color: #f0f4f8;
+  overflow-y: auto;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1e3a8a;
+  margin-bottom: 20px;
+}
+
+.contentContainer {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.nameColumn {
+  width: 30%;
+}
+
+.typeColumn {
+  width: 30%;
+}
+
+.areaColumn {
+  width: 40%;
+  text-align: left;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th,
+table td {
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+table th {
+  font-weight: bold;
+  color: #374151;
+}
+
+table tr:hover {
+  background-color: #f3f4f6;
+}

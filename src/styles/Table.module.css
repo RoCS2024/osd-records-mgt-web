@@ -1,0 +1,31 @@
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+.table th,
+.table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.table th {
+  background-color: #f8fafc;
+  font-weight: bold;
+}
+
+.tableRow {
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.tableRow:hover {
+  background-color: #f1f5f9;
+}
+
+.tableRow.expanded {
+  background-color: #e2e8f0;
+}
+

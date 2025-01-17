@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import '../styles/ViolationStudent.css';
+import styles from '../styles/ViolationStudent.module.css';
 
 import { getApiUrl, API_ENDPOINTS } from '../Constants';
 
-import DateFilter from '../component/DateFilter';
-import TableViolationStudent from '../component/TableViolationStudent';
-import NavBar from '../component/NavBar';
+import DateFilter from '../components/DateFilter';
+import Table from '../components/Table';
+import NavBarStudent from '../components/NavBarStudent';
 
 const ViolationStudent = () => {
     const [violations, setViolations] = useState([]);
@@ -110,16 +110,53 @@ const ViolationStudent = () => {
         return new Date(dateString).toLocaleDateString(undefined, options);
     };
 
+    const columns = [
+        { 
+            key: 'dateOfNotice', 
+            header: 'DATE', 
+            className: styles.dateColumn,
+            render: (row) => formatDate(row.dateOfNotice)
+        },
+        { 
+            key: 'offense', 
+            header: 'OFFENSE', 
+            className: styles.offenseColumn,
+            render: (row) => row.offense.description
+        },
+        { 
+            key: 'type', 
+            header: 'TYPE', 
+            className: styles.typeColumn,
+            render: (row) => row.offense.type
+        },
+        { 
+            key: 'warningNumber', 
+            header: 'NO. OF OCCURRENCE', 
+            className: styles.statusColumn,
+            render: (row) => row.warningNumber
+        },
+        { 
+            key: 'disciplinaryAction', 
+            header: 'DISCIPLINARY ACTION', 
+            className: styles.statusColumn,
+            render: (row) => row.disciplinaryAction
+        },
+        { 
+            key: 'csHours', 
+            header: 'CS HOURS', 
+            className: styles.statusColumn,
+            render: (row) => row.csHours
+        },
+    ];
+
     return (
-        <div className="violation-student">
-            {/* NavBar component */}
-            <NavBar handleLogout={handleLogout} />
+        <div className={styles.violationStudent}>
+            <NavBarStudent handleLogout={handleLogout} />
 
-            <div className="container">
-                <h1>MY VIOLATIONS</h1>
+            <div className={styles.container}>
+                <h1 className={styles.head}>MY VIOLATIONS</h1>
 
-                <div className="content-container">
-                    {/* Date Filter Component */}
+                <div className={styles.contentContainer}>
                     <DateFilter
                         startDate={startDate}
                         endDate={endDate}
@@ -127,11 +164,14 @@ const ViolationStudent = () => {
                         handleEndDateChange={handleEndDateChange}
                     />
 
-                    {/* Table component */}
-                    <TableViolationStudent
-                        filteredViolations={filteredViolations}
-                        formatDate={formatDate}
-                    />
+                    
+
+                    <div className={styles.tableContainer}>
+                        <Table 
+                            columns={columns} 
+                            data={filteredViolations}
+                        />
+                    </div>
                 </div>
             </div>
         </div>
@@ -139,3 +179,4 @@ const ViolationStudent = () => {
 };
 
 export default ViolationStudent;
+
