@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { FaUser } from 'react-icons/fa';
 import { MdLockOutline } from 'react-icons/md';
 import { getApiUrl, API_ENDPOINTS } from '../Constants';
 import '../styles/OTP.css';
@@ -9,31 +8,25 @@ import logo from '../assets/logo.png';
 
 const OTP = () => {
     const navigate = useNavigate();
-    const [formData, setFormData] = useState({
-        username: '',
-        otp: ''
-    });
+    const [otp, setOtp] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [message, setMessage] = useState('');
-    const [errorType, setErrorType] = useState('');
+    const [isError, setIsError] = useState(false);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-        setMessage(''); 
-        setErrorType(''); 
+        setOtp(e.target.value);
+        setMessage('');
+        setIsError(false);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
         setMessage('');
-        setErrorType('');
+        setIsError(false);
+
         try {
-            const payload = {
-                username: formData.username,
-                otp: formData.otp
-            };
+            const payload = { otp };
             const response = await axios.post(getApiUrl(API_ENDPOINTS.USER.VERIFY_OTP), payload, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -42,31 +35,37 @@ const OTP = () => {
             });
 
             if (response.status === 200) {
-                setMessage('');
                 alert('OTP verified successfully! Redirecting to login...');
-                setErrorType(''); // Ensure it's not an error message
                 setTimeout(() => {
                     navigate('/login');
-                }, 3000); // Increased delay to 3 seconds for better user experience
+                }, 3000);
             }
         } catch (error) {
             setIsSubmitting(false);
+            handleErrorResponse(error);
+        }
+    };
 
-            if (error.response && error.response.data) {
-                const { message } = error.response.data;
-
-                if (message === 'Incorrect OTP') {
-                    setMessage('The OTP you entered is incorrect.');
-                    setErrorType('otp');
-                } else if (message === 'User does not exist') {
-                    setMessage('The username you entered does not exist.');
-                    setErrorType('username');
-                } else {
-                    setMessage('An error occurred: ' + message);
-                }
+    const handleErrorResponse = (error) => {
+        console.error('Error:', error);
+        if (error.response) {
+            const { status, data } = error.response;
+            if (status === 500) {
+                setMessage('A server error occurred. Please try again later.');
+                setIsError(true);
+            } else if (error.response.data) {
+                setMessage(error.response.data); // Set message from the response data
+                setIsError(true);
             } else {
                 setMessage('An unexpected error occurred. Please try again.');
+                setIsError(true);
             }
+        } else if (error.request) {
+            setMessage('Network error. Please check your internet connection.');
+            setIsError(true);
+        } else {
+            setMessage('An error occurred while processing your request.');
+            setIsError(true);
         }
     };
 
@@ -81,29 +80,14 @@ const OTP = () => {
                 </div>
 
                 <form onSubmit={handleSubmit} className="form-container">
-                    <div className={`input-box ${errorType === 'username' ? 'error' : ''}`}>
-                        <label htmlFor="username">Username:</label>
-                        <div className="insert">
-                            <input
-                                type="text"
-                                id="username"
-                                name="username"
-                                value={formData.username}
-                                onChange={handleChange}
-                                disabled={isSubmitting}
-                            />
-                            <FaUser className="icon" />
-                        </div>
-                    </div>
-
-                    <div className={`input-box ${errorType === 'otp' ? 'error' : ''}`}>
+                    <div className={`input-box ${isError ? 'error' : ''}`}>
                         <label htmlFor="otp">Enter OTP:</label>
                         <div className="insert">
                             <input
                                 type="text"
                                 id="otp"
                                 name="otp"
-                                value={formData.otp}
+                                value={otp}
                                 onChange={handleChange}
                                 disabled={isSubmitting}
                             />
@@ -114,17 +98,16 @@ const OTP = () => {
                     <button
                         className="otp-button"
                         type="submit"
-                        disabled={isSubmitting || formData.otp.length === 0 || formData.username.length === 0}
+                        disabled={isSubmitting || otp.length === 0}
                     >
                         {isSubmitting ? 'Verifying...' : 'Verify OTP'}
                     </button>
                 </form>
 
-                {message && <p className={`message ${errorType ? 'error-message' : 'success-message'}`}>{message}</p>}
+                {message && <p className={`message ${isError ? 'error-message' : 'success-message'}`}>{message}</p>}
             </div>
         </div>
     );
 };
 
 export default OTP;
-
