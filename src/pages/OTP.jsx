@@ -47,27 +47,28 @@ const OTP = () => {
     };
 
     const handleErrorResponse = (error) => {
-        console.error('Error:', error);
-        if (error.response) {
-            const { status, data } = error.response;
-            if (status === 500) {
-                setMessage('A server error occurred. Please try again later.');
-                setIsError(true);
-            } else if (error.response.data) {
-                setMessage(error.response.data); // Set message from the response data
-                setIsError(true);
-            } else {
-                setMessage('An unexpected error occurred. Please try again.');
-                setIsError(true);
-            }
-        } else if (error.request) {
-            setMessage('Network error. Please check your internet connection.');
-            setIsError(true);
+    console.error('Error:', error);
+
+    if (error.response) {
+        const { status, data } = error.response;
+
+        if (status === 500) {
+            setMessage('A server error occurred. Please try again later.');
+        } else if (data?.message) {
+            setMessage(data.message);
+        } else if (typeof data === 'string') {
+            setMessage(data); 
         } else {
-            setMessage('An error occurred while processing your request.');
-            setIsError(true);
+            setMessage('An unexpected error occurred. Please try again.');
         }
-    };
+    } else if (error.request) {
+        setMessage('Network error. Please check your internet connection.');
+    } else {
+        setMessage('An error occurred while processing your request.');
+    }
+
+    setIsError(true);
+};
 
     return (
         <div className="otp-container">
