@@ -27,6 +27,10 @@ const Login = () => {
         try {
             const response = await axios.post(getApiUrl(API_ENDPOINTS.LOGIN), userData);
             if (response.status === 200) {
+                if(response.data === "1"){
+                    navigate('/account/otp');
+                    return;
+                }
                 const token = response.headers['jwt-token'];
                 const tokenDecoded = jwtDecode(token);
                 const authorities = tokenDecoded.authorities;

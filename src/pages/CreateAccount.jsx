@@ -6,21 +6,17 @@ import { TbEyeClosed, TbEyeUp } from 'react-icons/tb';
 import logo from '../assets/logo.png';
 import '../styles/CreateAccount.css';
 import { getApiUrl, API_ENDPOINTS } from '../Constants';
-import AddGuestModal from '../components/AddGuestModal';
 
 const CreateAccount = () => {
     const navigate = useNavigate();
-    const [userType, setUserType] = useState('student');
     const [showPassword, setShowPassword] = useState(false);
     const [formData, setFormData] = useState({
         username: '',
         password: '',
-        memberNumber: '',
         email: ''
     });
     const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [showGuestModal, setShowGuestModal] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
     // Handle input changes
@@ -35,12 +31,7 @@ const CreateAccount = () => {
         const newErrors = {};
         if (!formData.username) newErrors.username = 'Username is required';
         if (!formData.password) newErrors.password = 'Password is required';
-        if (userType !== 'guest') {
-            if (!formData.memberNumber) {
-                newErrors.memberNumber = `${userType === 'student' ? 'Student' : 'Employee'} Number is required`;
-            }
-            if (!formData.email) newErrors.email = 'Email is required';
-        }
+        if (!formData.email) newErrors.email = 'Email is required';
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -52,35 +43,24 @@ const CreateAccount = () => {
         if (!validateForm()) return;
 
         setIsSubmitting(true);
-
-        if (userType === 'guest') {
-            setShowGuestModal(true);
-        } else {
-            await registerUser();
-        }
-
+        await registerUser();
         setIsSubmitting(false);
     };
 
     // Register user
-    const registerUser = async (guestData = null) => {
+    const registerUser = async () => {
         const payload = {
             user: {
                 username: formData.username,
                 password: formData.password
             },
-            [userType]: userType === 'guest'
-                ? { guestNumber: `GUEST_${Math.floor(1000 + Math.random() * 9000)}`, ...guestData }
-                : {
-                    [userType === 'student' ? 'studentNumber' : 'employeeNumber']: formData.memberNumber,
-                    email: formData.email
-                }
+            email: formData.email
         };
 
         try {
             const response = await axios.post(getApiUrl(API_ENDPOINTS.USER.REGISTER), payload);
             if (response.status === 200) {
-                navigate(userType === 'guest' ? '/login' : '/account/otp');
+                navigate('/account/otp');
             }
         } catch (error) {
             handleErrorResponse(error);
@@ -111,12 +91,6 @@ const CreateAccount = () => {
         setShowPassword(!showPassword);
     };
 
-    // Handle guest modal submission
-    const handleGuestSubmit = async (guestData) => {
-        setShowGuestModal(false);
-        await registerUser(guestData);
-    };
-
     return (
         <div className="create-account-container">
             <div className="form-box-register">
@@ -128,25 +102,6 @@ const CreateAccount = () => {
                 </div>
 
                 <form onSubmit={handleSubmit} className="form-container">
-                    <div className="input-box">
-                        <label>User Type:</label>
-                        <select
-                            name="userType"
-                            value={userType}
-                            onChange={(e) => {
-                                setUserType(e.target.value);
-                                setFormData({ username: '', password: '', memberNumber: '', email: '' });
-                                setErrorMessage('');
-                            }}
-                            className="select-style"
-                        >
-                            <option value="student">Student</option>
-                            <option value="employee">Employee</option>
-                            <option value="external">External</option>
-                            <option value="guest">Guest</option>
-                        </select>
-                    </div>
-
                     <div className="input-box">
                         <label>Username:</label>
                         <div className="insert">
@@ -174,31 +129,16 @@ const CreateAccount = () => {
                         {errors.password && <p className="error-message">{errors.password}</p>}
                     </div>
 
-                    {userType !== 'guest' && (
-                        <>
-                            <div className="input-box">
-                                <label>{userType === 'student' ? 'Student Number:' : 'Employee Number:'}</label>
-                                <input
-                                    type="text"
-                                    name="memberNumber"
-                                    value={formData.memberNumber}
-                                    onChange={handleChange}
-                                />
-                                {errors.memberNumber && <p className="error-message">{errors.memberNumber}</p>}
-                            </div>
-
-                            <div className="input-box">
-                                <label>Email:</label>
-                                <input
-                                    type="email"
-                                    name="email"
-                                    value={formData.email}
-                                    onChange={handleChange}
-                                />
-                                {errors.email && <p className="error-message">{errors.email}</p>}
-                            </div>
-                        </>
-                    )}
+                    <div className="input-box">
+                        <label>Email:</label>
+                        <input
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                        />
+                        {errors.email && <p className="error-message">{errors.email}</p>}
+                    </div>
 
                     {errorMessage && <p className="error-message general">{errorMessage}</p>}
 
@@ -215,10 +155,6 @@ const CreateAccount = () => {
                     </div>
                 </form>
             </div>
-
-            {showGuestModal && (
-                <AddGuestModal onClose={() => setShowGuestModal(false)} onSubmit={handleGuestSubmit} />
-            )}
         </div>
     );
 };
