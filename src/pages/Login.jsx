@@ -27,7 +27,7 @@ const Login = () => {
         try {
             const response = await axios.post(getApiUrl(API_ENDPOINTS.LOGIN), userData);
             if (response.status === 200) {
-                if(response.data == "1"){
+                if(response.data === "1"){
                     navigate('/account/otp');
                     return;
                 }
